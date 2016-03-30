@@ -6,10 +6,23 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
+    <link href="resources/styles/bootstrap.min.css" rel="stylesheet" />
+    <link href="resources/styles/bootstrap-theme.min.css" rel="stylesheet" />
+
    <title>Facelet Title</title>
 </h:head>
 <h:body>
-   EYYYY
+   <h1>Index Page</h1>
    #{testComponent.sakykLabas()}
+
+
+    <h:outputScript library="jsLibs" name="jquery.min.js" />
+    <h:outputScript library="jsLibs" name="require.js" />
+    <h:outputScript library="scripts" name="require-config.js" />
+    <script type="text/javascript">
+        require(['bootstrapper'], function(bootstrapper) {
+            bootstrapper.start();
+        });
+    </script>
 </h:body>
 </html>
