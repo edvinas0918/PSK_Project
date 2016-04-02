@@ -6,9 +6,11 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
-          <factory-entry name="NewPersistenceUnit" />
+          <factory-entry name="NameliaiPersistenceUnit" value="d860a7c4-17ad-4b21-894e-c8150b385f77" />
+          <factory-entry name="com.psk_pratybuProjektas_war_1.0-SNAPSHOTPU" />
+          <factory-entry name="noname-a.xml@0" value="d860a7c4-17ad-4b21-894e-c8150b385f77" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/java/META-INF/persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
     </facet>
     <facet type="ejb" name="EJB">
@@ -36,6 +38,12 @@
         </descriptors>
       </configuration>
     </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map />
+        <naming-strategy-map />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -46,11 +54,37 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="JPA 2.0-2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="TomEE 7.0.68" level="application_server_libraries" />
     <orderEntry type="library" name="ejb-3.2" level="project" />
     <orderEntry type="library" name="Mojarra-2.2.1" level="project" />
+    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
+    <orderEntry type="library" name="Jersey-2.2" level="project" />
+    <orderEntry type="library" name="JBoss Weld-2.0.3" level="project" />
+    <orderEntry type="library" name="Hibernate 4.2.2-4.2.2" level="project" />
+    <orderEntry type="library" name="Jersey-2.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.ejb:ejb-api:3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.liquibase:liquibase-maven-plugin:3.4.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-plugin-api:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-project:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-profile:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-model:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact-manager:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-repository-metadata:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-provider-api:1.0-alpha-5" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-utils:1.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven:maven-artifact:2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-8" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: classworlds:classworlds:1.1-alpha-2" level="project" />
+    <orderEntry type="library" name="Maven: org.liquibase:liquibase-core:3.4.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.faces:jsf-api:2.1" level="project" />
+    <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: jstl:jstl:1.2" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-server:1.18.1" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey:jersey-core:1.18.1" level="project" />
   </component>
 </module>
