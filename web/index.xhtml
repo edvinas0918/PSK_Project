@@ -15,10 +15,10 @@
    <h1>Index Page</h1>
    #{testComponent.sakykLabas()}
 
+    <script type="text/javascript" src="resources/jsLibs/jquery.min.js" />
+    <script type="text/javascript" src="resources/jsLibs/require.js" />
+    <script type="text/javascript" src="resources/scripts/require-config.js" />
 
-    <h:outputScript library="jsLibs" name="jquery.min.js" />
-    <h:outputScript library="jsLibs" name="require.js" />
-    <h:outputScript library="scripts" name="require-config.js" />
     <script type="text/javascript">
         require(['bootstrapper'], function(bootstrapper) {
             bootstrapper.start();
