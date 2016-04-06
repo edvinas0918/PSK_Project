@@ -1,6 +1,6 @@
 package EJBComponents;
 import com.sun.net.httpserver.HttpServer;
-import com.sun.jersey.api.container.httpserver.HttpServerFactory;
+//import com.sun.jersey.api.container.httpserver.HttpServerFactory;
 import java.io.IOException;
 
 import javax.ejb.Stateless;
