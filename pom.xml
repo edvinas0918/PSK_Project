@@ -12,9 +12,9 @@
                 <configuration>
                     <changeLogFile>${basedir}/src/main/liquibase/master.xml</changeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/Nameliai</url>
-                    <username>mindaugas</username>
-                    <password>mindaugas</password>
+                    <url>jdbc:mysql://localhost:3306/labanorasfriends</url>
+                    <username>labanoras</username>
+                    <password>1234</password>
                 </configuration>
                 <executions>
                     <execution>
