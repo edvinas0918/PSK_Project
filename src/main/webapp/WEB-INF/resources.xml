@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <Resource id="LabanorasDataSource" type="javax.sql.DataSource">#Tue Apr 12 16:01:46 EEST 2016
+jdbcDriver=com.mysql.jdbc.Driver
+password=Pudgepudg3
+userName=root
+jdbcUrl=jdbc\:mysql\://localhost\:3306/labanorasfriends?zeroDateTimeBehavior\=convertToNull
+</Resource>
+</resources>
