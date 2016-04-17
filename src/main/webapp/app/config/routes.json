@@ -1,0 +1,25 @@
+{
+  "routes": [
+    {
+      "url": "/friends",
+      "config": {
+        "templateUrl": "app/modules/friends/templates/friends.html",
+        "controller": "friendsController"
+      }
+    },
+    {
+      "url": "/houses",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/houses.html",
+        "controller": "summerHousesController"
+      }
+    },
+    {
+      "url": "/error",
+      "config": {
+        "templateUrl": "app/layout/error/error.html",
+        "controller": "errorController"
+      }
+    }
+  ]
+}

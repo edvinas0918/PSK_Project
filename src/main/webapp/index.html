@@ -1,10 +1,48 @@
 <!DOCTYPE html>
+
 <html>
     <head>
-        <title>Start Page</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <link href="styles/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="styles/bootstrap-theme.min.css" rel="stylesheet"/>-->
+        <link href="app/styles/summer-houses-styles.css" rel="stylesheet"/>
+        <title>Houses app</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-    </body>
+<body>
+    <!--libraries-->
+    <script type="text/javascript" src="scripts/jquery.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-route.js"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-resource.js"/>
+
+    <!--script type="text/javascript" src="scripts/angular/angular.min.js"></script>
+    <script type="text/javascript" src="scripts/angular/angular-resource.min.js"></script>
+    <script type="text/javascript" src="scripts/angular/angular-route.min.js"></script-->
+    <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+
+    <!--Our Scripts----------------------------------------------------------------->
+    <script type="text/javascript" src="app/app.js"></script>
+
+    <!--Providers-->
+    <script type="text/javascript" src="app/shared/services/route.resolver.provider.js"></script>
+
+    <!--Config-->
+    <script type="text/javascript" src="app/config/config.route.js"></script>
+
+    <!--Controllers-->
+    <script type="text/javascript" src="app/layout/main/main.js"></script>
+    <script type="text/javascript" src="app/modules/houses/summerHousesController.js"></script>
+    <script type="text/javascript" src="app/layout/error/errorController.js"></script>
+
+    <!--Services-->
+    <script type="text/javascript" src="app/modules/authentication/services/auth.service.js"></script>
+
+    <!--Directives-->
+    <script type="text/javascript" src="app/layout/topnav/topnav.directive.js"></script>
+
+    <div class="max-width-height">
+        <div class="max-width-height" data-ng-include="'app/layout/main/main.html'"></div>
+    </div>
+</body>
 </html>
