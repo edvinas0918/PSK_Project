@@ -1,4 +1,4 @@
-/// <reference path="../../typings/angular.d.ts" />
+/// <reference path="../../../typings/angular.d.ts" />
 
 module SummerHouses {
     "use strict";
