@@ -12,6 +12,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +33,7 @@ import javax.validation.constraints.Size;
 @Table(name = "tax")
 @NamedQueries({
     @NamedQuery(name = "Tax.findAll", query = "SELECT t FROM Tax t"),
-    @NamedQuery(name = "Tax.findByIDTax", query = "SELECT t FROM Tax t WHERE t.iDTax = :iDTax"),
+    @NamedQuery(name = "Tax.findById", query = "SELECT t FROM Tax t WHERE t.id = :id"),
     @NamedQuery(name = "Tax.findByName", query = "SELECT t FROM Tax t WHERE t.name = :name"),
     @NamedQuery(name = "Tax.findByPrice", query = "SELECT t FROM Tax t WHERE t.price = :price")})
 public class Tax implements Serializable {
@@ -41,8 +42,8 @@ public class Tax implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_Tax")
-    private Integer iDTax;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -53,33 +54,33 @@ public class Tax implements Serializable {
     @NotNull
     @Column(name = "Price")
     private BigDecimal price;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDTax")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxID", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDTax")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxID", fetch = FetchType.EAGER)
     private List<Summerhouse> summerhouseList;
-    @JoinColumn(name = "ID_TaxType", referencedColumnName = "ID_TaxType")
-    @ManyToOne(optional = false)
-    private Taxtype iDTaxType;
+    @JoinColumn(name = "TaxTypeID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Taxtype taxTypeID;
 
     public Tax() {
     }
 
-    public Tax(Integer iDTax) {
-        this.iDTax = iDTax;
+    public Tax(Integer id) {
+        this.id = id;
     }
 
-    public Tax(Integer iDTax, String name, BigDecimal price) {
-        this.iDTax = iDTax;
+    public Tax(Integer id, String name, BigDecimal price) {
+        this.id = id;
         this.name = name;
         this.price = price;
     }
 
-    public Integer getIDTax() {
-        return iDTax;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDTax(Integer iDTax) {
-        this.iDTax = iDTax;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -114,18 +115,18 @@ public class Tax implements Serializable {
         this.summerhouseList = summerhouseList;
     }
 
-    public Taxtype getIDTaxType() {
-        return iDTaxType;
+    public Taxtype getTaxTypeID() {
+        return taxTypeID;
     }
 
-    public void setIDTaxType(Taxtype iDTaxType) {
-        this.iDTaxType = iDTaxType;
+    public void setTaxTypeID(Taxtype taxTypeID) {
+        this.taxTypeID = taxTypeID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDTax != null ? iDTax.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -136,7 +137,7 @@ public class Tax implements Serializable {
             return false;
         }
         Tax other = (Tax) object;
-        if ((this.iDTax == null && other.iDTax != null) || (this.iDTax != null && !this.iDTax.equals(other.iDTax))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -144,7 +145,7 @@ public class Tax implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Tax[ iDTax=" + iDTax + " ]";
+        return "Entities.Tax[ id=" + id + " ]";
     }
     
 }

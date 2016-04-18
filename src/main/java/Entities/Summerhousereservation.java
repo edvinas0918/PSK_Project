@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "summerhousereservation")
 @NamedQueries({
     @NamedQuery(name = "Summerhousereservation.findAll", query = "SELECT s FROM Summerhousereservation s"),
-    @NamedQuery(name = "Summerhousereservation.findByIDSummerhouseReservation", query = "SELECT s FROM Summerhousereservation s WHERE s.iDSummerhouseReservation = :iDSummerhouseReservation"),
+    @NamedQuery(name = "Summerhousereservation.findById", query = "SELECT s FROM Summerhousereservation s WHERE s.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByFromDate", query = "SELECT s FROM Summerhousereservation s WHERE s.fromDate = :fromDate"),
     @NamedQuery(name = "Summerhousereservation.findByUntilDate", query = "SELECT s FROM Summerhousereservation s WHERE s.untilDate = :untilDate")})
 public class Summerhousereservation implements Serializable {
@@ -39,8 +40,8 @@ public class Summerhousereservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_SummerhouseReservation")
-    private Integer iDSummerhouseReservation;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FromDate")
@@ -51,32 +52,32 @@ public class Summerhousereservation implements Serializable {
     @Column(name = "UntilDate")
     @Temporal(TemporalType.DATE)
     private Date untilDate;
-    @JoinColumn(name = "ID_Member", referencedColumnName = "ID_Member")
-    @ManyToOne(optional = false)
-    private Member1 iDMember;
-    @JoinColumn(name = "ID_Summerhouse", referencedColumnName = "ID_Summerhouse")
-    @ManyToOne(optional = false)
-    private Summerhouse iDSummerhouse;
+    @JoinColumn(name = "MemberID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Clubmember memberID;
+    @JoinColumn(name = "SummerhouseID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Summerhouse summerhouseID;
 
     public Summerhousereservation() {
     }
 
-    public Summerhousereservation(Integer iDSummerhouseReservation) {
-        this.iDSummerhouseReservation = iDSummerhouseReservation;
+    public Summerhousereservation(Integer id) {
+        this.id = id;
     }
 
-    public Summerhousereservation(Integer iDSummerhouseReservation, Date fromDate, Date untilDate) {
-        this.iDSummerhouseReservation = iDSummerhouseReservation;
+    public Summerhousereservation(Integer id, Date fromDate, Date untilDate) {
+        this.id = id;
         this.fromDate = fromDate;
         this.untilDate = untilDate;
     }
 
-    public Integer getIDSummerhouseReservation() {
-        return iDSummerhouseReservation;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDSummerhouseReservation(Integer iDSummerhouseReservation) {
-        this.iDSummerhouseReservation = iDSummerhouseReservation;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getFromDate() {
@@ -95,26 +96,26 @@ public class Summerhousereservation implements Serializable {
         this.untilDate = untilDate;
     }
 
-    public Member1 getIDMember() {
-        return iDMember;
+    public Clubmember getMemberID() {
+        return memberID;
     }
 
-    public void setIDMember(Member1 iDMember) {
-        this.iDMember = iDMember;
+    public void setMemberID(Clubmember memberID) {
+        this.memberID = memberID;
     }
 
-    public Summerhouse getIDSummerhouse() {
-        return iDSummerhouse;
+    public Summerhouse getSummerhouseID() {
+        return summerhouseID;
     }
 
-    public void setIDSummerhouse(Summerhouse iDSummerhouse) {
-        this.iDSummerhouse = iDSummerhouse;
+    public void setSummerhouseID(Summerhouse summerhouseID) {
+        this.summerhouseID = summerhouseID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDSummerhouseReservation != null ? iDSummerhouseReservation.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -125,7 +126,7 @@ public class Summerhousereservation implements Serializable {
             return false;
         }
         Summerhousereservation other = (Summerhousereservation) object;
-        if ((this.iDSummerhouseReservation == null && other.iDSummerhouseReservation != null) || (this.iDSummerhouseReservation != null && !this.iDSummerhouseReservation.equals(other.iDSummerhouseReservation))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -133,7 +134,7 @@ public class Summerhousereservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Summerhousereservation[ iDSummerhouseReservation=" + iDSummerhouseReservation + " ]";
+        return "Entities.Summerhousereservation[ id=" + id + " ]";
     }
     
 }

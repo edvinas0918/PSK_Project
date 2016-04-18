@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,42 +32,43 @@ import javax.validation.constraints.Size;
 @Table(name = "memberstatus")
 @NamedQueries({
     @NamedQuery(name = "Memberstatus.findAll", query = "SELECT m FROM Memberstatus m"),
-    @NamedQuery(name = "Memberstatus.findByIDMemberStatus", query = "SELECT m FROM Memberstatus m WHERE m.iDMemberStatus = :iDMemberStatus"),
+    @NamedQuery(name = "Memberstatus.findById", query = "SELECT m FROM Memberstatus m WHERE m.id = :id"),
     @NamedQuery(name = "Memberstatus.findByName", query = "SELECT m FROM Memberstatus m WHERE m.name = :name")})
+@XmlRootElement
 public class Memberstatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_MemberStatus")
-    private Integer iDMemberStatus;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDMemberStatus")
-    private List<Member1> member1List;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberStatusID", fetch = FetchType.EAGER)
+    private List<Clubmember> clubmemberList;
 
     public Memberstatus() {
     }
 
-    public Memberstatus(Integer iDMemberStatus) {
-        this.iDMemberStatus = iDMemberStatus;
+    public Memberstatus(Integer id) {
+        this.id = id;
     }
 
-    public Memberstatus(Integer iDMemberStatus, String name) {
-        this.iDMemberStatus = iDMemberStatus;
+    public Memberstatus(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public Integer getIDMemberStatus() {
-        return iDMemberStatus;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDMemberStatus(Integer iDMemberStatus) {
-        this.iDMemberStatus = iDMemberStatus;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -75,18 +79,19 @@ public class Memberstatus implements Serializable {
         this.name = name;
     }
 
-    public List<Member1> getMember1List() {
-        return member1List;
+    @XmlTransient
+    public List<Clubmember> getClubmemberList() {
+        return clubmemberList;
     }
 
-    public void setMember1List(List<Member1> member1List) {
-        this.member1List = member1List;
+    public void setClubmemberList(List<Clubmember> clubmemberList) {
+        this.clubmemberList = clubmemberList;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDMemberStatus != null ? iDMemberStatus.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -97,7 +102,7 @@ public class Memberstatus implements Serializable {
             return false;
         }
         Memberstatus other = (Memberstatus) object;
-        if ((this.iDMemberStatus == null && other.iDMemberStatus != null) || (this.iDMemberStatus != null && !this.iDMemberStatus.equals(other.iDMemberStatus))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -105,7 +110,7 @@ public class Memberstatus implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Memberstatus[ iDMemberStatus=" + iDMemberStatus + " ]";
+        return "Entities.Memberstatus[ id=" + id + " ]";
     }
     
 }

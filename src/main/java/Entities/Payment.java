@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,90 +31,90 @@ import javax.validation.constraints.NotNull;
 @Table(name = "payment")
 @NamedQueries({
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
-    @NamedQuery(name = "Payment.findByIDPayment", query = "SELECT p FROM Payment p WHERE p.iDPayment = :iDPayment"),
-    @NamedQuery(name = "Payment.findByData", query = "SELECT p FROM Payment p WHERE p.data = :data"),
-    @NamedQuery(name = "Payment.findByConfirmation", query = "SELECT p FROM Payment p WHERE p.confirmation = :confirmation")})
+    @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id"),
+    @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
+    @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed")})
 public class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_Payment")
-    private Integer iDPayment;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "Data")
+    @Column(name = "PaymentDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date data;
+    private Date paymentDate;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "Confirmation")
-    private boolean confirmation;
-    @JoinColumn(name = "ID_Tax", referencedColumnName = "ID_Tax")
-    @ManyToOne(optional = false)
-    private Tax iDTax;
-    @JoinColumn(name = "ID_Member", referencedColumnName = "ID_Member")
-    @ManyToOne(optional = false)
-    private Member1 iDMember;
+    @Column(name = "Confirmed")
+    private boolean confirmed;
+    @JoinColumn(name = "TaxID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tax taxID;
+    @JoinColumn(name = "MemberID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Clubmember memberID;
 
     public Payment() {
     }
 
-    public Payment(Integer iDPayment) {
-        this.iDPayment = iDPayment;
+    public Payment(Integer id) {
+        this.id = id;
     }
 
-    public Payment(Integer iDPayment, Date data, boolean confirmation) {
-        this.iDPayment = iDPayment;
-        this.data = data;
-        this.confirmation = confirmation;
+    public Payment(Integer id, Date paymentDate, boolean confirmed) {
+        this.id = id;
+        this.paymentDate = paymentDate;
+        this.confirmed = confirmed;
     }
 
-    public Integer getIDPayment() {
-        return iDPayment;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDPayment(Integer iDPayment) {
-        this.iDPayment = iDPayment;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Date getData() {
-        return data;
+    public Date getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
-    public boolean getConfirmation() {
-        return confirmation;
+    public boolean getConfirmed() {
+        return confirmed;
     }
 
-    public void setConfirmation(boolean confirmation) {
-        this.confirmation = confirmation;
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
-    public Tax getIDTax() {
-        return iDTax;
+    public Tax getTaxID() {
+        return taxID;
     }
 
-    public void setIDTax(Tax iDTax) {
-        this.iDTax = iDTax;
+    public void setTaxID(Tax taxID) {
+        this.taxID = taxID;
     }
 
-    public Member1 getIDMember() {
-        return iDMember;
+    public Clubmember getMemberID() {
+        return memberID;
     }
 
-    public void setIDMember(Member1 iDMember) {
-        this.iDMember = iDMember;
+    public void setMemberID(Clubmember memberID) {
+        this.memberID = memberID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDPayment != null ? iDPayment.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -124,7 +125,7 @@ public class Payment implements Serializable {
             return false;
         }
         Payment other = (Payment) object;
-        if ((this.iDPayment == null && other.iDPayment != null) || (this.iDPayment != null && !this.iDPayment.equals(other.iDPayment))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -132,7 +133,7 @@ public class Payment implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Payment[ iDPayment=" + iDPayment + " ]";
+        return "Entities.Payment[ id=" + id + " ]";
     }
     
 }

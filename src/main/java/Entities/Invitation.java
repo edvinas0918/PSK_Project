@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,8 +32,8 @@ import javax.validation.constraints.Size;
 @Table(name = "invitation")
 @NamedQueries({
     @NamedQuery(name = "Invitation.findAll", query = "SELECT i FROM Invitation i"),
-    @NamedQuery(name = "Invitation.findByIDInvitation", query = "SELECT i FROM Invitation i WHERE i.iDInvitation = :iDInvitation"),
-    @NamedQuery(name = "Invitation.findByDate", query = "SELECT i FROM Invitation i WHERE i.date = :date"),
+    @NamedQuery(name = "Invitation.findById", query = "SELECT i FROM Invitation i WHERE i.id = :id"),
+    @NamedQuery(name = "Invitation.findByInvitationDate", query = "SELECT i FROM Invitation i WHERE i.invitationDate = :invitationDate"),
     @NamedQuery(name = "Invitation.findByEmail", query = "SELECT i FROM Invitation i WHERE i.email = :email")})
 public class Invitation implements Serializable {
 
@@ -40,50 +41,50 @@ public class Invitation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_Invitation")
-    private Integer iDInvitation;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "Date")
+    @Column(name = "InvitationDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private Date invitationDate;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "Email")
     private String email;
-    @JoinColumn(name = "ID_Member", referencedColumnName = "ID_Member")
-    @ManyToOne(optional = false)
-    private Member1 iDMember;
+    @JoinColumn(name = "MemberID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Clubmember memberID;
 
     public Invitation() {
     }
 
-    public Invitation(Integer iDInvitation) {
-        this.iDInvitation = iDInvitation;
+    public Invitation(Integer id) {
+        this.id = id;
     }
 
-    public Invitation(Integer iDInvitation, Date date, String email) {
-        this.iDInvitation = iDInvitation;
-        this.date = date;
+    public Invitation(Integer id, Date invitationDate, String email) {
+        this.id = id;
+        this.invitationDate = invitationDate;
         this.email = email;
     }
 
-    public Integer getIDInvitation() {
-        return iDInvitation;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDInvitation(Integer iDInvitation) {
-        this.iDInvitation = iDInvitation;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getInvitationDate() {
+        return invitationDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setInvitationDate(Date invitationDate) {
+        this.invitationDate = invitationDate;
     }
 
     public String getEmail() {
@@ -94,18 +95,18 @@ public class Invitation implements Serializable {
         this.email = email;
     }
 
-    public Member1 getIDMember() {
-        return iDMember;
+    public Clubmember getMemberID() {
+        return memberID;
     }
 
-    public void setIDMember(Member1 iDMember) {
-        this.iDMember = iDMember;
+    public void setMemberID(Clubmember memberID) {
+        this.memberID = memberID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDInvitation != null ? iDInvitation.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -116,7 +117,7 @@ public class Invitation implements Serializable {
             return false;
         }
         Invitation other = (Invitation) object;
-        if ((this.iDInvitation == null && other.iDInvitation != null) || (this.iDInvitation != null && !this.iDInvitation.equals(other.iDInvitation))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -124,7 +125,7 @@ public class Invitation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Invitation[ iDInvitation=" + iDInvitation + " ]";
+        return "Entities.Invitation[ id=" + id + " ]";
     }
     
 }

@@ -2,4 +2,138 @@
                    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
                    xsi:schemaLocation='http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd'>
 
+    <changeSet author="Dziugas" id="001">
+        <sql>
+            DROP TABLE AdditionalServiceReservation;
+            DROP TABLE SummerhouseReservation;
+            DROP TABLE Summerhouse;
+            DROP TABLE Payment;
+            DROP TABLE Tax;
+            DROP TABLE TaxType;
+            DROP TABLE Invitation;
+            DROP TABLE Recommendation;
+            DROP TABLE Member;
+            DROP TABLE MemberStatus;
+
+            CREATE TABLE MemberStatus(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                Name VARCHAR(40) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_MemberStatus (ID)
+            );
+
+            INSERT INTO MemberStatus (Name) VALUES
+            ('Candidate'), ('Member');
+
+            CREATE TABLE ClubMember(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                FirstName VARCHAR(30) NOT NULL,
+                LastName VARCHAR(30) NOT NULL,
+                Email VARCHAR(50) NOT NULL,
+                MemberStatusID INTEGER NOT NULL DEFAULT 1,
+                Points INTEGER NOT NULL,
+                ReservationGroup INTEGER NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_Member (ID),
+                CONSTRAINT FOREIGN KEY FK_Member_ID_MemberStatus (MemberStatusID)
+                REFERENCES MemberStatus(ID)
+                ON UPDATE CASCADE ON DELETE RESTRICT,
+                CONSTRAINT UN_Member_Email UNIQUE (Email)
+            );
+
+            CREATE TABLE Recommendation(
+                MemberID INTEGER NOT NULL,
+                RecommendedMemberID INTEGER NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_Recommendation (MemberID, RecommendedMemberID),
+                CONSTRAINT FOREIGN KEY FK_Recommendation_ID_Member (MemberID)
+                REFERENCES ClubMember(ID)
+                ON DELETE CASCADE,
+                CONSTRAINT FOREIGN KEY FK_Recommendation_Recommended (RecommendedMemberID)
+                REFERENCES ClubMember(ID)
+                ON DELETE CASCADE
+            );
+
+            CREATE TABLE Invitation(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                MemberID INTEGER NOT NULL,
+                InvitationDate DATETIME NOT NULL,
+                Email VARCHAR(50) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_Invitation (ID),
+                CONSTRAINT FOREIGN KEY FK_Invitation_ID_Member (MemberID)
+                REFERENCES ClubMember(ID)
+                ON DELETE CASCADE,
+                CONSTRAINT UN_Invitation_Email UNIQUE(Email)
+            );
+
+            CREATE TABLE TaxType(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                Name VARCHAR(40) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_TaxType (ID)
+            );
+
+            INSERT INTO TaxType (Name) VALUES
+            ('Member Tax'), ('Vasarnamio reservation tax'), ('Additional service tax');
+
+
+            CREATE TABLE Tax(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                TaxTypeID INTEGER NOT NULL,
+                Name VARCHAR(50) NOT NULL,
+                Price DECIMAL(5,2) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_Tax(ID),
+                CONSTRAINT FOREIGN KEY FK_Tax_ID_TaxType (TaxTypeID)
+                REFERENCES TaxType(ID)
+                ON UPDATE CASCADE ON DELETE RESTRICT
+            );
+
+            CREATE TABLE Payment(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                TaxID INTEGER NOT NULL,
+                MemberID INTEGER NOT NULL,
+                PaymentDate DATETIME NOT NULL,
+                Confirmed BIT(1) NOT NULL DEFAULT 0,
+                CONSTRAINT PRIMARY KEY PK_Payment (ID),
+                CONSTRAINT FOREIGN KEY FK_Payment_ID_Tax (TaxID)
+                REFERENCES Tax(ID)
+                ON DELETE RESTRICT,
+                CONSTRAINT FOREIGN KEY FK_Payment_ID_Member (MemberID)
+                REFERENCES ClubMember(ID)
+                ON DELETE RESTRICT
+            );
+
+            CREATE TABLE Summerhouse(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                Number INTEGER NOT NULL,
+                Capacity INTEGER NOT NULL,
+                TaxID INTEGER NOT NULL,
+                AvailabilityPeriod CHAR(11) NOT NULL, -- format: mm.dd-mm.dd
+                Description VARCHAR(500),
+                CONSTRAINT PRIMARY KEY PK_Summerhouse (ID),
+                CONSTRAINT FOREIGN KEY FK_Summerhouse_ID_Tax (TaxID)
+                REFERENCES Tax(ID)
+                ON DELETE RESTRICT,
+                CONSTRAINT UN_Summerhouse_Number UNIQUE (Number)
+            );
+
+            CREATE TABLE SummerhouseReservation(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                MemberID INTEGER NOT NULL,
+                SummerhouseID INTEGER NOT NULL,
+                FromDate DATE NOT NULL,
+                UntilDate DATE NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_SummerhouseReservation (ID),
+                CONSTRAINT FOREIGN KEY FK_SummerhouseReservation_ID_Member (MemberID)
+                REFERENCES ClubMember(ID)
+                ON DELETE RESTRICT,
+                CONSTRAINT FOREIGN KEY FK_SummerhouseReservation_ID_Summerhouse(SummerhouseID)
+                REFERENCES Summerhouse(ID)
+                ON DELETE RESTRICT
+            );
+
+            CREATE TABLE AdditionalServiceReservation(
+                SummerhouseReservationID INTEGER NOT NULL,
+                TaxID INTEGER NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_AdditionalServiceReservation (SummerhouseReservationID, TaxID)
+            );
+
+        </sql>
+    </changeSet>
 </databaseChangeLog>

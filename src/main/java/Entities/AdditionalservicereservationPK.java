@@ -20,42 +20,42 @@ public class AdditionalservicereservationPK implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_SummerhouseReservation")
-    private int iDSummerhouseReservation;
+    @Column(name = "SummerhouseReservationID")
+    private int summerhouseReservationID;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "ID_Tax")
-    private int iDTax;
+    @Column(name = "TaxID")
+    private int taxID;
 
     public AdditionalservicereservationPK() {
     }
 
-    public AdditionalservicereservationPK(int iDSummerhouseReservation, int iDTax) {
-        this.iDSummerhouseReservation = iDSummerhouseReservation;
-        this.iDTax = iDTax;
+    public AdditionalservicereservationPK(int summerhouseReservationID, int taxID) {
+        this.summerhouseReservationID = summerhouseReservationID;
+        this.taxID = taxID;
     }
 
-    public int getIDSummerhouseReservation() {
-        return iDSummerhouseReservation;
+    public int getSummerhouseReservationID() {
+        return summerhouseReservationID;
     }
 
-    public void setIDSummerhouseReservation(int iDSummerhouseReservation) {
-        this.iDSummerhouseReservation = iDSummerhouseReservation;
+    public void setSummerhouseReservationID(int summerhouseReservationID) {
+        this.summerhouseReservationID = summerhouseReservationID;
     }
 
-    public int getIDTax() {
-        return iDTax;
+    public int getTaxID() {
+        return taxID;
     }
 
-    public void setIDTax(int iDTax) {
-        this.iDTax = iDTax;
+    public void setTaxID(int taxID) {
+        this.taxID = taxID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) iDSummerhouseReservation;
-        hash += (int) iDTax;
+        hash += (int) summerhouseReservationID;
+        hash += (int) taxID;
         return hash;
     }
 
@@ -66,10 +66,10 @@ public class AdditionalservicereservationPK implements Serializable {
             return false;
         }
         AdditionalservicereservationPK other = (AdditionalservicereservationPK) object;
-        if (this.iDSummerhouseReservation != other.iDSummerhouseReservation) {
+        if (this.summerhouseReservationID != other.summerhouseReservationID) {
             return false;
         }
-        if (this.iDTax != other.iDTax) {
+        if (this.taxID != other.taxID) {
             return false;
         }
         return true;
@@ -77,7 +77,7 @@ public class AdditionalservicereservationPK implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.AdditionalservicereservationPK[ iDSummerhouseReservation=" + iDSummerhouseReservation + ", iDTax=" + iDTax + " ]";
+        return "Entities.AdditionalservicereservationPK[ summerhouseReservationID=" + summerhouseReservationID + ", taxID=" + taxID + " ]";
     }
     
 }

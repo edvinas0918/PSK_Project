@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,29 +25,32 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Dziugas
  */
 @Entity
-@Table(name = "member")
+@Table(name = "clubmember")
 @NamedQueries({
-    @NamedQuery(name = "Member1.findAll", query = "SELECT m FROM Member1 m"),
-    @NamedQuery(name = "Member1.findByIDMember", query = "SELECT m FROM Member1 m WHERE m.iDMember = :iDMember"),
-    @NamedQuery(name = "Member1.findByFirstName", query = "SELECT m FROM Member1 m WHERE m.firstName = :firstName"),
-    @NamedQuery(name = "Member1.findByLastName", query = "SELECT m FROM Member1 m WHERE m.lastName = :lastName"),
-    @NamedQuery(name = "Member1.findByEmail", query = "SELECT m FROM Member1 m WHERE m.email = :email"),
-    @NamedQuery(name = "Member1.findByPoints", query = "SELECT m FROM Member1 m WHERE m.points = :points"),
-    @NamedQuery(name = "Member1.findByReservationGroup", query = "SELECT m FROM Member1 m WHERE m.reservationGroup = :reservationGroup")})
-public class Member1 implements Serializable {
+    @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c"),
+    @NamedQuery(name = "Clubmember.findById", query = "SELECT c FROM Clubmember c WHERE c.id = :id"),
+    @NamedQuery(name = "Clubmember.findByFirstName", query = "SELECT c FROM Clubmember c WHERE c.firstName = :firstName"),
+    @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
+    @NamedQuery(name = "Clubmember.findByEmail", query = "SELECT c FROM Clubmember c WHERE c.email = :email"),
+    @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
+    @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup")})
+@XmlRootElement
+public class Clubmember implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_Member")
-    private Integer iDMember;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
@@ -72,31 +76,31 @@ public class Member1 implements Serializable {
     @Column(name = "ReservationGroup")
     private int reservationGroup;
     @JoinTable(name = "recommendation", joinColumns = {
-        @JoinColumn(name = "ID_Member", referencedColumnName = "ID_Member")}, inverseJoinColumns = {
-        @JoinColumn(name = "Recommended", referencedColumnName = "ID_Member")})
-    @ManyToMany
-    private List<Member1> member1List;
-    @ManyToMany(mappedBy = "member1List")
-    private List<Member1> member1List1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDMember")
+        @JoinColumn(name = "MemberID", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "RecommendedMemberID", referencedColumnName = "ID")})
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Clubmember> clubmemberList;
+    @ManyToMany(mappedBy = "clubmemberList", fetch = FetchType.EAGER)
+    private List<Clubmember> clubmemberList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDMember")
+    @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Memberstatus memberStatusID;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Invitation> invitationList;
-    @JoinColumn(name = "ID_MemberStatus", referencedColumnName = "ID_MemberStatus")
-    @ManyToOne(optional = false)
-    private Memberstatus iDMemberStatus;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDMember")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
 
-    public Member1() {
+    public Clubmember() {
     }
 
-    public Member1(Integer iDMember) {
-        this.iDMember = iDMember;
+    public Clubmember(Integer id) {
+        this.id = id;
     }
 
-    public Member1(Integer iDMember, String firstName, String lastName, String email, int points, int reservationGroup) {
-        this.iDMember = iDMember;
+    public Clubmember(Integer id, String firstName, String lastName, String email, int points, int reservationGroup) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -104,12 +108,12 @@ public class Member1 implements Serializable {
         this.reservationGroup = reservationGroup;
     }
 
-    public Integer getIDMember() {
-        return iDMember;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDMember(Integer iDMember) {
-        this.iDMember = iDMember;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -152,22 +156,25 @@ public class Member1 implements Serializable {
         this.reservationGroup = reservationGroup;
     }
 
-    public List<Member1> getMember1List() {
-        return member1List;
+    @XmlTransient
+    public List<Clubmember> getClubmemberList() {
+        return clubmemberList;
     }
 
-    public void setMember1List(List<Member1> member1List) {
-        this.member1List = member1List;
+    public void setClubmemberList(List<Clubmember> clubmemberList) {
+        this.clubmemberList = clubmemberList;
     }
 
-    public List<Member1> getMember1List1() {
-        return member1List1;
+    @XmlTransient
+    public List<Clubmember> getClubmemberList1() {
+        return clubmemberList1;
     }
 
-    public void setMember1List1(List<Member1> member1List1) {
-        this.member1List1 = member1List1;
+    public void setClubmemberList1(List<Clubmember> clubmemberList1) {
+        this.clubmemberList1 = clubmemberList1;
     }
 
+    @XmlTransient
     public List<Summerhousereservation> getSummerhousereservationList() {
         return summerhousereservationList;
     }
@@ -176,6 +183,15 @@ public class Member1 implements Serializable {
         this.summerhousereservationList = summerhousereservationList;
     }
 
+    public Memberstatus getMemberStatusID() {
+        return memberStatusID;
+    }
+
+    public void setMemberStatusID(Memberstatus memberStatusID) {
+        this.memberStatusID = memberStatusID;
+    }
+
+    @XmlTransient
     public List<Invitation> getInvitationList() {
         return invitationList;
     }
@@ -184,14 +200,7 @@ public class Member1 implements Serializable {
         this.invitationList = invitationList;
     }
 
-    public Memberstatus getIDMemberStatus() {
-        return iDMemberStatus;
-    }
-
-    public void setIDMemberStatus(Memberstatus iDMemberStatus) {
-        this.iDMemberStatus = iDMemberStatus;
-    }
-
+    @XmlTransient
     public List<Payment> getPaymentList() {
         return paymentList;
     }
@@ -203,18 +212,18 @@ public class Member1 implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDMember != null ? iDMember.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Member1)) {
+        if (!(object instanceof Clubmember)) {
             return false;
         }
-        Member1 other = (Member1) object;
-        if ((this.iDMember == null && other.iDMember != null) || (this.iDMember != null && !this.iDMember.equals(other.iDMember))) {
+        Clubmember other = (Clubmember) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -222,7 +231,7 @@ public class Member1 implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Member1[ iDMember=" + iDMember + " ]";
+        return "Entities.Clubmember[ id=" + id + " ]";
     }
     
 }

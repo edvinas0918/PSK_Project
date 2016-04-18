@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,9 +32,9 @@ import javax.validation.constraints.Size;
 @Table(name = "summerhouse")
 @NamedQueries({
     @NamedQuery(name = "Summerhouse.findAll", query = "SELECT s FROM Summerhouse s"),
-    @NamedQuery(name = "Summerhouse.findByIDSummerhouse", query = "SELECT s FROM Summerhouse s WHERE s.iDSummerhouse = :iDSummerhouse"),
+    @NamedQuery(name = "Summerhouse.findById", query = "SELECT s FROM Summerhouse s WHERE s.id = :id"),
     @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
-    @NamedQuery(name = "Summerhouse.findByNumberOfSeats", query = "SELECT s FROM Summerhouse s WHERE s.numberOfSeats = :numberOfSeats"),
+    @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
     @NamedQuery(name = "Summerhouse.findByAvailabilityPeriod", query = "SELECT s FROM Summerhouse s WHERE s.availabilityPeriod = :availabilityPeriod"),
     @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description")})
 public class Summerhouse implements Serializable {
@@ -42,16 +43,16 @@ public class Summerhouse implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_Summerhouse")
-    private Integer iDSummerhouse;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "Number")
     private int number;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "NumberOfSeats")
-    private int numberOfSeats;
+    @Column(name = "Capacity")
+    private int capacity;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 11)
@@ -60,32 +61,32 @@ public class Summerhouse implements Serializable {
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDSummerhouse")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
-    @JoinColumn(name = "ID_Tax", referencedColumnName = "ID_Tax")
-    @ManyToOne(optional = false)
-    private Tax iDTax;
+    @JoinColumn(name = "TaxID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tax taxID;
 
     public Summerhouse() {
     }
 
-    public Summerhouse(Integer iDSummerhouse) {
-        this.iDSummerhouse = iDSummerhouse;
+    public Summerhouse(Integer id) {
+        this.id = id;
     }
 
-    public Summerhouse(Integer iDSummerhouse, int number, int numberOfSeats, String availabilityPeriod) {
-        this.iDSummerhouse = iDSummerhouse;
+    public Summerhouse(Integer id, int number, int capacity, String availabilityPeriod) {
+        this.id = id;
         this.number = number;
-        this.numberOfSeats = numberOfSeats;
+        this.capacity = capacity;
         this.availabilityPeriod = availabilityPeriod;
     }
 
-    public Integer getIDSummerhouse() {
-        return iDSummerhouse;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDSummerhouse(Integer iDSummerhouse) {
-        this.iDSummerhouse = iDSummerhouse;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getNumber() {
@@ -96,12 +97,12 @@ public class Summerhouse implements Serializable {
         this.number = number;
     }
 
-    public int getNumberOfSeats() {
-        return numberOfSeats;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public String getAvailabilityPeriod() {
@@ -128,18 +129,18 @@ public class Summerhouse implements Serializable {
         this.summerhousereservationList = summerhousereservationList;
     }
 
-    public Tax getIDTax() {
-        return iDTax;
+    public Tax getTaxID() {
+        return taxID;
     }
 
-    public void setIDTax(Tax iDTax) {
-        this.iDTax = iDTax;
+    public void setTaxID(Tax taxID) {
+        this.taxID = taxID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDSummerhouse != null ? iDSummerhouse.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -150,7 +151,7 @@ public class Summerhouse implements Serializable {
             return false;
         }
         Summerhouse other = (Summerhouse) object;
-        if ((this.iDSummerhouse == null && other.iDSummerhouse != null) || (this.iDSummerhouse != null && !this.iDSummerhouse.equals(other.iDSummerhouse))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -158,7 +159,7 @@ public class Summerhouse implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Summerhouse[ iDSummerhouse=" + iDSummerhouse + " ]";
+        return "Entities.Summerhouse[ id=" + id + " ]";
     }
     
 }

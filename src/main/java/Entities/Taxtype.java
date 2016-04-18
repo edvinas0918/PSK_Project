@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 @Table(name = "taxtype")
 @NamedQueries({
     @NamedQuery(name = "Taxtype.findAll", query = "SELECT t FROM Taxtype t"),
-    @NamedQuery(name = "Taxtype.findByIDTaxType", query = "SELECT t FROM Taxtype t WHERE t.iDTaxType = :iDTaxType"),
+    @NamedQuery(name = "Taxtype.findById", query = "SELECT t FROM Taxtype t WHERE t.id = :id"),
     @NamedQuery(name = "Taxtype.findByName", query = "SELECT t FROM Taxtype t WHERE t.name = :name")})
 public class Taxtype implements Serializable {
 
@@ -38,34 +38,34 @@ public class Taxtype implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "ID_TaxType")
-    private Integer iDTaxType;
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "iDTaxType", fetch=FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxTypeID", fetch = FetchType.EAGER)
     private List<Tax> taxList;
 
     public Taxtype() {
     }
 
-    public Taxtype(Integer iDTaxType) {
-        this.iDTaxType = iDTaxType;
+    public Taxtype(Integer id) {
+        this.id = id;
     }
 
-    public Taxtype(Integer iDTaxType, String name) {
-        this.iDTaxType = iDTaxType;
+    public Taxtype(Integer id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public Integer getIDTaxType() {
-        return iDTaxType;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIDTaxType(Integer iDTaxType) {
-        this.iDTaxType = iDTaxType;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -87,7 +87,7 @@ public class Taxtype implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (iDTaxType != null ? iDTaxType.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +98,7 @@ public class Taxtype implements Serializable {
             return false;
         }
         Taxtype other = (Taxtype) object;
-        if ((this.iDTaxType == null && other.iDTaxType != null) || (this.iDTaxType != null && !this.iDTaxType.equals(other.iDTaxType))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -106,7 +106,7 @@ public class Taxtype implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Taxtype[ iDTaxType=" + iDTaxType + " ]";
+        return "Entities.Taxtype[ id=" + id + " ]";
     }
     
 }

@@ -20,8 +20,8 @@ import javax.persistence.Table;
 @Table(name = "additionalservicereservation")
 @NamedQueries({
     @NamedQuery(name = "Additionalservicereservation.findAll", query = "SELECT a FROM Additionalservicereservation a"),
-    @NamedQuery(name = "Additionalservicereservation.findByIDSummerhouseReservation", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.iDSummerhouseReservation = :iDSummerhouseReservation"),
-    @NamedQuery(name = "Additionalservicereservation.findByIDTax", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.iDTax = :iDTax")})
+    @NamedQuery(name = "Additionalservicereservation.findBySummerhouseReservationID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.summerhouseReservationID = :summerhouseReservationID"),
+    @NamedQuery(name = "Additionalservicereservation.findByTaxID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.taxID = :taxID")})
 public class Additionalservicereservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,8 +35,8 @@ public class Additionalservicereservation implements Serializable {
         this.additionalservicereservationPK = additionalservicereservationPK;
     }
 
-    public Additionalservicereservation(int iDSummerhouseReservation, int iDTax) {
-        this.additionalservicereservationPK = new AdditionalservicereservationPK(iDSummerhouseReservation, iDTax);
+    public Additionalservicereservation(int summerhouseReservationID, int taxID) {
+        this.additionalservicereservationPK = new AdditionalservicereservationPK(summerhouseReservationID, taxID);
     }
 
     public AdditionalservicereservationPK getAdditionalservicereservationPK() {

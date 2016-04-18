@@ -5,7 +5,7 @@
  */
 package RestControllers;
 
-import Entities.Taxtype;
+import Entities.Clubmember;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,36 +25,27 @@ import javax.ws.rs.core.MediaType;
  * @author Dziugas
  */
 @Stateless
-@Path("taxtype")
-public class TaxtypeFacadeREST extends AbstractFacade<Taxtype> {
+@Path("clubmember")
+public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public TaxtypeFacadeREST() {
-        super(Taxtype.class);
+    public ClubmemberFacadeREST() {
+        super(Clubmember.class);
     }
 
     @POST
-    @Path("dummy")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void createDummy(){
-        Taxtype taxType = new Taxtype();
-        taxType.setName("dummy taxtype");
-        super.create(taxType);
-    }    
-    
-    @POST
     @Override
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Taxtype entity) {
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(Clubmember entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Taxtype entity) {
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void edit(@PathParam("id") Integer id, Clubmember entity) {
         super.edit(entity);
     }
 
@@ -66,22 +57,22 @@ public class TaxtypeFacadeREST extends AbstractFacade<Taxtype> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Taxtype find(@PathParam("id") Integer id) {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Clubmember find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Taxtype> findAll() {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Clubmember> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Taxtype> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Clubmember> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
