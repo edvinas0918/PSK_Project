@@ -48,7 +48,7 @@ public class Memberstatus implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberStatusID", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberStatus", fetch = FetchType.EAGER)
     private List<Clubmember> clubmemberList;
 
     public Memberstatus() {

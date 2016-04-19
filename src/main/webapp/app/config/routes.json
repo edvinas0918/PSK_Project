@@ -1,10 +1,17 @@
 {
   "routes": [
     {
-      "url": "/friends",
+      "url": "/members",
       "config": {
-        "templateUrl": "app/modules/friends/templates/friends.html",
-        "controller": "friendsController"
+        "templateUrl": "app/modules/members/templates/members.html",
+        "controller": "membersController"
+      }
+    },
+    {
+      "url": "/members/:memberID",
+      "config": {
+        "templateUrl": "app/modules/members/templates/memberEdit.html",
+        "controller": "memberEditController"
       }
     },
     {

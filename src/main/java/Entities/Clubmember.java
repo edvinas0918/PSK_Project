@@ -86,7 +86,7 @@ public class Clubmember implements Serializable {
     private List<Summerhousereservation> summerhousereservationList;
     @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Memberstatus memberStatusID;
+    private Memberstatus memberStatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Invitation> invitationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
@@ -183,12 +183,12 @@ public class Clubmember implements Serializable {
         this.summerhousereservationList = summerhousereservationList;
     }
 
-    public Memberstatus getMemberStatusID() {
-        return memberStatusID;
+    public Memberstatus getMemberStatus() {
+        return memberStatus;
     }
 
-    public void setMemberStatusID(Memberstatus memberStatusID) {
-        this.memberStatusID = memberStatusID;
+    public void setMemberStatus(Memberstatus memberStatus) {
+        this.memberStatus = memberStatus;
     }
 
     @XmlTransient

@@ -1,0 +1,24 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Points</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="x in members">
+        <td>{{x.firstName}}</td>
+        <td>{{x.lastName}}</td>
+        <td>{{x.email}}</td>
+        <td>{{x.memberStatus.name}}</td>
+        <td>{{x.points}}</td>
+        <td><button class="btn btn-default">Edit</button>
+            <button class="btn btn-danger" ng-click="deleteMember(x)">Delete</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
