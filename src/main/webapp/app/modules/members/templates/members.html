@@ -16,7 +16,8 @@
         <td>{{x.email}}</td>
         <td>{{x.memberStatus.name}}</td>
         <td>{{x.points}}</td>
-        <td><button class="btn btn-default">Edit</button>
+        <td>
+            <a class="btn btn-default" ng-href="#/members/{{x.id}}">Edit</a>
             <button class="btn btn-danger" ng-click="deleteMember(x)">Delete</button>
         </td>
     </tr>
