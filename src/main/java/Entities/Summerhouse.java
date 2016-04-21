@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,6 +39,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
     @NamedQuery(name = "Summerhouse.findByAvailabilityPeriod", query = "SELECT s FROM Summerhouse s WHERE s.availabilityPeriod = :availabilityPeriod"),
     @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description")})
+@XmlRootElement
 public class Summerhouse implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -121,6 +124,7 @@ public class Summerhouse implements Serializable {
         this.description = description;
     }
 
+    @XmlTransient
     public List<Summerhousereservation> getSummerhousereservationList() {
         return summerhousereservationList;
     }

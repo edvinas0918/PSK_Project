@@ -21,6 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +34,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Taxtype.findAll", query = "SELECT t FROM Taxtype t"),
     @NamedQuery(name = "Taxtype.findById", query = "SELECT t FROM Taxtype t WHERE t.id = :id"),
     @NamedQuery(name = "Taxtype.findByName", query = "SELECT t FROM Taxtype t WHERE t.name = :name")})
+@XmlRootElement
 public class Taxtype implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,6 +79,7 @@ public class Taxtype implements Serializable {
         this.name = name;
     }
 
+    @XmlTransient
     public List<Tax> getTaxList() {
         return taxList;
     }
