@@ -4,17 +4,6 @@
 
     <changeSet author="Dziugas" id="001">
         <sql>
-            DROP TABLE AdditionalServiceReservation;
-            DROP TABLE SummerhouseReservation;
-            DROP TABLE Summerhouse;
-            DROP TABLE Payment;
-            DROP TABLE Tax;
-            DROP TABLE TaxType;
-            DROP TABLE Invitation;
-            DROP TABLE Recommendation;
-            DROP TABLE Member;
-            DROP TABLE MemberStatus;
-
             CREATE TABLE MemberStatus(
                 ID INTEGER NOT NULL AUTO_INCREMENT,
                 Name VARCHAR(40) NOT NULL,
