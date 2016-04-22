@@ -1,4 +1,5 @@
 ///<reference path="../../../typings/angular.d.ts"/>
+///<reference path="summerHouseModel.ts"/>
 
 module SummerHouses.houses {
 
@@ -8,15 +9,24 @@ module SummerHouses.houses {
 
         static $inject = [
             '$rootScope',
-            '$scope'
+            '$scope',
+            '$http'
         ];
 
         constructor(
             private $rootScope:any,
-            private $scope: any
+            private $scope: any,
+            private $http: any
         ) {
             SummerHousesController.that = this;
-            $scope.data = "SUMMER HOUSES CONTROLLER";
+            $scope.data = this.getSummerHouses()
+            this.getSummerHouses();
+        }
+
+        getSummerHouses(): void{
+            this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
+                this.$scope.summerhouses = summerhouses;
+            });
         }
 
     }

@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author Dziugas
  */
 @Stateless
-@Path("entities.summerhouse")
+@Path("summerhouse")
 public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

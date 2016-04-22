@@ -136,4 +136,13 @@
 
         </sql>
     </changeSet>
+
+    <changeSet id="002" author="Mindaugas">
+        <sql>
+            insert into taxtype (name) values ("aaaaaa");
+            insert into tax (taxtypeid, name, price) values ("1", "tax", "100");
+            insert into summerhouse (number, capacity, taxid, availabilityperiod, description) values ("2", "1", "1", "1", "aaaaaa");
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

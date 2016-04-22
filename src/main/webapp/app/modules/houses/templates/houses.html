@@ -1,1 +1,19 @@
-<h1>HOUSES TEMPLATE {{data}}</h1>
+<h1>Summerhouses</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Availability period</th>
+        <th>Number</th>
+        <th>Capacity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="x in summerhouses">
+        <td>{{x.description}}</td>
+        <td>{{x.availabilityPeriod}}</td>
+        <td>{{x.number}}</td>
+        <td>{{x.capacity}}</td>
+    </tr>
+    </tbody>
+</table>
