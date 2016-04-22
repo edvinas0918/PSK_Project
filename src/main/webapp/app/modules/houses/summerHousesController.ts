@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
+///<reference path="../../../typings/lodash.d.ts"/>
 
 module SummerHouses.houses {
 
@@ -19,8 +20,28 @@ module SummerHouses.houses {
             private $http: any
         ) {
             SummerHousesController.that = this;
-            $scope.data = this.getSummerHouses()
             this.getSummerHouses();
+
+            this.$scope.addEmptyHouse = () => {
+                var sm: SummerHouse = {
+                    availabilityPeriod: null,
+                    description: null,
+                    capacity: null,
+                    number: null
+                }
+                $scope.summerhouses.push(sm);
+                $scope.$apply();
+            }
+
+            this.$scope.saveHouse = (house: SummerHouse) => {
+                var config = {
+                    headers : {
+                        'Content-Type': 'application/json;'
+                    }
+                }
+                this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {});
+            }
+
         }
 
         getSummerHouses(): void{

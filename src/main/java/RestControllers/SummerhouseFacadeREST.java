@@ -6,7 +6,12 @@
 package RestControllers;
 
 import Entities.Summerhouse;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.owlike.genson.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -37,9 +42,19 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Summerhouse entity) {
         super.create(entity);
+    }
+
+    @POST
+    @Path("postHashMap")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void getHouse(Map<Object, Object> summerhouseMap) {
+        System.out.println(summerhouseMap);
+        String serialized = new Genson().serialize(summerhouseMap);
+        Summerhouse summerhouse = new Genson().deserialize(serialized, Summerhouse.class);
+        create(summerhouse);
     }
 
     @PUT
