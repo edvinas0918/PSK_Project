@@ -45,7 +45,7 @@
             </div>
         </td>
         <td>
-            <div class="form-group" ng-class="{ 'has-error' : houseExists }">
+            <div class="form-group" ng-class="{ 'has-error' : houseWithNumberExists }">
                 <input placeholder="Number" min="1" class="form-control" style="width: inherit;" type="number" ng-model="x.number" name="numberInput" ng-required="true">
                 <p ng-show="houseWithNumberExists" class="help-block">House with the same number exists.</p>
             </div>
