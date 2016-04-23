@@ -54,7 +54,7 @@
             <input placeholder="Capacity" min="1" class="form-control" style="width: inherit;"  type="number" ng-model="x.capacity" name="capacityInput" ng-required="true">
         </td>
         <td>
-            <select class="form-control" ng-model="x.taxID" ng-options="tax.taxTypeID.name for tax in taxes">
+            <select class="form-control" ng-model="x.taxID" ng-options="tax.taxTypeID.name for tax in taxes" ng-required="true">
                 <option value="">{{x.taxID.taxTypeID.name}}</option>
             </select>
         </td>
