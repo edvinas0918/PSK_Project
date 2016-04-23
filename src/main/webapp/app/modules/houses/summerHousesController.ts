@@ -37,24 +37,39 @@ module SummerHouses.houses {
             }
 
             this.$scope.saveHouse = (house: SummerHouse) => {
-                $scope.houseExists = false;
-                for (let existingHouse of this.$scope.summerhouses) {
-                    if(existingHouse.number == house.number && existingHouse.id) {
-                        $scope.houseExists = true;
-                        break;
+                if (!house.id) {
+                    $scope.houseWithNumberExists = false;
+                    for (let existingHouse of this.$scope.summerhouses) {
+                        if(existingHouse.number == house.number && existingHouse.id) {
+                            $scope.houseWithNumberExists = true;
+                            break;
+                        }
                     }
-                }
-                if(!$scope.houseExists) {
-                    this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
+                    if(!$scope.houseWithNumberExists) {
+                        this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
+                            $route.reload();
+                        });
+                    }
+                } else {
+                    this.$http.put('/rest/summerhouse/'+house.id, house).success(() => {
                         $route.reload();
                     });
                 }
+
             }
 
             this.$scope.deleteHouse = (house: SummerHouse) => {
                 this.$http.delete('/rest/summerhouse/' + house.id).success(() => {
-                    $route.reload();
+                    var index = this.$scope.summerhouses.indexOf(house, 0);
+                    if (index > -1) {
+                        this.$scope.summerhouses.splice(index, 1);
+                    }
                 });
+            }
+
+            this.$scope.editHouse = (house: SummerHouse) => {
+                house.editMode = true;
+
             }
 
         }

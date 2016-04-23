@@ -59,15 +59,8 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
     public void getHouse(Map<Object, Object> summerhouseMap) {
-        Tax tax = null;
-        if (summerhouseMap.containsKey("taxID")) {
-            Integer taxid = Integer.valueOf((String) summerhouseMap.get("taxID"));
-            tax = taxFacadeREST.find(taxid);
-            summerhouseMap.remove("taxID");
-        }
         String serialized = genson.serialize(summerhouseMap);
         Summerhouse summerhouse = genson.deserialize(serialized, Summerhouse.class);
-        summerhouse.setTaxID(tax);
         create(summerhouse);
     }
 

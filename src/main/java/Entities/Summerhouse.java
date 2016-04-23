@@ -64,7 +64,7 @@ public class Summerhouse implements Serializable {
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
