@@ -7,7 +7,7 @@ module SummerHouses.config {
 
         static that: RouteConfigurator;
 
-        static $inject = ['$routeProvider', 'allRoutes', 'routeResolverProvider'];
+        static $inject = ['$routeProvider', 'allRoutes', 'routeResolverProvider', '$locationProvider'];
 
         static Configurator($routeProvider:any,
                             allRoutes:any,
