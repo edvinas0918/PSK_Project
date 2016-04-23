@@ -48,7 +48,7 @@ public class Taxtype implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "Name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxTypeID", fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, mappedBy = "taxTypeID", fetch = FetchType.EAGER)
     private List<Tax> taxList;
 
     public Taxtype() {

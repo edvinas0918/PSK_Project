@@ -57,9 +57,9 @@ public class Tax implements Serializable {
     @NotNull
     @Column(name = "Price")
     private BigDecimal price;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxID", fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, mappedBy = "taxID", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "taxID", fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, mappedBy = "taxID", fetch = FetchType.EAGER)
     private List<Summerhouse> summerhouseList;
     @JoinColumn(name = "TaxTypeID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

@@ -12,13 +12,15 @@ module SummerHouses.houses {
         static $inject = [
             '$rootScope',
             '$scope',
-            '$http'
+            '$http',
+            '$route'
         ];
 
         constructor(
             private $rootScope:any,
             private $scope: any,
-            private $http: any
+            private $http: any,
+            private $route: any
         ) {
             SummerHousesController.that = this;
             this.getSummerHouses();
@@ -44,9 +46,15 @@ module SummerHouses.houses {
                 }
                 if(!$scope.houseExists) {
                     this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
-                        this.$scope.$apply();
+                        $route.reload();
                     });
                 }
+            }
+
+            this.$scope.deleteHouse = (house: SummerHouse) => {
+                this.$http.delete('/rest/summerhouse/' + house.id).success(() => {
+                    $route.reload();
+                });
             }
 
         }
