@@ -1,9 +1,9 @@
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-8">
         <h2>Summerhouses</h2>
     </div>
-    <div class="col-md-2" style="margin-top: 20px;">
-        <button type="button" ng-click="addEmptyHouse()" class="btn btn-primary">Create</button>
+    <div class="col-md-4" style="margin-top: 20px;">
+        <button type="button" ng-click="addEmptyHouse()" class="form-control btn btn-primary">Create</button>
     </div>
 </div>
 <table class="table">
@@ -29,21 +29,32 @@
                 <button class="btn btn-danger" ng-click="deleteHouse(x)">Delete</button>
             </td>
     </tr>
-    <tr ng-repeat="x in summerhouses" ng-show="x.id == null">
+    <tr ng-repeat="x in summerhouses" ng-form name="x.houseForm" ng-show="x.id == null">
         <td>
-            <textarea style="resize: vertical;" ng-model="x.description" class="form-control" rows="1" required></textarea>
+            <div class="form-group" ng-class="{ 'has-error' : x.houseForm.descInput.$invalid && !x.houseForm.descInput.$pristine }">
+                <textarea ng-minlength="5" ng-maxlength="500" name="descInput" placeholder="Summerhouse description" style="resize: vertical;" ng-model="x.description" class="form-control" rows="1" ng-required="true"/>
+                <p ng-show="x.houseForm.descInput.$error.minlength" class="help-block">Description is too short.</p>
+                <p ng-show="x.houseForm.descInput.$error.maxlength" class="help-block">Description is too long.</p>
+            </div>
         </td>
         <td>
-            <input class="form-control" type="number" min="1" max="99" ng-model="x.availabilityPeriod" name="availabilityPeriodInput" required>
+            <div class="form-group" ng-class="{ 'has-error' : x.houseForm.periodInput.$invalid && !x.houseForm.periodInput.$pristine }">
+                <input ng-minlength="1" ng-maxlength="11" placeholder="Availability period" class="form-control" type="text" ng-model="x.availabilityPeriod" name="periodInput">
+                <p ng-show="x.houseForm.periodInput.$error.minlength" class="help-block">Period is too short.</p>
+                <p ng-show="x.houseForm.periodInput.$error.maxlength" class="help-block">Period is too long.</p>
+            </div>
         </td>
         <td>
-            <input class="form-control" type="number" min="1" max="99" ng-model="x.number" name="numberInput" required>
+            <div class="form-group" ng-class="{ 'has-error' : houseExists }">
+                <input placeholder="Number" min="1" class="form-control" type="number" ng-model="x.number" name="numberInput" ng-required="true">
+                <p ng-show="houseExists" class="help-block">House with the same number exists.</p>
+            </div>
         </td>
         <td>
-            <input class="form-control" type="number" min="1" max="99" ng-model="x.capacity" name="capacityInput" required>
+            <input placeholder="Capacity" min="1" class="form-control" type="number" ng-model="x.capacity" name="capacityInput" ng-required="true">
         </td>
         <td>
-            <select class="form-control" ng-model="x.taxID">
+            <select class="form-control" ng-model="x.taxID" ng-required="true">
                 <option ng-repeat="tax in taxes"
                         value="{{tax.id}}">
                     {{tax.taxTypeID.name}}
@@ -51,7 +62,11 @@
             </select>
         </td>
         <td>
-            <a class="btn btn-success" ng-click="saveHouse(x)">Save</a>
+            <!--ng-disabled="!x.houseForm.$valid"-->
+            <!--ng-submit="saveHouse(x.houseForm.$valid)"-->
+            <button type="submit" ng-disabled="!x.houseForm.$valid" ng-click="saveHouse(x)" class="form-control btn btn-success">
+                Save
+            </button>
         </td>
     </tr>
     </tbody>

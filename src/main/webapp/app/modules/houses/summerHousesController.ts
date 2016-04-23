@@ -7,6 +7,7 @@ module SummerHouses.houses {
     class SummerHousesController {
 
         static that: SummerHousesController;
+        private summerhouses: SummerHouse[];
 
         static $inject = [
             '$rootScope',
@@ -34,20 +35,29 @@ module SummerHouses.houses {
             }
 
             this.$scope.saveHouse = (house: SummerHouse) => {
-                this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
-                    this.$scope.$apply();
-                });
+                $scope.houseExists = false;
+                for (let existingHouse of this.$scope.summerhouses) {
+                    if(existingHouse.number == house.number && existingHouse.id) {
+                        $scope.houseExists = true;
+                        break;
+                    }
+                }
+                if(!$scope.houseExists) {
+                    this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
+                        this.$scope.$apply();
+                    });
+                }
             }
 
         }
 
-        getSummerHouses(): void{
+        getTaxes(): void{
             this.$http.get('/rest/entities.tax').success((taxes: Tax[], status) => {
                 this.$scope.taxes = taxes;
             });
         }
 
-        getTaxes(): void{
+        getSummerHouses(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
                 this.$scope.summerhouses = summerhouses;
             });

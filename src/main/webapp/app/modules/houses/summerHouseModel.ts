@@ -4,7 +4,7 @@ module SummerHouses.houses {
         public id:number;
         public taxID:number;
 
-        constructor(public availabilityPeriod:number, public description:string, public capacity:number, public number:number) {
+        constructor(public availabilityPeriod:string, public description:string, public capacity:number, public number:number) {
 
         }
     }
