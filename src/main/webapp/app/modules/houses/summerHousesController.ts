@@ -21,7 +21,7 @@ module SummerHouses.houses {
         ) {
             SummerHousesController.that = this;
             this.getSummerHouses();
-
+            this.getTaxes();
             this.$scope.addEmptyHouse = () => {
                 var sm: SummerHouse = {
                     availabilityPeriod: null,
@@ -34,17 +34,20 @@ module SummerHouses.houses {
             }
 
             this.$scope.saveHouse = (house: SummerHouse) => {
-                var config = {
-                    headers : {
-                        'Content-Type': 'application/json;'
-                    }
-                }
-                this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {});
+                this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
+                    this.$scope.$apply();
+                });
             }
 
         }
 
         getSummerHouses(): void{
+            this.$http.get('/rest/entities.tax').success((taxes: Tax[], status) => {
+                this.$scope.taxes = taxes;
+            });
+        }
+
+        getTaxes(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
                 this.$scope.summerhouses = summerhouses;
             });

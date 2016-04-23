@@ -11,8 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Entities.Tax;
+import Helpers.GensonHelpers;
 import com.owlike.genson.*;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -33,6 +36,11 @@ import javax.ws.rs.core.MediaType;
 @Path("summerhouse")
 public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
+    @Inject
+    TaxFacadeREST taxFacadeREST;
+
+    private Genson genson = GensonHelpers.getInstance();
+
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -51,9 +59,15 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
     public void getHouse(Map<Object, Object> summerhouseMap) {
-        System.out.println(summerhouseMap);
-        String serialized = new Genson().serialize(summerhouseMap);
-        Summerhouse summerhouse = new Genson().deserialize(serialized, Summerhouse.class);
+        Tax tax = null;
+        if (summerhouseMap.containsKey("taxID")) {
+            Integer taxid = Integer.valueOf((String) summerhouseMap.get("taxID"));
+            tax = taxFacadeREST.find(taxid);
+            summerhouseMap.remove("taxID");
+        }
+        String serialized = genson.serialize(summerhouseMap);
+        Summerhouse summerhouse = genson.deserialize(serialized, Summerhouse.class);
+        summerhouse.setTaxID(tax);
         create(summerhouse);
     }
 

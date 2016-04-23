@@ -13,6 +13,7 @@
         <th>Availability period</th>
         <th>Number</th>
         <th>Capacity</th>
+        <th>Tax type</th>
         <th>Manage</th>
     </tr>
     </thead>
@@ -22,6 +23,7 @@
             <td>{{x.availabilityPeriod}}</td>
             <td>{{x.number}}</td>
             <td>{{x.capacity}}</td>
+            <td>{{x.taxID.taxTypeID.name}}</td>
             <td>
                 <a class="btn btn-default" ng-href="#/summerhouses/{{x.id}}">Edit</a>
                 <button class="btn btn-danger" ng-click="deleteHouse(x)">Delete</button>
@@ -39,6 +41,14 @@
         </td>
         <td>
             <input class="form-control" type="number" min="1" max="99" ng-model="x.capacity" name="capacityInput" required>
+        </td>
+        <td>
+            <select class="form-control" ng-model="x.taxID">
+                <option ng-repeat="tax in taxes"
+                        value="{{tax.id}}">
+                    {{tax.taxTypeID.name}}
+                </option>
+            </select>
         </td>
         <td>
             <a class="btn btn-success" ng-click="saveHouse(x)">Save</a>

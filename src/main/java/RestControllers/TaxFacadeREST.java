@@ -64,7 +64,7 @@ public class TaxFacadeREST extends AbstractFacade<Tax> {
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Tax> findAll() {
         return super.findAll();
     }
