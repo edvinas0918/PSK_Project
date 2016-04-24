@@ -151,4 +151,41 @@
             ('Admin');
         </sql>
     </changeSet>
+
+    <changeSet author="Gintautas" id="004">
+        <sql>
+            CREATE TABLE Settings(
+            ID INTEGER NOT NULL AUTO_INCREMENT,
+            Name VARCHAR(40) NOT NULL,
+            Value INTEGER NOT NULL,
+            CONSTRAINT PRIMARY KEY PK_Settings (ID)
+            );
+
+            INSERT INTO Settings (Name, Value) VALUES ('Maximum members count', 100), ('Minimal recommendations count', 2);
+            INSERT INTO Tax (TaxTypeID, Name, Price) VALUES (1, 'Member Tax', 50);
+        </sql>
+    </changeSet>
+
+    <changeSet author="Gintautas" id="005">
+        <sql>
+            delete from tax where ID = 2;
+            update tax set Name = "Member Tax" where ID = 1;
+        </sql>
+    </changeSet>
+
+    <changeSet author="Gintautas" id="006">
+        <sql>
+            drop table Settings;
+            CREATE TABLE Settings(
+            ID INTEGER NOT NULL AUTO_INCREMENT,
+            Name VARCHAR(40) NOT NULL,
+            Value VARCHAR(40) NOT NULL,
+            CONSTRAINT PRIMARY KEY PK_Settings (ID)
+            );
+
+            INSERT INTO Settings (Name, Value)
+            VALUES ('Maximum members count', '100'),
+            ('Minimal recommendations count', '2');
+        </sql>
+    </changeSet>
 </databaseChangeLog>
