@@ -67,7 +67,7 @@ public class EmailUtils {
         message += "<br/><br/>";
         message += String.format("Naujas kandidatas <i> %s </i> laukia tavo patvirtinimo!", newMember);
         message += "<br/><br/>";
-        message += "<a href = \"http://localhost:8080/#/friends\"><button>Patvirtinti</button></a>";;
+        message += "<a href = \"http://localhost:8080/#/friends\"><button>Patvirtinti</button></a>";
 
         try {
             EmailUtils.sendHtmlEmail(mailTo, subject, message);

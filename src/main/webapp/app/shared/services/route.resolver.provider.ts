@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/angular.d.ts" />
+/// <reference path="../../../typings/angular.d.ts" />/// <reference path="../../../typings/angular.d.ts" />
 ///<reference path="../../modules/authentication/services/auth.service.ts"/>
 
 module SummerHouses.shared {
@@ -9,19 +9,11 @@ module SummerHouses.shared {
     }
 
     class RouteResolverProvider implements IRouteResolverProvider {
-        public defaultRouteResolver:any;
 
         static that:RouteResolverProvider;
 
         constructor() {
             RouteResolverProvider.that = this;
-
-            this.routeResolver = ($q:ng.IQService):ng.IPromise<any> => {
-                var deferred = $q.defer();
-                deferred.resolve(true);
-
-                return deferred.promise;
-            };
 
             this.defaultRouteResolver = [
                 this.routeResolver
@@ -84,10 +76,9 @@ module SummerHouses.shared {
         }
 
         private authHandler = ($q:ng.IQService,
-                               authService: any//SummerHouses.authentication.AuthenticationService
+                               authService: any
         ):ng.IPromise<any> => {
 
-            // alert("AUTHENTICATION!");
             var userInfo = authService.user;
             
             var authError = () => {
@@ -98,26 +89,20 @@ module SummerHouses.shared {
                 return $q.when(userInfo);
             };
 
-            return $q.when(true);
-
-           /* return authService.requestIMSToken().then(() => {
+            return authService.requestUserAccessToken().then((response) => {
+                // now check if logged in
+                console.log("response from requestUserAccessToken: ");
+                console.log(response);
+                
                 if (authService.isLoggedIn())
                     return authSuccess();
                 else
-                    return $q.reject({authenticated: false});
-            }, authError);*/
-
+                    return $q.reject({ authenticated: false });
+            }, authError);
         };
 
-        getRouteResolver() {
-            return ($q:ng.IQService):ng.IPromise<any> => {
-                var deferred = $q.defer();
-                deferred.resolve(true);
+        public defaultRouteResolver:any;
 
-                return deferred.promise;
-            };
-        }
-        
         private routeResolver:($q:ng.IQService,
                                $rootScope:any,
                                $route:any,
@@ -127,7 +112,7 @@ module SummerHouses.shared {
         public $get = ["$q", this.get];
 
         private get():any {
-            return {getRouteResolver: this.getRouteResolver};
+            return {};
         }
     }
 

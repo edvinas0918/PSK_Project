@@ -5,24 +5,25 @@ module SummerHouses {
 
     export class MainController {
 
-        static $inject = ['$scope'];
+        static $inject = ['$scope', 'sh-authentication-service'];
 
         private authenticated:boolean;
 
         //$scope.authenticated = true;
 
         constructor(
-            private $scope:any
+            private $scope:any,
+            private authService: any
         ) {
             $scope.authenticated = true;
            // var vm = this;
           //  this.authenticated = true;
 
-            this.activate();
-        }
-
-        private activate = ():void => {
-
+            authService.getFullName().then((fullName:string) => {
+                this.$scope.fullName = fullName;
+            }, (error) => {
+                this.$scope.fullName = "shittyMittyAnonymous";
+            });
         }
     }
 

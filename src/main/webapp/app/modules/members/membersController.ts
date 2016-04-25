@@ -12,28 +12,24 @@ module SummerHouses.members {
             '$http'
         ];
 
-        private scope: any;
-        private httpService: any;
-
         constructor(
             private $rootScope:any,
             private $scope: any,
             private $http: any
         ) {
-            this.scope = $scope;
-            this.httpService = $http;
+
             this.getMembers();
 
-            this.scope.deleteMember = (member: Member) => {
-                this.httpService.delete('rest/clubmember/' + member.id).success(() => {
-                    _.pull(this.scope.members, member);
+            this.$scope.deleteMember = (member: Member) => {
+                this.$http.delete('rest/clubmember/' + member.id).success(() => {
+                    _.pull(this.$scope.members, member);
                 });
             }
         }
 
         getMembers(): void{
-            this.httpService.get('/rest/clubmember').success((members: Member[], status) => {
-                this.scope.members = members;
+            this.$http.get('/rest/clubmember').success((members: Member[], status) => {
+                this.$scope.members = members;
             });
         }
 
