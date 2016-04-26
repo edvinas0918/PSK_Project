@@ -6,8 +6,13 @@
 package RestControllers;
 
 import Entities.Clubmember;
+import Services.ClubMemberService;
+import com.sun.deploy.net.HttpResponse;
+import models.PointsGrant;
+
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -19,6 +24,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -30,6 +36,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+
+    @Inject
+    private ClubMemberService clubMemberService;
 
     public ClubmemberFacadeREST() {
         super(Clubmember.class);
@@ -47,6 +56,20 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Clubmember entity) {
         super.edit(entity);
+    }
+
+    @PUT
+    @Path("grantPoints")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response grantPoints(PointsGrant grant){
+        Clubmember member = clubMemberService.getMember(grant.memberID);
+        if (member == null){
+            return Response.status(Response.Status.NOT_FOUND).entity("Member not found").build();
+        }
+        clubMemberService.grantPoints(member, grant.points);
+        //send email
+
+        return Response.status(Response.Status.OK).build();
     }
 
     @DELETE

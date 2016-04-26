@@ -10,7 +10,7 @@ module SummerHouses.members {
         public firstName:string;
         public lastName:string;
         public email:string;
-        public memberStatus:MemberStatus;
+        public memberStatus: MemberStatus;
         public points:number;
         public reservationGroup:number;
     }
