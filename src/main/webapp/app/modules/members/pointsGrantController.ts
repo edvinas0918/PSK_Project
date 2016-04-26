@@ -34,12 +34,21 @@ module SummerHouses.members {
             this.getMember(this.memberID);
             this.$scope.points = 0;
             this.$scope.description = "";
+            this.$scope.showAlert = false;
 
             this.$scope.grantPoints = () => {
                 var model = new PointsGrant(this.memberID, this.$scope.points, this.$scope.description);
-                this.$http.put('rest/clubmember/grantPoints', model);
-                //browser.redirect("#");
+                this.$http.put('rest/clubmember/grantPoints', model).success(() => {
+                    this.$scope.showAlert = true;
+                    setTimeout(() => {
+                        this.$scope.$apply(() => {
+                            this.$scope.showAlert = false;
+                        })
+                    }, 4000)
+                });
             }
+
+
         }
 
         getMember(memberID: number): void{
