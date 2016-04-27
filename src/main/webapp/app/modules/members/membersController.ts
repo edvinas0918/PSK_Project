@@ -9,12 +9,14 @@ module SummerHouses.members {
         static $inject = [
             '$rootScope',
             '$scope',
+            '$uibModal',
             '$http'
         ];
 
         constructor(
             private $rootScope:any,
             private $scope: any,
+            private $uibModal: any,
             private $http: any
         ) {
 
@@ -25,6 +27,14 @@ module SummerHouses.members {
                     _.pull(this.$scope.members, member);
                 });
             }
+
+            this.$scope.openInvitationForm = () => {
+               this.$uibModal.open({
+                  templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
+                   controller: 'mailingController'
+               });
+            }
+
         }
 
         getMembers(): void{

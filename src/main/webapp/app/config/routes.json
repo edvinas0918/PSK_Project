@@ -41,6 +41,13 @@
         "templateUrl": "app/layout/error/error.html",
         "controller": "errorController"
       }
+    },
+    {
+      "url": "/invitation",
+      "config": {
+        "templateUrl": "app/modules/mailing/templates/mailingInvitation.html",
+        "controller": "mailingController"
+      }
     }
   ]
 }

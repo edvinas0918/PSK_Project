@@ -3,7 +3,7 @@
 
 module SummerHouses {
 
-    angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage']);
+    angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage', 'ui.bootstrap']);
 
     export class Application_PreLoad {
 

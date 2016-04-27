@@ -1,0 +1,48 @@
+<div class="showModal">
+    <form name="sentMessage" id="invitationForm" ng-submit="sendMessage(emailAddresses)">
+        <div class="control-group">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Invite your friends!</h4>
+            </div>
+            <div class="modal-body">
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label >Email addresses:</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div ng-repeat="x in emailAddresses track by $index">
+                                            <div class="input-group">
+                                                <input type="email" class="form-control"  value="{{x}}" required>
+                                                <span class="input-group-btn" ng-show="$last">
+                                                    <button class="btn btn-success" ng-click="addEmailAddresses()">Add</button>
+                                                </span>
+                                                <span class="input-group-btn" ng-show="!$last">
+                                                    <button class="btn btn-danger" ng-click="removeEmailAddresses(x)">Remove</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Subject:</label>
+                                <input type="text" class="form-control" id="subject" value="Kvietimas prisijungti prie „Labanoro draugų“" readonly >
+                            </div>
+                        </div>
+                        <div class="control-group form-group">
+                            <div class="controls">
+                                <label>Message:</label>
+                                <textarea rows="6" cols="100" class="form-control" id="message" maxlength="999" style="resize:none" readonly>Sveiki,&#13;&#10;Labanoras Labanoras Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.&#13;&#10;&#13;&#10;Pagarbiai,&#13;&#10;„Labanoro draugų“ klubas</textarea>
+                            </div>
+                        </div>
+                </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Send invitation</button>
+                <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

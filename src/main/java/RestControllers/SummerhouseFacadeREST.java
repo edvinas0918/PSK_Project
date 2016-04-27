@@ -7,13 +7,13 @@ package RestControllers;
 
 import Entities.Summerhouse;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Entities.Tax;
 import Helpers.GensonHelpers;
 import com.owlike.genson.*;
+import Services.EmailService;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
