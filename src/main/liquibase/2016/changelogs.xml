@@ -188,6 +188,7 @@
             ('Minimal recommendations count', '2');
         </sql>
     </changeSet>
+    
     <changeSet id="007" author="Dziugas">
         <sql>
             CREATE TABLE MemberFormField(
@@ -204,8 +205,15 @@
             ('status', 0),
             ('points', 1),
             ('reservationGroup', 0);
-
-
         </sql>
     </changeSet>
+
+    <changeSet id="008" author="Mindaugas">
+        <dropColumn tableName="summerhouse" columnName="AvailabilityPeriod"/>
+        <addColumn tableName="summerhouse">
+            <column name="BeginPeriod" type="DATE"/>
+            <column name="EndPeriod" type="DATE"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
