@@ -5,27 +5,30 @@
  */
 package Entities;
 
+import Helpers.Helpers;
+import com.owlike.genson.Genson;
+import com.owlike.genson.ext.jodatime.JodaTimeBundle;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.MonthDay;
+
 import java.io.Serializable;
+import java.time.temporal.TemporalField;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.*;
+import com.owlike.genson.GensonBuilder;
+import com.owlike.genson.annotation.JsonDateFormat;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 /**
  *
  * @author Dziugas
@@ -37,7 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Summerhouse.findById", query = "SELECT s FROM Summerhouse s WHERE s.id = :id"),
     @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
     @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
-    @NamedQuery(name = "Summerhouse.findByAvailabilityPeriod", query = "SELECT s FROM Summerhouse s WHERE s.availabilityPeriod = :availabilityPeriod"),
     @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description")})
 @XmlRootElement
 public class Summerhouse implements Serializable {
@@ -56,11 +58,12 @@ public class Summerhouse implements Serializable {
     @NotNull
     @Column(name = "Capacity")
     private int capacity;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
-    @Column(name = "AvailabilityPeriod")
-    private String availabilityPeriod;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "BeginPeriod")
+    private Date beginPeriod;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "EndPeriod")
+    private Date endPeriod;
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
@@ -77,11 +80,10 @@ public class Summerhouse implements Serializable {
         this.id = id;
     }
 
-    public Summerhouse(Integer id, int number, int capacity, String availabilityPeriod) {
+    public Summerhouse(Integer id, int number, int capacity) {
         this.id = id;
         this.number = number;
         this.capacity = capacity;
-        this.availabilityPeriod = availabilityPeriod;
     }
 
     public Integer getId() {
@@ -100,20 +102,38 @@ public class Summerhouse implements Serializable {
         this.number = number;
     }
 
+    public String getBeginPeriod() {
+        MonthDay monthDay = Helpers.monthDayFromDate(beginPeriod);
+        return monthDay.monthOfYear().getAsText() + " " + String.valueOf(monthDay.dayOfMonth().get());
+    }
+
+//    public void setBeginPeriod(MonthDay beginPeriod) {
+//        this.beginPeriod = Helpers.dateFromMonthDay(beginPeriod);
+//    }
+Description Description Description Description
+    public void setBeginPeriod(Date beginPeriod) {
+        this.beginPeriod = beginPeriod;
+    }
+
+    public void setEndPeriod(Date endPeriod) {
+        this.endPeriod = endPeriod;
+    }
+
+    public String getEndPeriod() {
+        MonthDay monthDay = Helpers.monthDayFromDate(endPeriod);
+        return monthDay.monthOfYear().getAsText() + " " + String.valueOf(monthDay.dayOfMonth().get());
+    }
+
+//    public void setEndPeriod(MonthDay endPeriod) {
+//        this.endPeriod = Helpers.dateFromMonthDay(endPeriod);
+//    }
+
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
-    }
-
-    public String getAvailabilityPeriod() {
-        return availabilityPeriod;
-    }
-
-    public void setAvailabilityPeriod(String availabilityPeriod) {
-        this.availabilityPeriod = availabilityPeriod;
     }
 
     public String getDescription() {

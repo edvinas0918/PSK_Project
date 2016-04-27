@@ -36,8 +36,12 @@ module SummerHouses.houses {
                     for (let existingHouse of this.$scope.summerhouses) {
                         if(existingHouse.number == house.number && existingHouse.id) {
                             $scope.houseWithNumberExists = true;
-                            break;
+                            return;
                         }
+                    }
+                    if (house.beginPeriod > house.endPeriod) {
+                        $scope.datesDoNotMatch = true;
+                        return;
                     }
                     if(!$scope.houseWithNumberExists) {
                         this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {

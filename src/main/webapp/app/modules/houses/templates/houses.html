@@ -20,7 +20,7 @@
                 <div class="col-md-6">
                     <h3>Summerhouse no. {{x.number}}</h3>
                     <h4><small>Capacity:</small> {{x.capacity}}</h4>
-                    <h4><small>Availability period:</small> {{x.availabilityPeriod}}</h4>
+                    <h4><small>Availability period:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
                     <h4><small>Payment type:</small> {{x.taxID.taxTypeID.name}}</h4>
                     <p>{{x.description}}</p>
                     <a class="btn btn-info" ng-href="#/houses/{{x.id}}">Edit</a>

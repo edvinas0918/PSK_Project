@@ -27,35 +27,12 @@ module SummerHouses.houses {
             this.getTaxes();
             this.$scope.addEmptyHouse = () => {
                 var sm: SummerHouse = {
-                    availabilityPeriod: null,
                     description: null,
                     capacity: null,
                     number: null
                 }
                 $scope.summerhouses.push(sm);
                 $scope.$apply();
-            }
-
-            this.$scope.saveHouse = (house: SummerHouse) => {
-                if (!house.id) {
-                    $scope.houseWithNumberExists = false;
-                    for (let existingHouse of this.$scope.summerhouses) {
-                        if(existingHouse.number == house.number && existingHouse.id) {
-                            $scope.houseWithNumberExists = true;
-                            break;
-                        }
-                    }
-                    if(!$scope.houseWithNumberExists) {
-                        this.$http.post('/rest/summerhouse/postHashMap',house).success(() => {
-                            $route.reload();
-                        });
-                    }
-                } else {
-                    this.$http.put('/rest/summerhouse/'+house.id, house).success(() => {
-                        $route.reload();
-                    });
-                }
-
             }
 
             this.$scope.deleteHouse = (house: SummerHouse) => {
