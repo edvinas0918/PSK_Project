@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Grant points for user {{member.firstName}} {{member.lastName}}</h3>
+            <div class="alert alert-success" ng-if="showAlert">
+                <strong>Success!</strong> Points have been granted for the member
+            </div>
+            <ng-form name="pointsGrantForm">
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Number of points:</label>
+                        <input type="number" class="form-control" ng-model="points" ng-required="true"
+                               placeholder="Enter number of points you wish to grant to the member"
+                               min="1">
+                    </div>
+                </div>
+
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Reason:</label>
+                        <textarea rows="8" cols="100" placeholder="Enter the reason you wish to grant points for the member"
+                                  class="form-control" ng-model="description" maxlength="999"
+                                  style="resize:none" aria-invalid="false"></textarea>
+                    </div>
+                </div>
+                <div id="success"></div>
+                <button ng-click="grantPoints()" ng-disabled="!pointsGrantForm.$valid"
+                        class="btn btn-success">Grant points</button>
+            </ng-form>
+        </div>
+
+    </div>
+</div>

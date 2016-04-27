@@ -3,6 +3,11 @@ module SummerHouses.members {
     export class MemberStatus {
         public id:number;
         public name:string;
+
+        constructor(id: number, name: string){
+            this.id = id;
+            this.name =  name;
+        }
     }
 
     export class Member {
@@ -10,8 +15,19 @@ module SummerHouses.members {
         public firstName:string;
         public lastName:string;
         public email:string;
-        public memberStatus:MemberStatus;
+        public memberStatus: MemberStatus;
         public points:number;
         public reservationGroup:number;
+
+        constructor(){
+            this.id = null;
+            this.firstName = "";
+            this.lastName = "";
+            this.email = "";
+            this.memberStatus = new MemberStatus(1, "Candidate");
+            this.points = 0;
+            this.reservationGroup = 0;
+        }
     }
+
 }
