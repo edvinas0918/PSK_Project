@@ -4,31 +4,31 @@
         <strong>Success!</strong> Changes for the member have been saved
     </div>
     <form role="form" ng-if="!editing" class="form-horizontal">
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.firstName">
             <label class="control-label col-sm-2">First name:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.firstName}}</p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.lastName">
             <label class="control-label col-sm-2">Last name:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.lastName}}</p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.email">
             <label class="control-label col-sm-2">Email:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.email}}</p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.status">
             <label class="control-label col-sm-2">Status:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.memberStatus.name}}</p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.points">
             <label class="control-label col-sm-2">Points:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.points}}</p>
@@ -43,19 +43,19 @@
     </form>
 
     <form role="form" ng-if="editing" class="form-horizontal">
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.firstName">
             <label class="control-label col-sm-2">First name:</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="Enter first name" ng-model="member.firstName">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.lastName">
             <label class="control-label col-sm-2">Last name:</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" placeholder="Enter last name" ng-model="member.lastName">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="formFields.email">
             <label class="control-label col-sm-2">Email:</label>
             <div class="col-sm-10">
                 <input type="email" class="form-control" placeholder="Enter email" ng-model="member.email">
@@ -65,6 +65,41 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-success" ng-click="saveMember()">Save</button>
             </div>
+        </div>
+    </form>
+
+
+    <form class="form-horizontal">
+        <h2>Select which fields are shown for the members</h2>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="formFields.firstName"> First name
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="formFields.lastName"> Last name
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="formFields.email"> Email
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="formFields.status"> Status
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="formFields.points"> Points
+            </label>
+        </div>
+        <br />
+
+        <div>
+            <button type="submit" class="btn btn-success" ng-click="saveFormSettings()">Save settings</button>
         </div>
     </form>
 </div>

@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="memberModel.ts"/>
+///<reference path="memberFormFieldModel.ts"/>
 
 module SummerHouses.members {
 
@@ -25,7 +26,16 @@ module SummerHouses.members {
             this.$scope.editable = true;
             this.$scope.newMember = false;
 
+            this.$scope.formFields = {
+                firstName: false,
+                lastName: false,
+                email: false,
+                status: false,
+                points: false
+            }
+
             this.getMember($routeParams.memberID);
+            this.getFormFields();
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 if (this.$scope.newMember){
@@ -38,12 +48,20 @@ module SummerHouses.members {
                         this.showSuccessMessage();
                     });
                 }
-
                 this.$scope.editing = false;
             }
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
+            }
+
+            this.$scope.saveFormSettings = () => {
+                _.forEach(this.$scope.originalFieldOptions, (field: MemberFormField) => {
+                    field.visible = this.$scope.formFields[field.fieldName];
+                });
+                this.$http.put('rest/memberFormField', this.$scope.originalFieldOptions).success(() => {
+                    this.showSuccessMessage();
+                });
             }
         }
 
@@ -55,6 +73,15 @@ module SummerHouses.members {
                     this.$scope.member = member;
                 });
             }
+        }
+
+        getFormFields(): void{
+            this.$http.get('/rest/memberFormField').success((fields: MemberFormField[]) => {
+                this.$scope.originalFieldOptions = fields;
+                _.forEach(fields, (field) => {
+                    this.$scope.formFields[field.fieldName] = field.visible;
+                });
+            });
         }
 
         showSuccessMessage(): void{
