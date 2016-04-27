@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -29,6 +30,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Memberformfield.findById", query = "SELECT m FROM Memberformfield m WHERE m.id = :id"),
     @NamedQuery(name = "Memberformfield.findByFieldName", query = "SELECT m FROM Memberformfield m WHERE m.fieldName = :fieldName"),
     @NamedQuery(name = "Memberformfield.findByVisible", query = "SELECT m FROM Memberformfield m WHERE m.visible = :visible")})
+@XmlRootElement
 public class Memberformfield implements Serializable {
 
     private static final long serialVersionUID = 1L;
