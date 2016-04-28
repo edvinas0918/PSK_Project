@@ -7,13 +7,14 @@ package RestControllers;
 
 import Entities.Summerhouse;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import Entities.Tax;
-import Helpers.GensonHelpers;
+import Helpers.Helpers;
 import com.owlike.genson.*;
+import org.joda.time.DateTime;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -39,7 +40,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Inject
     TaxFacadeREST taxFacadeREST;
 
-    private Genson genson = GensonHelpers.getInstance();
+    private Genson genson = Helpers.getGensonInstance();
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
@@ -59,8 +60,23 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
     public void getHouse(Map<Object, Object> summerhouseMap) {
+        Date endPeriod=null, beginPeriod=null;
+        if(summerhouseMap.containsKey("endPeriod")) {
+            summerhouseMap.get("endPeriod");
+            DateTime dateTime = DateTime.parse((String) summerhouseMap.get("endPeriod"));
+            endPeriod = dateTime.toDate();
+            summerhouseMap.remove("endPeriod");
+        }
+        if(summerhouseMap.containsKey("beginPeriod")) {
+            summerhouseMap.get("beginPeriod");
+            DateTime dateTime = DateTime.parse((String) summerhouseMap.get("beginPeriod"));
+            beginPeriod = dateTime.toDate();
+            summerhouseMap.remove("beginPeriod");
+        }
         String serialized = genson.serialize(summerhouseMap);
         Summerhouse summerhouse = genson.deserialize(serialized, Summerhouse.class);
+        summerhouse.setEndPeriod(endPeriod);
+        summerhouse.setBeginPeriod(beginPeriod);
         create(summerhouse);
     }
 
@@ -81,7 +97,8 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Summerhouse find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Summerhouse summerhouse = super.find(id);
+        return summerhouse;
     }
 
     @GET

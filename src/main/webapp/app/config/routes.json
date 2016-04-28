@@ -19,6 +19,13 @@
       }
     },
     {
+      "url": "/members/:memberID/pointsGrant",
+      "config": {
+        "templateUrl": "app/modules/members/templates/pointsGrant.html",
+        "controller": "pointsGrantController"
+      }
+    },
+    {
       "url": "/houses",
       "config": {
         "name": "houses",

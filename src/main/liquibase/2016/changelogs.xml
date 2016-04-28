@@ -188,7 +188,35 @@
             ('Minimal recommendations count', '2');
         </sql>
     </changeSet>
-    <changeSet id="007" author="Edvinas">
+
+    <changeSet id="007" author="Dziugas">
+        <sql>
+            CREATE TABLE MemberFormField(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                FieldName VARCHAR(40) NOT NULL,
+                Visible BIT(1) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_MemberFormField (ID)
+            );
+
+            INSERT INTO MemberFormField (FieldName, Visible)
+            VALUES ('firstName', 1),
+            ('lastName', 1),
+            ('email', 1),
+            ('status', 0),
+            ('points', 1),
+            ('reservationGroup', 0);
+        </sql>
+    </changeSet>
+
+    <changeSet id="008" author="Mindaugas">
+        <dropColumn tableName="summerhouse" columnName="AvailabilityPeriod"/>
+        <addColumn tableName="summerhouse">
+            <column name="BeginPeriod" type="DATE"/>
+            <column name="EndPeriod" type="DATE"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="009" author="Edvinas">
         <sql>
             ALTER TABLE clubmember
             ADD COLUMN token VARCHAR(200);
