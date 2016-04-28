@@ -48,6 +48,13 @@
         "templateUrl": "app/modules/settings/templates/settings.html",
         "controller": "settingsController"
       }
+    },
+    {
+      "url": "/payments",
+      "config": {
+        "templateUrl": "app/modules/payments/templates/payments.html",
+        "controller": "paymentsController"
+      }
     }
   ]
 }
