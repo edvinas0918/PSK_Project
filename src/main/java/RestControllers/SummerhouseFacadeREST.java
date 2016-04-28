@@ -14,6 +14,7 @@ import java.util.Map;
 import Helpers.Helpers;
 import com.owlike.genson.*;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -40,8 +41,6 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Inject
     TaxFacadeREST taxFacadeREST;
 
-    private Genson genson = Helpers.getGensonInstance();
-
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
@@ -60,30 +59,19 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
     public void getHouse(Map<Object, Object> summerhouseMap) {
-        Date endPeriod=null, beginPeriod=null;
-        if(summerhouseMap.containsKey("endPeriod")) {
-            summerhouseMap.get("endPeriod");
-            DateTime dateTime = DateTime.parse((String) summerhouseMap.get("endPeriod"));
-            endPeriod = dateTime.toDate();
-            summerhouseMap.remove("endPeriod");
+        Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
+        if (summerhouseMap.containsKey("editMode")) {
+            edit(summerhouse.getId(), summerhouse);
+        } else {
+            create(summerhouse);
         }
-        if(summerhouseMap.containsKey("beginPeriod")) {
-            summerhouseMap.get("beginPeriod");
-            DateTime dateTime = DateTime.parse((String) summerhouseMap.get("beginPeriod"));
-            beginPeriod = dateTime.toDate();
-            summerhouseMap.remove("beginPeriod");
-        }
-        String serialized = genson.serialize(summerhouseMap);
-        Summerhouse summerhouse = genson.deserialize(serialized, Summerhouse.class);
-        summerhouse.setEndPeriod(endPeriod);
-        summerhouse.setBeginPeriod(beginPeriod);
-        create(summerhouse);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Summerhouse entity) {
+
         super.edit(entity);
     }
 

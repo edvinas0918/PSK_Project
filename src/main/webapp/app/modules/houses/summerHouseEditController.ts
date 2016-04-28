@@ -45,13 +45,12 @@ module SummerHouses.houses {
                     }
                     if(!$scope.houseWithNumberExists) {
                         this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
-                            //$route.reload();
                             $location.path("/houses");
                         });
                     }
                 } else {
-                    this.$http.put('/rest/summerhouse/'+house.id, house).success(() => {
-                        //$route.reload();
+                    house.editMode = true
+                    this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
                         $location.path("/houses");
                     });
                 }
