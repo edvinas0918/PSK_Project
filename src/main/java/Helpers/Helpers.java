@@ -30,8 +30,8 @@ public class Helpers {
     public static MonthDay monthDayFromDate(Date date){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.get(Calendar.DAY_OF_MONTH);
-        calendar.get(Calendar.MONTH);
+        System.out.println(calendar.get(Calendar.DAY_OF_MONTH));
+        System.out.println(calendar.get(Calendar.MONTH));
         return new MonthDay(calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
     }
 
