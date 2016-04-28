@@ -1,11 +1,11 @@
-<h2>Payments</h2>
+<h2>Mokėjimai</h2>
 <table class="table">
     <thead>
     <tr>
-        <th>Payment Date</th>
-        <th>Tax</th>
-        <th>Member</th>
-        <th>Confirmed</th>
+        <th>Mokėjimo data</th>
+        <th>Mokestis</th>
+        <th>Narys</th>
+        <th>Patvirtinimas</th>
     </tr>
     </thead>
     <tbody>
@@ -13,7 +13,7 @@
         <td>{{x.paymentDate}}</td>
         <td>{{x.taxID.name}}</td>
         <td>{{x.memberID.firstName}}</td>
-        <td>{{x.confirmed}}</td>
+        <td>{{isConfirmed(x)}}</td>
     </tr>
     </tbody>
 </table>

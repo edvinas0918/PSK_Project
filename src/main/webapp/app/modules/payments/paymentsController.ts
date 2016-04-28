@@ -19,6 +19,9 @@ module SummerHouses.payments {
         ) {
 
             this.getPayments();
+            this.$scope.isConfirmed  = (payment: Payment) => {
+                return payment.confirmed ?  "Patvirtinas" : "Nepatvirtintas";
+            }
         }
 
         getPayments(): void{
@@ -26,7 +29,6 @@ module SummerHouses.payments {
                 this.$scope.payments = payments;
             });
         }
-
     }
 
     angular

@@ -5,21 +5,21 @@
             <label class="control-label col-sm-6" style="text-align: left;">Maksimalus narių skaičius</label>
             <div class="col-sm-10">
                 <input min="0" class="form-control" type="number" style="width: 100px;"
-                       ng-model="settings[0].value" value={{settings[0].value}} ng-required="true">
+                       ng-model="settings[0].value" ng-value={{settings[0].value}} ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-6" style="text-align: left;">Minimalus rekomendacijų kiekis naujam nariui</label>
             <div class="col-sm-10">
                 <input min="0" class="form-control" type="number" style="width: 100px;"
-                       ng-model="settings[1].value" value={{settings[1].value}} ng-required="true">
+                       ng-model="settings[1].value" ng-value="settings[1].value" ng-required="true">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-6" style="text-align: left;">Rezervacijos atšaukimas leidžiamas likus dienoms</label>
             <div class="col-sm-10">
                 <input min="0" class="form-control" type="number" style="width: 100px;"
-                       ng-model="settings[2].value" value={{settings[2].value}} ng-required="true">
+                       ng-model="settings[2].value" ng-value={{settings[2].value}} ng-required="true">
             </div>
         </div>
         <div class="col-md-4 text-center">
