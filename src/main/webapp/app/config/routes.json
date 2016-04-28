@@ -5,7 +5,7 @@
       "config": {
         "templateUrl": "app/modules/members/templates/members.html",
         "controller": "membersController",
-        "layout": "member",
+        "layout": "admin",
         "allowedRoles": ["Admin", "Member"]
       }
     },
@@ -14,7 +14,7 @@
       "config": {
         "templateUrl": "app/modules/members/templates/memberEdit.html",
         "controller": "memberEditController",
-        "layout": "member",
+        "layout": "admin",
         "allowedRoles": ["Member"]
       }
     },
