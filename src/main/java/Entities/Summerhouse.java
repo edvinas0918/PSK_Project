@@ -6,29 +6,16 @@
 package Entities;
 
 import Helpers.Helpers;
-import com.owlike.genson.Genson;
-import com.owlike.genson.ext.jodatime.JodaTimeBundle;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.MonthDay;
 
-import java.io.Serializable;
-import java.time.temporal.TemporalField;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 import javax.persistence.*;
-import java.time.*;
-import com.owlike.genson.GensonBuilder;
-import com.owlike.genson.annotation.JsonDateFormat;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 /**
  *
  * @author Dziugas
