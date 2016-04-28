@@ -74,21 +74,27 @@
       "url": "/settings",
       "config": {
         "templateUrl": "app/modules/settings/templates/settings.html",
-        "controller": "settingsController"
+        "controller": "settingsController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     },
     {
       "url": "/settings/edit",
       "config": {
         "templateUrl": "app/modules/settings/templates/settingsEdit.html",
-        "controller": "settingsEditController"
+        "controller": "settingsEditController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     },
     {
       "url": "/payments",
       "config": {
         "templateUrl": "app/modules/payments/templates/payments.html",
-        "controller": "paymentsController"
+        "controller": "paymentsController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     }
   ]
