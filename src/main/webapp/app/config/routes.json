@@ -41,6 +41,13 @@
         "templateUrl": "app/layout/error/error.html",
         "controller": "errorController"
       }
+    },
+    {
+      "url": "/settings",
+      "config": {
+        "templateUrl": "app/modules/settings/templates/settings.html",
+        "controller": "settingsController"
+      }
     }
   ]
 }

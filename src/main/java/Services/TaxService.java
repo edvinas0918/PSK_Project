@@ -15,7 +15,7 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
  */
 @Stateless
 public class TaxService {
-    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
     public Tax getTax(Object id){
