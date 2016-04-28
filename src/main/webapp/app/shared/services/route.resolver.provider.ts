@@ -2,8 +2,9 @@
 ///<reference path="../../modules/authentication/services/auth.service.ts"/>
 
 module SummerHouses.shared {
-    
 
+
+    import IUser = SummerHouses.authentication.IUser;
     interface IRouteResolverProvider extends ng.IServiceProvider {
         defaultRouteResolver:any;
     }
@@ -22,32 +23,15 @@ module SummerHouses.shared {
             this.routeResolver = ($q:ng.IQService,
                                   $rootScope:any,
                                   $route:any,
-                                  authService: SummerHouses.authentication.AuthenticationService) => {
+                                  $location:ng.ILocationService,
+                                  authService:SummerHouses.authentication.AuthenticationService) => {
                 var deferred = $q.defer();
-
-                var reject = (val:any) => {
-                    $rootScope.isResolvingRoute = false;
-
-                    console.log("rejected", val);
-                    deferred.reject(val);
-                };
-
-                var resolve = (val:any) => {
-                    $rootScope.isResolvingRoute = false;
-
-                    console.log("resolved", val);
-                    deferred.resolve(val);
-                };
-
-
-                $rootScope.isResolvingRoute = true;
 
                 var routeDefinition = $route.current;
 
-                var requireAuth = true;
-
-                if (routeDefinition.requireAuthenticatedUser === false) {
-                    requireAuth = false;
+                var requireAuth = false;
+                if (routeDefinition.allowedRoles.indexOf('Candidate') == -1) {
+                    requireAuth = true;
                 }
 
                 var authenticationPromise:ng.IPromise<any>;
@@ -56,12 +40,22 @@ module SummerHouses.shared {
                     authenticationPromise = this.authHandler($q, authService);
                 }
 
-                if (!routeDefinition.login) {
-                    return authenticationPromise.then(resolve, reject);
-                }
-                else {
-                    resolve('login');
-                }
+                $q.when(authenticationPromise).then(function (userInfo:IUser) {
+                    //check for roles
+                    if (userInfo) {
+                        var userRole = userInfo.memberStatus.name;
+                        if (routeDefinition.allowedRoles.indexOf(userRole) == -1) {
+                            deferred.reject({reason: "permission denied"});
+                        } else {
+                            deferred.resolve(userInfo);
+                        }
+                    } else {
+                        deferred.resolve(true);
+                    }
+                }, function (error) {
+                    $location.path('/login');
+                    deferred.reject(error);
+                });
 
                 return deferred.promise;
             };
@@ -70,35 +64,16 @@ module SummerHouses.shared {
                 '$q',
                 '$rootScope',
                 '$route',
+                '$location',
                 'sh-authentication-service',
                 this.routeResolver
             ];
         }
 
         private authHandler = ($q:ng.IQService,
-                               authService: any
-        ):ng.IPromise<any> => {
+                               authService:SummerHouses.authentication.IAuthenticationService):ng.IPromise<any> => {
 
-            var userInfo = authService.user;
-            
-            var authError = () => {
-                return $q.reject({authenticated: false});
-            };
-
-            var authSuccess = () => {
-                return $q.when(userInfo);
-            };
-
-            return authService.requestUserAccessToken().then((response) => {
-                // now check if logged in
-                console.log("response from requestUserAccessToken: ");
-                console.log(response);
-                
-                if (authService.isLoggedIn())
-                    return authSuccess();
-                else
-                    return $q.reject({ authenticated: false });
-            }, authError);
+            return (authService.isLoggedIn()) ? authService.getUser() : $q.reject({authenticated:false});
         };
 
         public defaultRouteResolver:any;
@@ -106,8 +81,8 @@ module SummerHouses.shared {
         private routeResolver:($q:ng.IQService,
                                $rootScope:any,
                                $route:any,
-                               authService: SummerHouses.authentication.AuthenticationService
-        ) => ng.IPromise < any >;
+                               $location:ng.ILocationService,
+                               authService:SummerHouses.authentication.AuthenticationService) => ng.IPromise < any >;
 
         public $get = ["$q", this.get];
 

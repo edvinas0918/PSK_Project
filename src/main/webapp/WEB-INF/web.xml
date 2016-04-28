@@ -8,7 +8,8 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-    
+
+
     <data-source>
         <name>java:app/env/LabanorasDataSource</name>
         <class-name>org.apache.derby.jdbc.ClientXADataSource</class-name>
@@ -21,7 +22,37 @@
             <name>connectionAttributes</name>
             <value>;create=true</value>
         </property>
-    </data-source> 
-    
-    
+    </data-source>
+
+    <env-entry>
+        <env-entry-name>emailHost</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>smtp.gmail.com</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>emailPort</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>587</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>emailUsername</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>LabanorasFriends@gmail.com</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>emailPassword</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Laba1234</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>reccomendationTemplate</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>./src/main/resources/emailRecommendation.vm</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>invitationTemplate</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>Laba1234</env-entry-value>
+    </env-entry>
+
 </web-app>

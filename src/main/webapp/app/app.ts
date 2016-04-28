@@ -1,9 +1,8 @@
-
 /// <reference path="../typings/angular.d.ts" />
 
 module SummerHouses {
 
-    angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage']);
+    angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage', 'ui.bootstrap']);
 
     export class Application_PreLoad {
 
@@ -13,6 +12,7 @@ module SummerHouses {
 
         private static that:Application_PreLoad;
 
+        
         constructor() {
             console.log("Application PreLoad!");
 
@@ -42,6 +42,6 @@ module SummerHouses {
 
     var Application = new Application_PreLoad();
     angular.module("housesApp").run(['$route', function($route)  {
-        $route.reload();
+        //$route.reload();
     }]);
 }

@@ -188,7 +188,7 @@
             ('Minimal recommendations count', '2');
         </sql>
     </changeSet>
-    
+
     <changeSet id="007" author="Dziugas">
         <sql>
             CREATE TABLE MemberFormField(
@@ -226,4 +226,12 @@
         </sql>
     </changeSet>
 
+    <changeSet id="009" author="Edvinas">
+        <sql>
+            ALTER TABLE clubmember
+            ADD COLUMN token VARCHAR(200);
+            ALTER TABLE clubmember
+            ADD COLUMN fbUserId VARCHAR(20);
+        </sql>
+    </changeSet>
 </databaseChangeLog>

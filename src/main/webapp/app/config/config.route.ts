@@ -7,7 +7,7 @@ module SummerHouses.config {
 
         static that: RouteConfigurator;
 
-        static $inject = ['$routeProvider', 'allRoutes', 'routeResolverProvider', '$locationProvider'];
+        static $inject = ['$routeProvider', 'allRoutes', 'routeResolverProvider'];
 
         static Configurator($routeProvider:any,
                             allRoutes:any,
@@ -19,8 +19,7 @@ module SummerHouses.config {
                 setRoute(route.url, route.config, routeResolverProvider);
             });
 
-            $routeProvider.otherwise({ redirectTo: '/error' });
-
+            $routeProvider.otherwise({ redirectTo: '/login' });
 
             function setRoute(url, definition, routeResolver) {
                 definition.resolve = {

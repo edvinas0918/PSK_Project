@@ -1,10 +1,14 @@
 package RestControllers;
 
+import Entities.Clubmember;
+import Entities.Memberstatus;
 import models.AuthResponse;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -18,8 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Edvinas.Barickis on 4/20/2016.
@@ -29,27 +33,11 @@ import java.util.Map;
 @Path("authentication")
 public class AuthenticationControllerREST {
 
-   /* @GET
-    @Path("logout")
-    @Produces(MediaType.APPLICATION_JSON)
-    public AuthResponse logout () {
-        this.session.invalidate ();
-    }*/
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
 
-
-    @GET
-    @Path("getUserInfo")
-    @Produces(MediaType.APPLICATION_JSON)
-    public AuthResponse getUserInfo(@QueryParam("access_token") String accessToken){
-
-        FBGraph fbGraph = new FBGraph(accessToken);
-        String userInfo;
-
-        userInfo = fbGraph.getFBGraph();
-
-        return new AuthResponse(200, userInfo);
-    }
-
+    @Inject
+    ClubmemberFacadeREST userServiceREST;
 
     @GET
     @Path("getUserAccessToken")
@@ -70,8 +58,32 @@ public class AuthenticationControllerREST {
             return new AuthResponse(401, ex.getMessage());
         }
 
+        JSONObject userInfo = new FBGraph(accessToken).getFBGraph();
+
+        Clubmember user = userServiceREST.findByFbUserId(userInfo.getString("id"));
+
+        if (user != null) {
+            if (!user.getToken().equals(accessToken)) {
+                user.setToken(accessToken);
+                userServiceREST.edit(user.getId(), user);
+            }
+        } else {
+            user = new Clubmember();
+            String[] name = userInfo.getString("name").split(" ");
+            user.setFirstName(name[0]);
+            user.setLastName(name[1]);
+            user.setMemberStatus(new Memberstatus(1));
+            user.setFbUserId(userInfo.getString("id"));
+            user.setToken(accessToken);
+            user.setEmail(userInfo.getString("email"));
+            user.setReservationGroup(1);
+            user.setPoints(0);
+            userServiceREST.create(user);
+        }
+
         return new AuthResponse(200, accessToken);
     }
+
 
     private class FBConnection {
         public static final String FB_APP_ID = "1597719040467242";
@@ -139,22 +151,32 @@ public class AuthenticationControllerREST {
                             + accessToken);
                 }
             }
-            return accessToken;
+
+            String pattern = "^access_token=([^&]+).*";
+            Pattern r = Pattern.compile(pattern);
+
+            Matcher m = r.matcher(accessToken);
+
+            if (m.find()) {
+                return m.group(1);
+            }
+
+            return "";
         }
     }
 
-    public class FBGraph {
+    private class FBGraph {
         private String accessToken;
 
         public FBGraph(String accessToken) {
             this.accessToken = accessToken;
         }
 
-        public String getFBGraph() {
+        public JSONObject getFBGraph() {
             String graph = null;
             try {
 
-                String g = "https://graph.facebook.com/me?access_token=" + accessToken;
+                String g = "https://graph.facebook.com/me?access_token=" + accessToken + "&fields=name,email";
                 URL u = new URL(g);
                 URLConnection c = u.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -170,24 +192,8 @@ public class AuthenticationControllerREST {
                 e.printStackTrace();
                 throw new RuntimeException("ERROR in getting FB graph data. " + e);
             }
-            return graph;
-        }
 
-        public Map getGraphData(String fbGraph) {
-            Map fbProfile = new HashMap();
-            try {
-                JSONObject json = new JSONObject(fbGraph);
-                fbProfile.put("id", json.getString("id"));
-                fbProfile.put("first_name", json.getString("first_name"));
-                if (json.has("email"))
-                    fbProfile.put("email", json.getString("email"));
-                if (json.has("gender"))
-                    fbProfile.put("gender", json.getString("gender"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-                throw new RuntimeException("ERROR in parsing FB graph data. " + e);
-            }
-            return fbProfile;
+            return new JSONObject(graph);
         }
     }
 }

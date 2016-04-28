@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -77,6 +78,33 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
+    }
+
+    @GET
+    @Path("/token/{token}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Clubmember findByToken(@PathParam("token") String token) {
+
+        TypedQuery<Clubmember> query =
+                em.createNamedQuery("Clubmember.findByToken", Clubmember.class).setParameter("token", token);
+        List<Clubmember> results = query.getResultList();
+
+        return results.get(0);
+    }
+
+    @GET
+    @Path("/fbUserId/{fbUserId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Clubmember findByFbUserId(@PathParam("fbUserId") String fbUserId) {
+        TypedQuery<Clubmember> query =
+                em.createNamedQuery("Clubmember.findByfbUserId", Clubmember.class).setParameter("fbUserId", fbUserId);
+        List<Clubmember> results = query.getResultList();
+
+        if (results.isEmpty()) {
+            return null;
+        }
+
+        return results.get(0);
     }
 
     @GET
