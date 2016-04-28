@@ -4,14 +4,18 @@
       "url": "/members",
       "config": {
         "templateUrl": "app/modules/members/templates/members.html",
-        "controller": "membersController"
+        "controller": "membersController",
+        "layout": "member",
+        "allowedRoles": ["Admin", "Member"]
       }
     },
     {
       "url": "/members/:memberID",
       "config": {
         "templateUrl": "app/modules/members/templates/memberEdit.html",
-        "controller": "memberEditController"
+        "controller": "memberEditController",
+        "layout": "member",
+        "allowedRoles": ["Member"]
       }
     },
     {
@@ -24,22 +28,46 @@
     {
       "url": "/houses",
       "config": {
+        "name": "houses",
         "templateUrl": "app/modules/houses/templates/houses.html",
-        "controller": "summerHousesController"
+        "controller": "summerHousesController",
+        "layout": "member",
+        "allowedRoles": ["Admin", "Member"]
       }
     },
     {
       "url": "/houses/:houseID",
       "config": {
         "templateUrl": "app/modules/houses/templates/editHouse.html",
-        "controller": "summerHouseEditController"
+        "controller": "summerHouseEditController",
+        "layout": "member",
+        "allowedRoles": ["Admin"]
       }
     },
     {
       "url": "/error",
       "config": {
         "templateUrl": "app/layout/error/error.html",
-        "controller": "errorController"
+        "controller": "errorController",
+        "layout": "member",
+        "allowedRoles": ["Admin", "Member", "Candidate"]
+      }
+    },
+    {
+      "url": "/login",
+      "config": {
+        "templateUrl": "app/layout/login/login.html",
+        "layout": "candidate",
+        "allowedRoles": ["Admin", "Member", "Candidate"]
+      }
+    }
+  ,
+    {
+      "url": "/logout",
+      "config": {
+        "template": "",
+        "controller": "logoutController",
+        "allowedRoles": ["Admin", "Member", "Candidate"]
       }
     }
   ]
