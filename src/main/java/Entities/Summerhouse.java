@@ -110,7 +110,7 @@ public class Summerhouse implements Serializable {
 //    public void setBeginPeriod(MonthDay beginPeriod) {
 //        this.beginPeriod = Helpers.dateFromMonthDay(beginPeriod);
 //    }
-Description Description Description Description
+
     public void setBeginPeriod(Date beginPeriod) {
         this.beginPeriod = beginPeriod;
     }

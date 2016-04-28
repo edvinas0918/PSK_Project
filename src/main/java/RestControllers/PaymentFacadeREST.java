@@ -1,8 +1,10 @@
 package RestControllers;
 
 import Entities.Payment;
+import Services.PaymentService;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
@@ -20,6 +22,8 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @Inject private PaymentService paymentService;
+
     public PaymentFacadeREST() {
         super(Payment.class);
     }
@@ -36,6 +40,13 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Payment entity) {
         super.edit(entity);
+    }
+
+    @PUT
+    @Path("confirm")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void confirmPayment(Payment entity){
+        paymentService.confirmPayment(entity);
     }
 
     @DELETE

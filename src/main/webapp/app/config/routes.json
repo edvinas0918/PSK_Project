@@ -50,6 +50,13 @@
       }
     },
     {
+      "url": "/settings/edit",
+      "config": {
+        "templateUrl": "app/modules/settings/templates/settingsEdit.html",
+        "controller": "settingsEditController"
+      }
+    },
+    {
       "url": "/payments",
       "config": {
         "templateUrl": "app/modules/payments/templates/payments.html",
