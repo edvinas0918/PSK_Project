@@ -71,6 +71,33 @@
         "controller": "logoutController",
         "allowedRoles": ["Admin", "Member", "Candidate"]
       }
+    },
+    {
+      "url": "/settings",
+      "config": {
+        "templateUrl": "app/modules/settings/templates/settings.html",
+        "controller": "settingsController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
+      }
+    },
+    {
+      "url": "/settings/edit",
+      "config": {
+        "templateUrl": "app/modules/settings/templates/settingsEdit.html",
+        "controller": "settingsEditController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
+      }
+    },
+    {
+      "url": "/payments",
+      "config": {
+        "templateUrl": "app/modules/payments/templates/payments.html",
+        "controller": "paymentsController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
+      }
     }
   ]
 }

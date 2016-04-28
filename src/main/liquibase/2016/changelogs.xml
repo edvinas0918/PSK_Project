@@ -215,6 +215,16 @@
             <column name="EndPeriod" type="DATE"/>
         </addColumn>
     </changeSet>
+    <changeSet id="009" author="Gintautas">
+        <sql>
+            truncate table labanorasfriends.settings;
+
+            insert into labanorasfriends.settings (Name, Value) values
+            ("Maksimalus narių skaičius", "100"),
+            ("Minimalus rekomendacijų kiekis", "2"),
+            ("Rezervacijos atšaukimas","7")
+        </sql>
+    </changeSet>
 
     <changeSet id="009" author="Edvinas">
         <sql>

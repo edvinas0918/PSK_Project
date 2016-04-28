@@ -18,7 +18,7 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SettingsService {
-    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
     public List<Settings> getSettings(){

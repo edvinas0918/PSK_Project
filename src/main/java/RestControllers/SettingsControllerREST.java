@@ -25,7 +25,7 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 @Path("settings")
 @TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class SettingsControllerREST{
-    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
     @Inject private SettingsService settingsService;
