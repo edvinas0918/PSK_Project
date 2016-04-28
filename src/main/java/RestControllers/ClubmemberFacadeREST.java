@@ -46,14 +46,15 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Clubmember entity) {
+        // TODO: Check if number of members does not exceed maximum
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Clubmember entity) {
         super.edit(entity);
     }
@@ -67,7 +68,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
             return Response.status(Response.Status.NOT_FOUND).entity("Member not found").build();
         }
         clubMemberService.grantPoints(member, grant.points);
-        //send email
+        // TODO: send email
 
         return Response.status(Response.Status.OK).build();
     }
