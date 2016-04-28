@@ -2,28 +2,27 @@
 
 module SummerHouses {
     "use strict";
+    import AuthenticationService = SummerHouses.authentication.AuthenticationService;
+    import IRootScopeService = angular.IRootScopeService;
 
     export class MainController {
 
-        static $inject = ['$scope', 'sh-authentication-service'];
+        static that:MainController;
 
-        private authenticated:boolean;
+        static $inject = ['$scope', 'sh-authentication-service', '$route', '$rootScope'];
 
-        //$scope.authenticated = true;
+        constructor(private $scope:any,
+                    private authService:any,
+                    private $route:ng.route.IRouteService,
+                    private $rootScope:IRootScopeService) {
+            MainController.that = this;
 
-        constructor(
-            private $scope:any,
-            private authService: any
-        ) {
-            $scope.authenticated = true;
-           // var vm = this;
-          //  this.authenticated = true;
-
-            authService.getFullName().then((fullName:string) => {
-                this.$scope.fullName = fullName;
+            MainController.that.authService.getUser().then((user:AuthenticationService.IUser) => {
+                this.$scope.fullName = user.firstName + " " + user.lastName;
             }, (error) => {
                 this.$scope.fullName = "shittyMittyAnonymous";
             });
+
         }
     }
 

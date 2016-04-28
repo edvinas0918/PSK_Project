@@ -29,21 +29,32 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author Dziugas
  */
 @Entity
 @Table(name = "clubmember")
 @NamedQueries({
-    @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c"),
-    @NamedQuery(name = "Clubmember.findById", query = "SELECT c FROM Clubmember c WHERE c.id = :id"),
-    @NamedQuery(name = "Clubmember.findByFirstName", query = "SELECT c FROM Clubmember c WHERE c.firstName = :firstName"),
-    @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
-    @NamedQuery(name = "Clubmember.findByEmail", query = "SELECT c FROM Clubmember c WHERE c.email = :email"),
-    @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
-    @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup")})
+        @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c"),
+        @NamedQuery(name = "Clubmember.findById", query = "SELECT c FROM Clubmember c WHERE c.id = :id"),
+        @NamedQuery(name = "Clubmember.findByFirstName", query = "SELECT c FROM Clubmember c WHERE c.firstName = :firstName"),
+        @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
+        @NamedQuery(name = "Clubmember.findByEmail", query = "SELECT c FROM Clubmember c WHERE c.email = :email"),
+        @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
+        @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup"),
+        @NamedQuery(name = "Clubmember.findByToken", query = "SELECT c FROM Clubmember c WHERE c.token = :token"),
+        @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId")
+})
+
+
 @XmlRootElement
 public class Clubmember implements Serializable {
+
+    @Size(max = 200)
+    @Column(name = "token")
+    private String token;
+    @Size(max = 20)
+    @Column(name = "fbUserId")
+    private String fbUserId;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -76,8 +87,8 @@ public class Clubmember implements Serializable {
     @Column(name = "ReservationGroup")
     private int reservationGroup;
     @JoinTable(name = "recommendation", joinColumns = {
-        @JoinColumn(name = "MemberID", referencedColumnName = "ID")}, inverseJoinColumns = {
-        @JoinColumn(name = "RecommendedMemberID", referencedColumnName = "ID")})
+            @JoinColumn(name = "MemberID", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "RecommendedMemberID", referencedColumnName = "ID")})
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Clubmember> clubmemberList;
     @ManyToMany(mappedBy = "clubmemberList", fetch = FetchType.EAGER)
@@ -233,5 +244,21 @@ public class Clubmember implements Serializable {
     public String toString() {
         return "Entities.Clubmember[ id=" + id + " ]";
     }
-    
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getFbUserId() {
+        return fbUserId;
+    }
+
+    public void setFbUserId(String fbUserId) {
+        this.fbUserId = fbUserId;
+    }
+
 }

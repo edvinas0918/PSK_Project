@@ -1,4 +1,3 @@
-
 /// <reference path="../typings/angular.d.ts" />
 
 module SummerHouses {
@@ -42,6 +41,6 @@ module SummerHouses {
 
     var Application = new Application_PreLoad();
     angular.module("housesApp").run(['$route', function($route)  {
-        $route.reload();
+        //$route.reload();
     }]);
 }
