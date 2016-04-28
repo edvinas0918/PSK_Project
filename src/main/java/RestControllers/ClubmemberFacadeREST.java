@@ -64,11 +64,11 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Path("grantPoints")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response grantPoints(PointsGrant grant){
-        Clubmember member = clubMemberService.getMember(grant.memberID);
+        Clubmember member = clubMemberService.getMember(grant.getMemberID());
         if (member == null){
             return Response.status(Response.Status.NOT_FOUND).entity("Member not found").build();
         }
-        clubMemberService.grantPoints(member, grant.points);
+        clubMemberService.grantPoints(member, grant.getPoints());
         // TODO: send email
 
         return Response.status(Response.Status.OK).build();

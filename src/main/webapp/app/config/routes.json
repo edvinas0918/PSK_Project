@@ -22,7 +22,9 @@
       "url": "/members/:memberID/pointsGrant",
       "config": {
         "templateUrl": "app/modules/members/templates/pointsGrant.html",
-        "controller": "pointsGrantController"
+        "controller": "pointsGrantController",
+        "layout": "member",
+        "allowedRoles": ["Admin", "Member"]
       }
     },
     {
