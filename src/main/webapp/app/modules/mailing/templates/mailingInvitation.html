@@ -13,12 +13,12 @@
                                     <div class="col-md-12">
                                         <div ng-repeat="x in emailAddresses track by $index">
                                             <div class="input-group">
-                                                <input type="email" class="form-control"  value="{{x}}" required>
+                                                <input type="email" class="form-control" ng-model="x" ng-value="{{x.value}}" ng-required="!$last || emailAddresses.length == 1">
                                                 <span class="input-group-btn" ng-show="$last">
-                                                    <button class="btn btn-success" ng-click="addEmailAddresses()">Add</button>
+                                                    <button type="button" class="btn btn-success" ng-click="addEmailAddresses(x, $index)">Add</button>
                                                 </span>
                                                 <span class="input-group-btn" ng-show="!$last">
-                                                    <button class="btn btn-danger" ng-click="removeEmailAddresses(x)">Remove</button>
+                                                    <button type="button" class="btn btn-danger" ng-click="removeEmailAddresses($index)">Remove</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -40,8 +40,17 @@
                         </div>
                 </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary pull-left">Send invitation</button>
+                <button type="submit" class="btn btn-primary pull-left" id="load"
+                        data-loading-text="<i class='fa fa-spinner fa-spin'></i> Sending email...">Send invitation</button>
                 <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+            </div>
+            <div class="alert alert-success fade in" ng-show="isSuccesful">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Success!</strong> Your message has been sent successfully.
+            </div>
+            <div class="alert alert-danger fade in" ng-show="isError">
+                <a href="" class="close" data-dismiss="alert">&times;</a>
+                <strong>Error!</strong> A problem has been occurred while sending your email.
             </div>
         </div>
     </form>

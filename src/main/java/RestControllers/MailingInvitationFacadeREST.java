@@ -11,21 +11,34 @@ import javax.ws.rs.core.MediaType;
  */
 
 @Stateless
-@Path("invitation")
+@Path("mailing")
 public class MailingInvitationFacadeREST {
+
 
      public MailingInvitationFacadeREST() {}
 
     @POST
-    @Path("emails")
+    @Path("invitation")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void sendMessage(String[] recipients) {
+    public void sendInvitationMessage(String [] emails, String user) throws Exception {
         EmailService emailService = new EmailService();
-        try {
-            emailService.sendHtmlEmail(recipients, "Test", "Test");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        emailService.sendInvitationEmail(emails, user);
+    }
+
+    @POST
+    @Path("reccomendation")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void sendReccomendationMessage(String [] emails, String user, String link) throws Exception {
+        EmailService emailService = new EmailService();
+        emailService.sendReccomendationEmail(emails, user, link);
+    }
+
+    @POST
+    @Path("pointsReceived")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void sendPointsReceivedMessage(String [] emails, Integer points, String reason) throws Exception {
+        EmailService emailService = new EmailService();
+        emailService.sendPointsReceivedEmail(emails, points, reason);
     }
 
 }

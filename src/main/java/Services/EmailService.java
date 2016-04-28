@@ -9,6 +9,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -47,7 +48,7 @@ public class EmailService {
         }
     }
 
-   public void sendHtmlEmail(String toAddresses[], String subject, String message)
+   private void sendHtmlEmail(String toAddresses[], String subject, String message)
            throws Exception {
 
         // sets SMTP server properties
@@ -67,17 +68,21 @@ public class EmailService {
         Session session = Session.getDefaultInstance(properties, auth);
 
        for(String toAddress : toAddresses) {
+           if(toAddress.isEmpty()){
+               continue;
+           }
            // creates a new e-mail message
            Message msg = new MimeMessage(session);
 
            msg.setFrom(new InternetAddress(userName));
            InternetAddress[] toAddressesSend = {new InternetAddress(toAddress)};
            msg.setRecipients(Message.RecipientType.TO, toAddressesSend);
-           msg.setSubject(subject);
+           msg.setSubject(MimeUtility.encodeText(subject, "utf-8", "B"));
            msg.setSentDate(new Date());
 
+
            // set plain text message
-           msg.setContent(message, "text/html");
+           msg.setContent(message, "text/html; charset=UTF-8");
 
            // sends the e-mail
            Transport.send(msg);
@@ -98,25 +103,40 @@ public class EmailService {
         return writer.toString();
     }
 
-    public void sendTest() {
-
-        // outgoing message information
-        String mailTo [] = {"tavo.pastas@gmail.com", "tavo.pastas@gmail.com"};
-        String subject = "Naujo nario rekomendacija";
-        String newMember = "Labanoras Draugas";
+    public void sendInvitationEmail(String [] mailTo, String user) throws Exception {
+        String subject = "Kvietimas prisijungti prie „Labanoro draugų“";
 
         // message contains HTML markups
-        String message = "Sveikas,";
-        message += "<br/><br/>";
-        message += String.format("Naujas kandidatas <i> %s </i> laukia tavo patvirtinimo!", newMember);
-        message += "<br/><br/>";
-        message += "<a href = \"http://localhost:8080/#/friends\"><button>Patvirtinti</button></a>";;
+        String message = "Sveiki,<br>";
+        message += String.format("<i>%s</i> Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti <a href=\"http://localhost:8080\">mūsų puslapyje</a>.", user);
+        message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        try {
-            EmailService emailService = new EmailService();
-            emailService.sendHtmlEmail(mailTo, subject, message);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        sendHtmlEmail(mailTo, subject, message);
     }
+
+    public void sendPointsReceivedEmail(String [] mailTo, Integer pointsReceived, String reason) throws Exception {
+        String subject = "Taškai už nuopelnus";
+
+        if (reason == null || reason == "")
+            reason = "Nenurodyta";
+
+        // message contains HTML markups
+        String message = "Sveiki,<br>";
+        message += String.format(" Jums skirta <i>%d</i> taškų. <br>Priežastis: %s", pointsReceived, reason);
+        message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
+
+        sendHtmlEmail(mailTo, subject, message);
+    }
+
+    public void sendReccomendationEmail(String [] mailTo, String user, String link) throws Exception {
+        String subject = "Naujo nario rekomendacija";
+
+        // message contains HTML markups
+        String message = "Sveiki,<br>";
+        message += String.format("Naujas kandidatas <i> %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"%s\">mūsų puslapyje</a>.", user, link);
+        message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
+
+        sendHtmlEmail(mailTo, subject, message);
+    }
+
 }

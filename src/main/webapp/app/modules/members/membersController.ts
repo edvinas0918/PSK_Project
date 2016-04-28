@@ -12,6 +12,7 @@ module SummerHouses.members {
             '$uibModal',
             '$http'
         ];
+        
 
         constructor(
             private $rootScope:any,

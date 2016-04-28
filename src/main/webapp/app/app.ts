@@ -13,6 +13,7 @@ module SummerHouses {
 
         private static that:Application_PreLoad;
 
+        
         constructor() {
             console.log("Application PreLoad!");
 
