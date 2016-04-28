@@ -15,7 +15,7 @@
         "templateUrl": "app/modules/members/templates/memberEdit.html",
         "controller": "memberEditController",
         "layout": "admin",
-        "allowedRoles": ["Member"]
+        "allowedRoles": ["Member", "Admin"]
       }
     },
     {
