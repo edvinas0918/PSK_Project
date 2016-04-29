@@ -1,13 +1,13 @@
-<button class="btn btn-success pull-right" ng-click="openInvitationForm()">Invite a friend!</button>
+<button class="btn btn-success pull-right" ng-if="isAdminPage" ng-click="openInvitationForm()">Pakviesk draugą!</button>
 
 <table class="table">
     <thead>
     <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Points</th>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>El. paštas</th>
+        <th>Statusas</th>
+        <th>Taškai</th>
         <th></th>
     </tr>
     </thead>
@@ -19,9 +19,9 @@
         <td>{{x.memberStatus.name}}</td>
         <td>{{x.points}}</td>
         <td>
-            <a class="btn btn-default" ng-href="#/members/{{x.id}}">Edit</a>
-            <button class="btn btn-danger" ng-click="deleteMember(x)">Delete</button>
-            <a class="btn btn-info" ng-href="#/members/{{x.id}}/pointsGrant">Grant points</a>
+            <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
+            <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
+            <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/members/{{x.id}}/pointsGrant">Suteikti taškų</a>
         </td>
     </tr>
     </tbody>

@@ -34,7 +34,10 @@ module SummerHouses {
             LoginController.that.authService.requestUserAccessToken(redirectUrl, code)
                 .then(function (token) {
                     if (token) {
-                        LoginController.that.authService.$window.location.href = "http://localhost:8080/#/houses";
+                        LoginController.that.authService.$window.location.href =
+                            LoginController.that.authService.user.memberStatus.name.toLowerCase() === "admin"
+                            ? "http://localhost:8080/#/admin/houses"
+                            : "http://localhost:8080/#/houses"
                     }
                 }, function (error) {
                     console.log("authentication failed");

@@ -11,20 +11,26 @@ module SummerHouses.members {
             '$rootScope',
             '$scope',
             '$routeParams',
-            '$http'
+            '$http',
+            'sh-authentication-service'
         ];
-        private scope: any;
-        private httpService: any;
 
         constructor(
             private $rootScope:any,
             private $scope: any,
             private $routeParams: any,
-            private $http: any
+            private $http: any,
+            private authService: any
         ) {
             this.$scope.editing = false;
-            this.$scope.editable = true;
+            this.$scope.editable = false;
             this.$scope.newMember = false;
+
+            this.authService.getUser().then((user) => {
+                this.$scope.editable = user.id == this.$routeParams.memberID;
+            }, (error) => {
+                this.$scope.newMember = true;
+            });
 
             this.$scope.formFields = {
                 firstName: false,
@@ -53,15 +59,6 @@ module SummerHouses.members {
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
-            }
-
-            this.$scope.saveFormSettings = () => {
-                _.forEach(this.$scope.originalFieldOptions, (field: MemberFormField) => {
-                    field.visible = this.$scope.formFields[field.fieldName];
-                });
-                this.$http.put('rest/memberFormField', this.$scope.originalFieldOptions).success(() => {
-                    this.showSuccessMessage();
-                });
             }
         }
 

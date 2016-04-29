@@ -1,12 +1,30 @@
 {
   "routes": [
     {
-      "url": "/members",
+      "url": "/admin/members",
       "config": {
         "templateUrl": "app/modules/members/templates/members.html",
         "controller": "membersController",
         "layout": "admin",
+        "allowedRoles": ["Admin"]
+      }
+    },
+    {
+      "url": "/members",
+      "config": {
+        "templateUrl": "app/modules/members/templates/members.html",
+        "controller": "membersController",
+        "layout": "member",
         "allowedRoles": ["Admin", "Member"]
+      }
+    },
+    {
+      "url": "/admin/members/:memberID",
+      "config": {
+        "templateUrl": "app/modules/members/templates/memberEdit.html",
+        "controller": "memberEditController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     },
     {
@@ -14,17 +32,17 @@
       "config": {
         "templateUrl": "app/modules/members/templates/memberEdit.html",
         "controller": "memberEditController",
-        "layout": "admin",
+        "layout": "member",
         "allowedRoles": ["Member", "Admin"]
       }
     },
     {
-      "url": "/members/:memberID/pointsGrant",
+      "url": "/admin/members/:memberID/pointsGrant",
       "config": {
         "templateUrl": "app/modules/members/templates/pointsGrant.html",
         "controller": "pointsGrantController",
-        "layout": "member",
-        "allowedRoles": ["Admin", "Member"]
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     },
     {
@@ -35,6 +53,16 @@
         "controller": "summerHousesController",
         "layout": "member",
         "allowedRoles": ["Admin", "Member"]
+      }
+    },
+    {
+      "url": "/admin/houses",
+      "config": {
+        "name": "houses",
+        "templateUrl": "app/modules/houses/templates/houses.html",
+        "controller": "summerHousesController",
+        "layout": "admin",
+        "allowedRoles": ["Admin"]
       }
     },
     {
@@ -73,7 +101,7 @@
       }
     },
     {
-      "url": "/settings",
+      "url": "/admin/settings",
       "config": {
         "templateUrl": "app/modules/settings/templates/settings.html",
         "controller": "settingsController",
@@ -82,7 +110,7 @@
       }
     },
     {
-      "url": "/settings/edit",
+      "url": "/admin/settings/edit",
       "config": {
         "templateUrl": "app/modules/settings/templates/settingsEdit.html",
         "controller": "settingsEditController",

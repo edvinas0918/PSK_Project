@@ -1,24 +1,74 @@
-<h2>Nustatymai</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Pavadinimas</th>
-        <th>Reikšmė</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Maksimalus narių skaičius</td>
-        <td>{{settings[0].value}}</td>
-    </tr>
-    <tr>
-        <td>Minimalus rekomendacijų kiekis naujam nariui</td>
-        <td>{{settings[1].value}}</td>
-    </tr>
-    <tr>
-        <td>Rezervacijos atšaukimas leidžiamas likus dienoms</td>
-        <td>{{settings[2].value}}</td>
-    </tr>
-    </tbody>
-</table>
-<a class="btn btn-info" ng-href="#/settings/edit">Redaguoti</a>
+<div class="container">
+    <div class="alert alert-success" ng-if="showAlert">
+        <strong>Patvirtinta!</strong> Pakeitimai išsaugoti
+    </div>
+    <form >
+        <h2>Nustatymai</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Reikšmė</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Maksimalus narių skaičius</td>
+                <td ng-if="!editing">{{settings[0].value}}</td>
+                <td ng-if="editing">
+                    <input min="0" class="form-control" type="text"
+                           ng-model="settings[0].value" ng-value={{settings[0].value}} ng-required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Minimalus rekomendacijų kiekis naujam nariui</td>
+                <td ng-if="!editing">{{settings[1].value}}</td>
+                <td ng-if="editing">
+                    <input min="0" class="form-control" type="text" ng-if="editing"
+                           ng-model="settings[1].value" ng-value="settings[1].value" ng-required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>Rezervacijos atšaukimas leidžiamas likus dienoms</td>
+                <td ng-if="!editing">{{settings[2].value}}</td>
+                <td ng-if="editing">
+                    <input min="0" class="form-control" type="text"
+                           ng-model="settings[2].value" ng-required="true">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-horizontal">
+            <h4>Pasirinkite laukus, kurie bus matomi klubo nario anketoje</h4>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="formFields.firstName"> Vardas
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="formFields.lastName"> Pavardė
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="formFields.email"> El. paštas
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="formFields.status"> Statusas
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="formFields.points"> Taškai
+                </label>
+            </div>
+            <br />
+        </div>
+        <button class="btn btn-info" ng-if="!editing" ng-click="startEditing()">Redaguoti</button>
+        <button class="btn btn-success" ng-if="editing" ng-click="saveSettings()">Išsaugoti</button>
+    </form>
+</div>
