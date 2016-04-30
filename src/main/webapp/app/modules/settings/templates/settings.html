@@ -36,6 +36,14 @@
                            ng-model="settings[2].value" ng-required="true">
                 </td>
             </tr>
+            <tr>
+                <td>Metinis nario mokestis</td>
+                <td ng-if="!editing">{{settings[3].value}}</td>
+                <td ng-if="editing">
+                    <input min="0" class="form-control" type="text"
+                           ng-model="settings[3].value" ng-required="true">
+                </td>
+            </tr>
             </tbody>
         </table>
 
