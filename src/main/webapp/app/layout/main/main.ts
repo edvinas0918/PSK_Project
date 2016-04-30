@@ -19,6 +19,7 @@ module SummerHouses {
 
             MainController.that.authService.getUser().then((user:AuthenticationService.IUser) => {
                 this.$scope.fullName = user.firstName + " " + user.lastName;
+                this.$scope.userID = user.id;
             }, (error) => {
                 this.$scope.fullName = "shittyMittyAnonymous";
             });
