@@ -1,5 +1,6 @@
 <div class="container">
-    <h2>Nario informacija</h2>
+    <h2 ng-if="!editable">Nario informacija</h2>
+    <h2 ng-if="editable">Jūsų informacija</h2>
     <div class="alert alert-success" ng-if="showAlert">
         <strong>Patvirtinta!</strong> Pakeitimai išsaugoti
     </div>
@@ -36,7 +37,7 @@
         </div>
         <div class="form-group" ng-if="editable">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" ng-click="editForm()">Edit</button>
+                <button type="submit" class="btn btn-primary" ng-click="editForm()">Redaguoti</button>
             </div>
         </div>
 
