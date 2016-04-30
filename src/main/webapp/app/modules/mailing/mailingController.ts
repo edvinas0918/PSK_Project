@@ -42,13 +42,13 @@ module SummerHouses.mailing {
             this.$scope.addEmailAddresses = (email: string, index: number) => {
                 this.$scope.emailAddresses[index] = email;
                 this.$scope.emailAddresses.push("");
-            }
+            };
 
             this.$scope.removeEmailAddresses = (index: number) => {
                if (index > -1) {
                     this.$scope.emailAddresses.splice(index, 1);
                 }
-            }
+            };
 
             this.$scope.sendMessage = (emailAddresses: string[]) => {
                 var btn =$("#load").button('loading');

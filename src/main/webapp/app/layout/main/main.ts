@@ -25,6 +25,19 @@ module SummerHouses {
             });
 
         }
+
+        sidebarToggleClick() {
+            var classes = ['sidebar-collapse', 'sidebar-open'];
+            var item = $(".sidebar-mini");
+            
+            for (var i in classes) {
+                if (item.hasClass(classes[i])) {
+                    item.removeClass(classes[i]);
+                } else {
+                    item.addClass(classes[i]);
+                }
+            }
+        }
     }
 
     angular.module("housesApp").controller("main", MainController);

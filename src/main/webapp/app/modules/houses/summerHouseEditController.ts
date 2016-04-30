@@ -6,6 +6,8 @@ module SummerHouses.houses {
 
     class SummerHouseEditController {
 
+        static that: SummerHouseEditController;
+
         static $inject = [
             '$rootScope',
             '$scope',
@@ -25,6 +27,8 @@ module SummerHouses.houses {
             private $route: any,
             private $location: any
         ) {
+            SummerHouseEditController.that = this;
+
             this.scope = $scope;
             this.httpService = $http;
             this.getHouse($routeParams.houseID);
@@ -37,19 +41,19 @@ module SummerHouses.houses {
                 }
                 if (!house.id) {
                     $scope.houseWithNumberExists = false;
-                    for (let existingHouse of this.$scope.summerhouses) {
+                    for (let existingHouse of SummerHouseEditController.that.$scope.summerhouses) {
                         if(existingHouse.number == house.number && existingHouse.id) {
                             $scope.houseWithNumberExists = true;
                             return;
                         }
                     }
                     if(!$scope.houseWithNumberExists) {
-                        this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
+                        SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
                             $location.path("/houses");
                         });
                     }
                 } else {
-                    house.editMode = true
+                    house.editMode = true;
                     this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
                         $location.path("/houses");
                     });
@@ -60,22 +64,22 @@ module SummerHouses.houses {
         }
 
         getTaxes(): void{
-            this.$http.get('/rest/entities.tax').success((taxes: Tax[], status) => {
-                this.$scope.taxes = taxes;
+            SummerHouseEditController.that.$http.get('/rest/entities.tax').success((taxes: Tax[], status) => {
+                SummerHouseEditController.that.$scope.taxes = taxes;
             });
         }
 
         getHouse(houseID: string): void{
             if (houseID != "0") {
-                this.httpService.get('/rest/summerhouse/' + houseID).success((house: SummerHouse, status) => {
-                    this.scope.house = house;
+                SummerHouseEditController.that.httpService.get('/rest/summerhouse/' + houseID).success((house: SummerHouse, status) => {
+                    SummerHouseEditController.that.scope.house = house;
                 });
             }
         }
 
         getSummerHouses(): void{
-            this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
-                this.$scope.summerhouses = summerhouses;
+            SummerHouseEditController.that.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
+                SummerHouseEditController.that.$scope.summerhouses = summerhouses;
             });
         }
 

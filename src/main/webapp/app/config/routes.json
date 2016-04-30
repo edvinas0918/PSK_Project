@@ -66,11 +66,11 @@
       }
     },
     {
-      "url": "/houses/:houseID",
+      "url": "/admin/houses/:houseID",
       "config": {
         "templateUrl": "app/modules/houses/templates/editHouse.html",
         "controller": "summerHouseEditController",
-        "layout": "member",
+        "layout": "admin",
         "allowedRoles": ["Admin"]
       }
     },
