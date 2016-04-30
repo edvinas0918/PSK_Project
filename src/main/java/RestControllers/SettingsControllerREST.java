@@ -5,6 +5,7 @@ import Entities.Settings;
 import Entities.Tax;
 import Services.SettingsService;
 import Services.TaxService;
+import models.SettingsDto;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -33,16 +34,22 @@ public class SettingsControllerREST{
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Settings> findAll() {
-        List<Settings> settings = settingsService.getSettings();
+    public List<SettingsDto> getSettingsDto() {
+        List<SettingsDto> settings = settingsService.getSettingsDto();
+        settings.add(taxService.getSettingsDto());
         return settings;
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    public void edit(List<Settings> settings) {
-        for(Settings item : settings){
-            settingsService.editSettings(item);
+    public void saveSettings(List<SettingsDto> settingsDto) {
+        for(SettingsDto item : settingsDto){
+            if(item.getType().endsWith("Tax")){
+                taxService.editTax(item);
+            }
+            if(item.getType().endsWith("Settings")){
+                settingsService.editSettings(item);
+            }
         }
     }
 }

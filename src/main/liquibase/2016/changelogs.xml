@@ -234,4 +234,9 @@
             ADD COLUMN fbUserId VARCHAR(20);
         </sql>
     </changeSet>
+    <changeSet id="010" author="Gintautas">
+        <sql>
+            ALTER TABLE tax MODIFY Price INTEGER;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
