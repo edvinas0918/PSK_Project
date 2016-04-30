@@ -2,7 +2,8 @@ package RestControllers;
 
 import Services.EmailService;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -10,10 +11,12 @@ import javax.ws.rs.core.MediaType;
  * Created by Aurimas on 2016-04-23.
  */
 
-@Stateless
+@Stateful
 @Path("mailing")
 public class MailingInvitationFacadeREST {
 
+    @Inject
+    private EmailService emailService;
 
      public MailingInvitationFacadeREST() {}
 
@@ -21,7 +24,6 @@ public class MailingInvitationFacadeREST {
     @Path("invitation")
     @Consumes({MediaType.APPLICATION_JSON})
     public void sendInvitationMessage(String [] emails, String user) throws Exception {
-        EmailService emailService = new EmailService();
         emailService.sendInvitationEmail(emails, user);
     }
 
@@ -29,7 +31,6 @@ public class MailingInvitationFacadeREST {
     @Path("reccomendation")
     @Consumes({MediaType.APPLICATION_JSON})
     public void sendReccomendationMessage(String [] emails, String user, String link) throws Exception {
-        EmailService emailService = new EmailService();
         emailService.sendReccomendationEmail(emails, user, link);
     }
 
@@ -37,7 +38,6 @@ public class MailingInvitationFacadeREST {
     @Path("pointsReceived")
     @Consumes({MediaType.APPLICATION_JSON})
     public void sendPointsReceivedMessage(String [] emails, Integer points, String reason) throws Exception {
-        EmailService emailService = new EmailService();
         emailService.sendPointsReceivedEmail(emails, points, reason);
     }
 

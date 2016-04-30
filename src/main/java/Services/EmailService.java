@@ -6,6 +6,7 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
+import javax.ejb.Stateful;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -21,6 +22,7 @@ import java.util.Properties;
  * Created by Aurimas on 2016-04-19.
  */
 
+@Stateful
 public class EmailService {
 
     private String host;

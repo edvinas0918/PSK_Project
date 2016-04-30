@@ -7,6 +7,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Services.ClubMemberService;
+import Services.EmailService;
 import com.sun.deploy.net.HttpResponse;
 import models.PointsGrant;
 
@@ -41,6 +42,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Inject
     private ClubMemberService clubMemberService;
 
+    @Inject
+    private EmailService emailService;
+
     public ClubmemberFacadeREST() {
         super(Clubmember.class);
     }
@@ -69,7 +73,11 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
             return Response.status(Response.Status.NOT_FOUND).entity("Member not found").build();
         }
         clubMemberService.grantPoints(member, grant.getPoints());
-        // TODO: send email
+        try{
+            emailService.sendPointsReceivedEmail(new String[] {member.getEmail()}, grant.getPoints(), grant.getDescription());
+        } catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email sending has failed").build();
+        }
 
         return Response.status(Response.Status.OK).build();
     }
