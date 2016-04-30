@@ -2,7 +2,7 @@ package RestControllers;
 
 import Services.EmailService;
 
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
  * Created by Aurimas on 2016-04-23.
  */
 
-@Stateful
+@Stateless
 @Path("mailing")
 public class MailingInvitationFacadeREST {
 

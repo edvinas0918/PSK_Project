@@ -35,6 +35,7 @@ module SummerHouses {
                 .then(function (token) {
                     if (token) {
                         LoginController.that.authService.$window.location.href =
+                            LoginController.that.authService.user &&
                             LoginController.that.authService.user.memberStatus.name.toLowerCase() === "admin"
                             ? "http://localhost:8080/#/admin/houses"
                             : "http://localhost:8080/#/houses"
