@@ -2,11 +2,12 @@
 
 module SummerHouses.authentication {
     export interface IAuthenticationService {
-        requestUserAccessToken(redirectUrl:string, code:string):ng.IPromise<any>;
+        requestUserAccessToken(redirectUrl?:string, code?:string):ng.IPromise<any>;
         isLoggedIn():boolean;
         logout():void;
         reissueToken():ng.IPromise<any>;
         getUser():ng.IPromise<IUser>;
+        getCachedUser(): IUser;
     }
 
     export interface IUser {
@@ -15,9 +16,9 @@ module SummerHouses.authentication {
         email:string;
         memberStatus:any;
         points:number;
-        reservationGroup: number;
+        reservationGroup:number;
         accessToken:string;
-        token: string;
+        token:string;
     }
 
     export class AuthenticationService implements IAuthenticationService {
@@ -41,14 +42,16 @@ module SummerHouses.authentication {
                     private $http:ng.IHttpService,
                     private $window:ng.IWindowService,
                     private $location:ng.ILocationService,
-                    private $rootScope: ng.IRootScopeService,
+                    private $rootScope:ng.IRootScopeService,
                     private $routeParams:any,
                     private $sessionStorage:any) {
             AuthenticationService.that = this;
             AuthenticationService.that.userToken = AuthenticationService.that.$sessionStorage.get("AuthorizationToken");
+
+            this.$rootScope.$on('$routeChangeError', this.onRouteChangeError);
         }
 
-        public requestUserAccessToken(redirectUrl:string, code:string):ng.IPromise<any> {
+        public requestUserAccessToken(redirectUrl?:string, code?:string):ng.IPromise<any> {
 
             if (AuthenticationService.that.userToken) {
                 console.log("Provided cached token within current loaded session...", AuthenticationService.that);
@@ -63,7 +66,7 @@ module SummerHouses.authentication {
             if (code) {
                 params.url += '?code=' + code;
             } else {
-                params.url += '?redirectUrl=' + redirectUrl;
+                params.url += '?redirectUrl=http://localhost:8080/';// + redirectUrl;
             }
 
             return AuthenticationService.that.$http(params)
@@ -135,13 +138,14 @@ module SummerHouses.authentication {
             }
 
         }
+        
+        public getCachedUser(): IUser {
+            return AuthenticationService.that.user;
+        }
 
-        private getCodeFromUrl(url:string):string {
-            if (url.indexOf('?code=') != -1) {
-                return url.substring(url.indexOf('?code=') + 6, url.indexOf('#/') || url.length);
-            }
-
-            return null;
+        onRouteChangeError(event, next, previous, rejection) {
+            AuthenticationService.that.$rootScope.lastError = rejection;
+            AuthenticationService.that.$location.path("/error");
         }
     }
 

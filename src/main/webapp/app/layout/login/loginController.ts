@@ -18,31 +18,10 @@ module SummerHouses {
             private $route: any
         ) {
             LoginController.that=this;
-
-            var url = this.$location.absUrl();
-            var code = this.authService.getCodeFromUrl(url);
-
-            if (code) {
-                this.FBLogIn(code);
-            }
         }
         
-        public FBLogIn(code?: string) {
-
-            var redirectUrl = LoginController.that.$location.absUrl();
-            
-            LoginController.that.authService.requestUserAccessToken(redirectUrl, code)
-                .then(function (token) {
-                    if (token) {
-                        LoginController.that.authService.$window.location.href =
-                            LoginController.that.authService.user &&
-                            LoginController.that.authService.user.memberStatus.name.toLowerCase() === "admin"
-                            ? "http://localhost:8080/#/admin/houses"
-                            : "http://localhost:8080/#/houses"
-                    }
-                }, function (error) {
-                    console.log("authentication failed");
-                });
+        public FBLogIn() {
+            LoginController.that.authService.requestUserAccessToken();
         }
     }
 
