@@ -239,4 +239,22 @@
             ALTER TABLE tax MODIFY Price INTEGER;
         </sql>
     </changeSet>
+    <changeSet author="Dziugas" id="dz001">
+        <sql>
+            CREATE TABLE MoneyOperationLogEntry(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                member INTEGER NOT NULL,
+                memberFirstName VARCHAR (30),
+                memberLastName VARCHAR (30),
+                memberStatus INTEGER,
+                operationTime DATETIME,
+                invokedMethod VARCHAR(60),
+                CONSTRAINT FOREIGN KEY FK_MoneyOperationLogEntry_member (member)
+                    REFERENCES ClubMember(ID),
+                CONSTRAINT FOREIGN KEY FK_MoneyOperationLogEntry_memberStatus (memberStatus)
+                    REFERENCES MemberStatus(ID),
+                CONSTRAINT PRIMARY KEY PK_MoneyOperationLogEntry (ID)
+            );
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -8,7 +8,6 @@ package RestControllers;
 import Entities.Clubmember;
 import Services.ClubMemberService;
 import Services.EmailService;
-import com.sun.deploy.net.HttpResponse;
 import models.PointsGrant;
 
 import java.util.List;
