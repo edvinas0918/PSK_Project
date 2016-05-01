@@ -43,7 +43,7 @@ module SummerHouses.mailing {
             });
 
             this.$scope.mailing = {
-                currentUser: "asdas",
+                currentUser: "AS",
                 emailAddresses: []
             }
 
