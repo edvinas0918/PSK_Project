@@ -1,6 +1,7 @@
 package Services;
 
 import Entities.Clubmember;
+import Interceptors.Audit;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,6 +21,7 @@ public class ClubMemberService {
         return em.find(Clubmember.class, id);
     }
 
+    @Audit
     public void grantPoints(Clubmember member, Integer points){
         if (points > 0){
             member.setPoints(member.getPoints() + points);
