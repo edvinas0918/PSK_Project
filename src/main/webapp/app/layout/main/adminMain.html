@@ -11,16 +11,16 @@
 <div class="wrapper hold-transition skin-blue sidebar-mini">
     <header class="main-header">
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="#/houses" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><b>SH</b></span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg"><b>Labanoro draugai</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
-            <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <a class="sidebar-toggle" data-toggle="offcanvas" role="button" ng-click="vm.sidebarToggleClick()">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -31,7 +31,8 @@
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span class="hidden-xs">{{fullName}}</span>
+                            <span class="">{{fullName}}</span>
+                            <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu" style="width:203px;">
                             <!-- Menu Footer-->

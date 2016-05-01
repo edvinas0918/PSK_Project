@@ -3,7 +3,7 @@
         <h2>Summerhouses</h2>
     </div>
     <div class="col-md-1" style="margin-top: 20px;">
-        <a class="btn btn-primary" ng-href="#/houses/0">Add new</a>
+        <a class="btn btn-primary" ng-href="#/admin/houses/0">Add new</a>
         <!--<button type="button" ng-click="addEmptyHouse()" class="form-control btn btn-primary">Add new</button>-->
     </div>
 </div>
@@ -23,7 +23,7 @@
                     <h4><small>Availability period:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
                     <h4><small>Payment type:</small> {{x.taxID.taxTypeID.name}}</h4>
                     <p>{{x.description}}</p>
-                    <a class="btn btn-info" ng-href="#/houses/{{x.id}}">Edit</a>
+                    <a class="btn btn-info" ng-href="#/admin/houses/{{x.id}}">Edit</a>
                     <button class="btn btn-danger" ng-click="deleteHouse(x)">Delete</button>
                 </div>
             </div>
