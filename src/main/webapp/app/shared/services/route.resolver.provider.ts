@@ -24,8 +24,24 @@ module SummerHouses.shared {
                                   $rootScope:any,
                                   $route:any,
                                   $location:ng.ILocationService,
-                                  authService:SummerHouses.authentication.AuthenticationService) => {
-                var deferred = $q.defer();
+                                  authService:SummerHouses.authentication.AuthenticationService):ng.IPromise<any> => {
+
+                if ($location.path() == "/login" && authService.getCachedUser() != null) {
+                    RouteResolverProvider.that.redirectDefault($location, authService);
+                }
+
+                var url = $location.absUrl();
+                var code = RouteResolverProvider.that.getCodeFromUrl(url);
+
+                if (code) {
+                    return authService.requestUserAccessToken("http://localhost:8080", code)
+                        .then(function (token) {
+                            RouteResolverProvider.that.redirectDefault($location, authService);
+                            return $q.when(true);
+                        }, function (error) {
+                            return $q.reject(error);
+                        });
+                }
 
                 var routeDefinition = $route.current;
 
@@ -40,24 +56,21 @@ module SummerHouses.shared {
                     authenticationPromise = this.authHandler($q, authService);
                 }
 
-                $q.when(authenticationPromise).then(function (userInfo:IUser) {
+                return $q.when(authenticationPromise).then(function (userInfo:IUser) {
                     //check for roles
                     if (userInfo) {
                         var userRole = userInfo.memberStatus.name;
                         if (routeDefinition.allowedRoles.indexOf(userRole) == -1) {
-                            deferred.reject({reason: "permission denied"});
+                            return $q.reject({errorMessage: "Permission denied!"});
                         } else {
-                            deferred.resolve(userInfo);
+                            return $q.when(true);
                         }
                     } else {
-                        deferred.resolve(true);
+                        return $q.when(true);
                     }
                 }, function (error) {
                     $location.path('/login');
-                    deferred.reject(error);
                 });
-
-                return deferred.promise;
             };
 
             this.defaultRouteResolver = [
@@ -73,8 +86,36 @@ module SummerHouses.shared {
         private authHandler = ($q:ng.IQService,
                                authService:SummerHouses.authentication.IAuthenticationService):ng.IPromise<any> => {
 
-            return (authService.isLoggedIn()) ? authService.getUser() : $q.reject({authenticated:false});
+            return (authService.isLoggedIn()) ? authService.getUser() : $q.reject({authenticated: false});
         };
+
+        private getCodeFromUrl(url:string):string {
+            if (url.indexOf('?code=') != -1) {
+                return url.substring(url.indexOf('?code=') + 6, url.indexOf('#/') || url.length);
+            }
+
+            return null;
+        }
+
+        private redirectDefault($location:ng.ILocationService,
+                         authService:SummerHouses.authentication.IAuthenticationService) {
+            authService.getUser().then(function (user) {
+                var redirectPath;
+                switch (user.memberStatus.name.toLowerCase()) {
+                    case "admin":
+                        redirectPath = "/admin/houses";
+                        break;
+                    case "member":
+                        redirectPath = "/houses";
+                        break;
+                    case "candidate":
+                        redirectPath = "/anketa";
+                }
+
+                authService.$window.location.href = 'http://localhost:8080/#' + redirectPath;
+                $location.path(redirectPath);
+            });
+        }
 
         public defaultRouteResolver:any;
 

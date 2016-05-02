@@ -6,7 +6,9 @@
         "templateUrl": "app/modules/members/templates/members.html",
         "controller": "membersController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -15,7 +17,10 @@
         "templateUrl": "app/modules/members/templates/members.html",
         "controller": "membersController",
         "layout": "member",
-        "allowedRoles": ["Admin", "Member"]
+        "allowedRoles": [
+          "Admin",
+          "Member"
+        ]
       }
     },
     {
@@ -24,7 +29,9 @@
         "templateUrl": "app/modules/members/templates/memberEdit.html",
         "controller": "memberEditController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -33,7 +40,10 @@
         "templateUrl": "app/modules/members/templates/memberEdit.html",
         "controller": "memberEditController",
         "layout": "member",
-        "allowedRoles": ["Member", "Admin"]
+        "allowedRoles": [
+          "Member",
+          "Admin"
+        ]
       }
     },
     {
@@ -42,7 +52,22 @@
         "templateUrl": "app/modules/members/templates/pointsGrant.html",
         "controller": "pointsGrantController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
+    },
+    {
+      "url": "/",
+      "config": {
+        "name": "houses",
+        "templateUrl": "app/modules/houses/templates/houses.html",
+        "controller": "summerHousesController",
+        "layout": "member",
+        "allowedRoles": [
+          "Admin",
+          "Member"
+        ]
       }
     },
     {
@@ -52,7 +77,10 @@
         "templateUrl": "app/modules/houses/templates/houses.html",
         "controller": "summerHousesController",
         "layout": "member",
-        "allowedRoles": ["Admin", "Member"]
+        "allowedRoles": [
+          "Admin",
+          "Member"
+        ]
       }
     },
     {
@@ -62,7 +90,9 @@
         "templateUrl": "app/modules/houses/templates/houses.html",
         "controller": "summerHousesController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -71,7 +101,9 @@
         "templateUrl": "app/modules/houses/templates/editHouse.html",
         "controller": "summerHouseEditController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -80,7 +112,11 @@
         "templateUrl": "app/layout/error/error.html",
         "controller": "errorController",
         "layout": "member",
-        "allowedRoles": ["Admin", "Member", "Candidate"]
+        "allowedRoles": [
+          "Admin",
+          "Member",
+          "Candidate"
+        ]
       }
     },
     {
@@ -88,16 +124,23 @@
       "config": {
         "templateUrl": "app/layout/login/login.html",
         "layout": "candidate",
-        "allowedRoles": ["Admin", "Member", "Candidate"]
+        "allowedRoles": [
+          "Admin",
+          "Member",
+          "Candidate"
+        ]
       }
-    }
-  ,
+    },
     {
       "url": "/logout",
       "config": {
         "template": "",
         "controller": "logoutController",
-        "allowedRoles": ["Admin", "Member", "Candidate"]
+        "allowedRoles": [
+          "Admin",
+          "Member",
+          "Candidate"
+        ]
       }
     },
     {
@@ -106,7 +149,9 @@
         "templateUrl": "app/modules/settings/templates/settings.html",
         "controller": "settingsController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -115,7 +160,9 @@
         "templateUrl": "app/modules/settings/templates/settingsEdit.html",
         "controller": "settingsEditController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     },
     {
@@ -124,7 +171,9 @@
         "templateUrl": "app/modules/payments/templates/payments.html",
         "controller": "paymentsController",
         "layout": "admin",
-        "allowedRoles": ["Admin"]
+        "allowedRoles": [
+          "Admin"
+        ]
       }
     }
   ]
