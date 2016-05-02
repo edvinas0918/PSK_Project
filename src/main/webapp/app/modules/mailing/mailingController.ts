@@ -5,12 +5,15 @@
 module SummerHouses.mailing {
 
     import IAuthenticationService = SummerHouses.authentication.IAuthenticationService;
+    
     class MailingController {
 
         private isSuccesful: boolean;
         private isError: boolean;
-        private mailing: Mailing;
-        private user: any;
+        private user: string;
+        private emailAddresses: string [];
+
+        static that:MailingController;
 
         static $inject = [
             '$rootScope',
@@ -32,40 +35,41 @@ module SummerHouses.mailing {
             private $http: any,
             private authService: IAuthenticationService
         ) {
+            MailingController.that = this;
+
             this.scope = $scope;
             this.httpService = $http;
 
-            this.$scope.isSuccesful = false;
-            this.$scope.isError = false;
-            
-            this.authService.getUser().then((result) => {
-                this.$scope.user = result;
+            MailingController.that.authService.getUser().then((user:AuthenticationService.IUser) => {
+                this.$scope.user = user.firstName + " " + user.lastName;
+            }, function (error) {
+                this.$scope.user = "Anonimas";
             });
 
-            this.$scope.mailing = {
-                currentUser: "AS",
-                emailAddresses: []
-            }
-
-            this.$scope.mailing.emailAddresses.push("");
+            this.$scope.emailAddresses = [];
+            this.$scope.emailAddresses.push("");
+            this.$scope.isSuccesful = false;
+            this.$scope.isError = false;
 
             this.$scope.cancel = () => {
                 this.$uibModalInstance.dismiss('cancel');
             };
 
             this.$scope.addEmailAddresses = () => {
-                this.$scope.mailing.emailAddresses.push("");
+                this.$scope.emailAddresses.push("");
             }
 
             this.$scope.removeEmailAddresses = (email: string) => {
-                var index = this.$scope.mailing.emailAddresses.indexOf(email, 0);
+                var index = this.$scope.emailAddresses.indexOf(email, 0);
                if (index > -1) {
-                    this.$scope.mailing.emailAddresses.splice(index, 1);
+                    this.$scope.emailAddresses.splice(index, 1);
                 }
             }
 
-            this.$scope.sendMessage = (mailing: Mailing) => {
+            this.$scope.sendMessage = () => {
                 var btn =$("#load").button('loading');
+                this.$scope.emailAddresses.push("aurimas.repecka@gmail.com")
+                var mailing = new Mailing(this.$scope.user, this.$scope.emailAddresses);
                 this.$http.post('/rest/mailing/invitation', mailing ).success(() => {
                     btn.button('reset');
                     this.$scope.isSuccesful = true;

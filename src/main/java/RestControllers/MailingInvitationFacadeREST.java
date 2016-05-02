@@ -1,6 +1,7 @@
 package RestControllers;
 
 import Services.EmailService;
+import models.Mailing;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,8 +24,8 @@ public class MailingInvitationFacadeREST {
     @POST
     @Path("invitation")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void sendInvitationMessage(String [] emails, String user) throws Exception {
-        emailService.sendInvitationEmail(emails, user);
+    public void sendInvitationMessage(Mailing mailing) throws Exception {
+        emailService.sendInvitationEmail(mailing.getEmailAddresses(), mailing.getCurrentUser());
     }
 
     @POST

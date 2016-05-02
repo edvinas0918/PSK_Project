@@ -1,5 +1,5 @@
 <div class="showModal">
-    <form name="sentMessage" id="invitationForm" ng-submit="sendMessage(mailing.emailAddresses)">
+    <form name="sentMessage" id="invitationForm" ng-submit="sendMessage()">
         <div class="control-group">
             <div class="modal-header">
                 <button type="button" class="close" ng-click="cancel()">&times;</button>
@@ -11,7 +11,7 @@
                                 <label >El. pašto adresai:</label>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div ng-repeat="x in mailing.emailAddresses track by $index">
+                                        <div ng-repeat="x in emailAddresses track by $index">
                                             <div class="input-group">
                                                 <input type="email" class="form-control" ng-model="x.value" ng-required="!$last || mailing.emailAddresses.length == 1" >
                                                 <span class="input-group-btn" ng-show="$last">
@@ -35,7 +35,7 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Žinutė:</label>
-                                <textarea rows="6" cols="100" class="form-control" id="message" maxlength="999" style="resize:none" readonly>Sveiki,&#13;&#10;{{mailing.currentUser}} Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.&#13;&#10;&#13;&#10;Pagarbiai,&#13;&#10;„Labanoro draugų“ klubas</textarea>
+                                <textarea rows="6" cols="100" class="form-control" id="message" maxlength="999" style="resize:none" readonly>Sveiki,&#13;&#10;{{user}} Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.&#13;&#10;&#13;&#10;Pagarbiai,&#13;&#10;„Labanoro draugų“ klubas</textarea>
                             </div>
                         </div>
                 </div>
@@ -46,7 +46,7 @@
             </div>
             <div class="alert alert-success fade in" ng-show="isSuccesful">
                 <a href="" class="close" data-dismiss="alert">&times;</a>
-                <strong>Pavyko!</strong> Jūsu pakvietimas išsiųstas sėkmingai.
+                <strong>Patvirtinta!</strong> Jūsu pakvietimas išsiųstas sėkmingai.
             </div>
             <div class="alert alert-danger fade in" ng-show="isError">
                 <a href="" class="close" data-dismiss="alert">&times;</a>

@@ -5,10 +5,11 @@ module SummerHouses.mailing {
         public currentUser: string;
         public emailAddresses: string [];
 
-        constructor(){
-            this.currentUser = "";
-            this.emailAddresses = [];
+        constructor(currentUser: string, emailAddresses : string []){
+            this.currentUser = currentUser;
+            this.emailAddresses = emailAddresses;
         }
+
     }
 
 }
