@@ -51,6 +51,10 @@ module SummerHouses.mailing {
             this.$scope.isSuccesful = false;
             this.$scope.isError = false;
 
+            this.$scope.$on('$viewContentLoaded', () => {
+                this.$scope.$apply();
+            });
+
             this.$scope.cancel = () => {
                 this.$uibModalInstance.dismiss('cancel');
             };

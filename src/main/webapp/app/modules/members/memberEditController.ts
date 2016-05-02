@@ -12,6 +12,8 @@ module SummerHouses.members {
             '$scope',
             '$routeParams',
             '$http',
+            '$route',
+            '$window',
             'sh-authentication-service'
         ];
 
@@ -20,12 +22,16 @@ module SummerHouses.members {
             private $scope: any,
             private $routeParams: any,
             private $http: any,
+            private $route: any,
+            private $window: any,
             private authService: any
         ) {
             this.$scope.editing = false;
             this.$scope.editable = false;
             this.$scope.newMember = false;
 
+            this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
+            
             this.authService.getUser().then((user) => {
                 this.$scope.editable = user.id == this.$routeParams.memberID;
             }, (error) => {
@@ -59,6 +65,10 @@ module SummerHouses.members {
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
+            }
+
+            this.$scope.renewMembership = () => {
+                this.showSuccessMessage();
             }
         }
 

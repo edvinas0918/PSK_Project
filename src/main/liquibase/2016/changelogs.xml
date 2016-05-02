@@ -257,4 +257,10 @@
             );
         </sql>
     </changeSet>
+    <changeSet author="Aurimas" id="ar001">
+        <sql>
+            ALTER TABLE clubmember
+            ADD COLUMN membershipExpirationDate DATE;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

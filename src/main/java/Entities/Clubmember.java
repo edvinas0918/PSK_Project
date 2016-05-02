@@ -6,23 +6,9 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,7 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
         @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup"),
         @NamedQuery(name = "Clubmember.findByToken", query = "SELECT c FROM Clubmember c WHERE c.token = :token"),
-        @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId")
+        @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId"),
+        @NamedQuery(name = "Clubmember.findByMembershipExpirationDate", query = "SELECT c FROM Clubmember c WHERE c.membershipExpirationDate = :membershipExpirationDate")
 })
 
 
@@ -82,6 +69,11 @@ public class Clubmember implements Serializable {
     @NotNull
     @Column(name = "Points")
     private int points;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "membershipExpirationDate")
+    private Date membershipExpirationDate;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "ReservationGroup")
@@ -165,6 +157,14 @@ public class Clubmember implements Serializable {
 
     public void setReservationGroup(int reservationGroup) {
         this.reservationGroup = reservationGroup;
+    }
+
+    public Date getMembershipExpirationDate() {
+        return membershipExpirationDate;
+    }
+
+    public void setMembershipExpirationDate(Date membershipExpirationDate) {
+        this.membershipExpirationDate = membershipExpirationDate;
     }
 
     @XmlTransient

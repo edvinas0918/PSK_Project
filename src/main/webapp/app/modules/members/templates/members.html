@@ -8,7 +8,8 @@
         <th>El. paštas</th>
         <th>Statusas</th>
         <th>Taškai</th>
-        <th></th>
+        <th ng-if="isAdminPage">Narystės galiojimas</th>
+        <th ></th>
     </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
         <td>{{x.email}}</td>
         <td>{{x.memberStatus.name}}</td>
         <td>{{x.points}}</td>
+        <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td>
             <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
             <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
