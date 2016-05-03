@@ -30,6 +30,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Tax.findAll", query = "SELECT t FROM Tax t"),
     @NamedQuery(name = "Tax.findById", query = "SELECT t FROM Tax t WHERE t.id = :id"),
     @NamedQuery(name = "Tax.findByName", query = "SELECT t FROM Tax t WHERE t.name = :name"),
+    @NamedQuery(name = "Tax.findMemberTax", query = "SELECT t.price FROM Tax t WHERE t.name = \"Member Tax\""),
     @NamedQuery(name = "Tax.findByPrice", query = "SELECT t FROM Tax t WHERE t.price = :price")})
 public class Tax implements Serializable {
 

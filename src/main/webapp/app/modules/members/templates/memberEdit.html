@@ -4,6 +4,9 @@
     <div class="alert alert-success" ng-if="showAlert">
         <strong>Patvirtinta!</strong> Pakeitimai išsaugoti
     </div>
+    <div class="alert alert-error" ng-if="showAlertError">
+        <strong>Klaida!</strong> Nepakankamas taškų skaičius
+    </div>
     <form role="form" ng-if="!editing" class="form-horizontal">
         <div class="form-group" ng-if="formFields.firstName">
             <label class="control-label col-sm-2">Vardas:</label>
@@ -49,7 +52,7 @@
             </div>
             <div class="form-group" ng-if="editable">
             <div class="col-sm-10">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#confirm-delete">Pratęsti narystę</button>
+                <button type="button" class="btn btn-success" ng-click="collectMembershipData()" data-toggle="modal" data-target="#confirm-delete">Pratęsti narystę</button>
             </div>
         </div>
         </div>
@@ -92,7 +95,7 @@
                 <h4 class="modal-title">Narystės pratęsimas</h4>
             </div>
             <div class="modal-body">
-                <p>Už x taškų jūsų narystė bus pratęsta iki y datos.</p>
+                <p>Už {{memberTax}} taškų jūsų narystė bus pratęsta iki {{nextMembershipExpiration | date:'yyyy-MM-dd'}}.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>

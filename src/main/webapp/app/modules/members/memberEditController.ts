@@ -29,6 +29,8 @@ module SummerHouses.members {
             this.$scope.editing = false;
             this.$scope.editable = false;
             this.$scope.newMember = false;
+            this.$scope.memberTax = 0;
+            this.$scope.nextMembershipExpiration = null;
 
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             
@@ -68,7 +70,21 @@ module SummerHouses.members {
             }
 
             this.$scope.renewMembership = () => {
-                this.showSuccessMessage();
+                this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).success(() => {
+                    this.showSuccessMessage();
+                    this.$scope.$apply();
+                })
+                .error(() => {
+                    this.showErrorMessage();
+                });
+            }
+
+            this.$scope.collectMembershipData = () => {
+                this.$http.get('/rest/entities.tax/MemberTax').success((memberTax: number) => {
+                    this.$scope.memberTax = memberTax;
+                });
+                this.$scope.nextMembershipExpiration = new Date(this.$scope.member.membershipExpirationDate);
+                this.$scope.nextMembershipExpiration.setFullYear(this.$scope.nextMembershipExpiration.getFullYear() + 1)
             }
         }
 
@@ -100,6 +116,14 @@ module SummerHouses.members {
             }, 4000)
         }
 
+        showErrorMessage(): void{
+            this.$scope.showAlertError = true;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlertError = false;
+                })
+            }, 4000)
+        }
     }
 
     angular

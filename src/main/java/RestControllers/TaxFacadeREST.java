@@ -6,8 +6,12 @@
 package RestControllers;
 
 import Entities.Tax;
+import Entities.Taxtype;
+import Services.ClubMemberService;
+
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -81,6 +85,13 @@ public class TaxFacadeREST extends AbstractFacade<Tax> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+
+    @GET
+    @Path("MemberTax")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Integer getMemberTax() {
+        return (Integer)em.createNamedQuery("Tax.findMemberTax").getSingleResult();
     }
 
     @Override
