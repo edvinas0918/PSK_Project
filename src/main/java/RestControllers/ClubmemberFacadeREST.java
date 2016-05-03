@@ -142,6 +142,16 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         return String.valueOf(super.count());
     }
 
+    @PUT
+    @Path("renewMembership")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void renewMembership(Clubmember member) throws Exception {
+        //member.getMembershipExpirationDate().setYear(member.getMembershipExpirationDate().getYear() + 1);
+        //super.edit(member);
+        //TODO Update Points
+        //TODO Create Payment
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
