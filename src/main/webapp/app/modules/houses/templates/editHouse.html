@@ -1,58 +1,88 @@
 <div class="container">
-    <h2>Create/Edit house</h2>
+    <h2>Sukurti/keisti esamą vasarnamį</h2>
     <form role="form" name="houseForm" ng-submit="saveHouse(house)" class="form-horizontal" novalidate>
         <div class="form-group" ng-class="{ 'has-error' : houseWithNumberExists }">
-            <label class="control-label col-sm-2">Number:</label>
+            <label class="control-label col-sm-2">Numeris:</label>
             <div class="col-sm-10">
-                <input placeholder="Number" min="1" class="form-control" type="number" style="width: 100px;"
+                <input placeholder="Numeris" min="1" class="form-control" type="number" style="width: 150px;"
                        ng-model="house.number" name="numberInput" ng-required="true">
                 <p ng-show="houseWithNumberExists" class="help-block">House with the same number exists.</p>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Capacity:</label>
+            <label class="control-label col-sm-2">Vietų skaičius:</label>
             <div class="col-sm-10">
-                <input placeholder="Capacity" min="1" class="form-control" style="width: 100px;" type="number"
+                <input placeholder="Vietų skaičius" min="1" class="form-control" style="width: 150px;" type="number"
                        ng-model="house.capacity" name="capacityInput" ng-required="true">
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2">Tax type:</label>
+            <label class="control-label col-sm-2">Mokesčio tipas:</label>
             <div class="col-sm-10">
-                <select class="form-control" ng-model="house.taxID" ng-options="tax.taxTypeID.name for tax in taxes"
+                <select style="width: 30%;" class="form-control" ng-model="house.taxID"
+                        ng-options="tax.taxTypeID.name for tax in taxes"
                         ng-required="true">
                     <option value="">{{house.taxID.taxTypeID.name}}</option>
                 </select>
             </div>
         </div>
-        <div class="form-group" ng-class="{ 'has-error' : datesDoNotMatch || houseForm.beginPeriod.$invalid && !houseForm.beginPeriod.$pristine }">
-            <label class="control-label col-sm-2">Start of availability period:</label>
+        <div class="form-group"
+             ng-class="{ 'has-error' : datesDoNotMatch || houseForm.beginPeriod.$invalid && !houseForm.beginPeriod.$pristine }">
+            <label class="control-label col-sm-2">Rezervacijos laikotarpio pradžia:</label>
             <div class="col-sm-10">
-                <input class="form-control" style="width: 200px;" type="date" name="beginPeriod" ng-required="true" ng-model="house.beginPeriod" min="2016-01-01" max="2016-12-30"/>
-                <p ng-show="datesDoNotMatch" class="help-block">Must be before the end date</p>
+                <input class="form-control" style="width: 200px;" type="date" name="beginPeriod" ng-required="true"
+                       ng-model="house.beginPeriod" min="2016-01-01" max="2016-12-30"/>
+                <p ng-show="datesDoNotMatch" class="help-block">Pradžios data turi būti ankstesnė nei pabaigos</p>
             </div>
         </div>
-        <div class="form-group" ng-class="{ 'has-error' : datesDoNotMatch || houseForm.endPeriod.$invalid && !houseForm.endPeriod.$pristine }">
-            <label class="control-label col-sm-2">End of availability period:</label>
+        <div class="form-group"
+             ng-class="{ 'has-error' : datesDoNotMatch || houseForm.endPeriod.$invalid && !houseForm.endPeriod.$pristine }">
+            <label class="control-label col-sm-2">Rezervacijos laikotarpio pabaiga:</label>
             <div class="col-sm-10">
-                <input class="form-control" style="width: 200px;" type="date" name="endPeriod" ng-required="true" ng-model="house.endPeriod" min="2016-01-01" max="2016-12-30"/>
-                <p ng-show="datesDoNotMatch" class="help-block">Must be after the begin date</p>
+                <input class="form-control" style="width: 200px;" type="date" name="endPeriod" ng-required="true"
+                       ng-model="house.endPeriod" min="2016-01-01" max="2016-12-30"/>
+                <p ng-show="datesDoNotMatch" class="help-block">Pabaigos data turi būti vėlesnė nei pradžios</p>
             </div>
         </div>
         <div class="form-group"
              ng-class="{ 'has-error' : houseForm.descInput.$invalid && !houseForm.descInput.$pristine }">
-            <label class="control-label col-sm-2">Description:</label>
+            <label class="control-label col-sm-2">Aprašymas:</label>
             <div class="col-sm-10">
-                <textarea ng-minlength="5" ng-maxlength="500" name="descInput" placeholder="Summerhouse description"
-                          style="resize: vertical;" ng-model="house.description" class="form-control" rows="3"
+                <textarea ng-minlength="5" ng-maxlength="500" name="descInput" placeholder="Vasarnamio aprašymas"
+                          style="width: 90%;resize: vertical;" ng-model="house.description" class="form-control"
+                          rows="3"
                           ng-required="true"/>
-                <p ng-show="houseForm.descInput.$error.minlength" class="help-block">Description is too short.</p>
-                <p ng-show="houseForm.descInput.$error.maxlength" class="help-block">Description is too long.</p>
+                <p ng-show="houseForm.descInput.$error.minlength" class="help-block">Aprašymas per trumpas.</p>
+                <p ng-show="houseForm.descInput.$error.maxlength" class="help-block">Aprašymas per ilgas.</p>
             </div>
         </div>
-        <div class="col-md-4 text-center">
-            <a class="btn btn-default" href="#/admin/houses">Back</a>
-            <button type="submit" class="btn btn-primary" ng-disabled="houseForm.$invalid">Submit</button>
+        <div class="form-group">
+            <label class="control-label col-sm-2">Galimos paslaugos:</label>
+            <div class="col-sm-10">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Pavadinimas</th>
+                        <th>Kaina klubo taškais</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="service in additionalServices">
+                        <td>
+                            <input type="checkbox" ng-click="addService(service)" ng-checked="{{service.selected}}">{{service.name}}</input>
+                        </td>
+                        <td>{{service.priceInPoints}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <div class="col-sm-12" style="text-align: start;">
+            <button type="submit" class="btn btn-primary" ng-disabled="houseForm.$invalid">Išsaugoti pakeitimus
+            </button>
+        </div>
+        <!--<div class="col-sm-6" style="text-align: end;">-->
+        <!--<a style="margin-right: 15%;" class="btn btn-default" href="#/admin/houses">Grįžti</a>-->
+        <!--</div>-->
     </form>
 </div>

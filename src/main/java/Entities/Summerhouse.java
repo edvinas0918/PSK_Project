@@ -16,18 +16,18 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 /**
- *
  * @author Dziugas
  */
 @Entity
 @Table(name = "summerhouse")
 @NamedQueries({
-    @NamedQuery(name = "Summerhouse.findAll", query = "SELECT s FROM Summerhouse s"),
-    @NamedQuery(name = "Summerhouse.findById", query = "SELECT s FROM Summerhouse s WHERE s.id = :id"),
-    @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
-    @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
-    @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description")})
+        @NamedQuery(name = "Summerhouse.findAll", query = "SELECT s FROM Summerhouse s"),
+        @NamedQuery(name = "Summerhouse.findById", query = "SELECT s FROM Summerhouse s WHERE s.id = :id"),
+        @NamedQuery(name = "Summerhouse.findByNumber", query = "SELECT s FROM Summerhouse s WHERE s.number = :number"),
+        @NamedQuery(name = "Summerhouse.findByCapacity", query = "SELECT s FROM Summerhouse s WHERE s.capacity = :capacity"),
+        @NamedQuery(name = "Summerhouse.findByDescription", query = "SELECT s FROM Summerhouse s WHERE s.description = :description")})
 @XmlRootElement
 public class Summerhouse implements Serializable {
 
@@ -56,6 +56,13 @@ public class Summerhouse implements Serializable {
     private String description;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
+
+    @JoinTable(name = "summerhouse_services", joinColumns = {
+            @JoinColumn(name = "summerhouse_id")}, inverseJoinColumns = {
+            @JoinColumn(name = "service_id")})
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<AdditionalService> additionalServices;
+
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tax taxID;
@@ -71,6 +78,14 @@ public class Summerhouse implements Serializable {
         this.id = id;
         this.number = number;
         this.capacity = capacity;
+    }
+
+    public List<AdditionalService> getAdditionalServices() {
+        return additionalServices;
+    }
+
+    public void setAdditionalServices(List<AdditionalService> additionalServices) {
+        this.additionalServices = additionalServices;
     }
 
     public Integer getId() {
@@ -172,5 +187,5 @@ public class Summerhouse implements Serializable {
     public String toString() {
         return "Entities.Summerhouse[ id=" + id + " ]";
     }
-    
+
 }

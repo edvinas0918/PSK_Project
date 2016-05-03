@@ -263,4 +263,34 @@
             ADD COLUMN membershipExpirationDate DATE;
         </sql>
     </changeSet>
+    <changeSet id="min001" author="Mindaugas">
+        <createTable tableName="AdditionalService">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ADDITIONAL_SERVICE_PK" />
+            </column>
+            <column name="Name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Description" type="TEXT"></column>
+        </createTable>
+    </changeSet>
+    <changeSet id="min002" author="Mindaugas">
+        <addColumn tableName="AdditionalService">
+            <column name="PricePoints" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="min003" author="Mindaugas">
+        <sql>
+            CREATE TABLE Summerhouse_Services
+            (
+            summerhouse_id INT NOT NULL,
+            service_id INT NOT NULL,
+            PRIMARY KEY (summerhouse_id, service_id),
+            FOREIGN KEY (summerhouse_id) REFERENCES Summerhouse(id) ON UPDATE CASCADE,
+            FOREIGN KEY (service_id) REFERENCES AdditionalService(id) ON UPDATE CASCADE
+            );
+        </sql>
+    </changeSet>
 </databaseChangeLog>

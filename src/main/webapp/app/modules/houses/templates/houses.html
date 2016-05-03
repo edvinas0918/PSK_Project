@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-11">
-        <h2>Summerhouses</h2>
+        <h2>Vasarnamiai</h2>
     </div>
     <div class="col-md-1" style="margin-top: 20px;">
         <a class="btn btn-primary" ng-href="#/admin/houses/0">Add new</a>
@@ -18,13 +18,13 @@
                     </a>
                 </div>
                 <div class="col-md-6">
-                    <h3>Summerhouse no. {{x.number}}</h3>
-                    <h4><small>Capacity:</small> {{x.capacity}}</h4>
-                    <h4><small>Availability period:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
-                    <h4><small>Payment type:</small> {{x.taxID.taxTypeID.name}}</h4>
+                    <h3>Vasarnamis nr. {{x.number}}</h3>
+                    <h4><small>Vietų skaičius:</small> {{x.capacity}}</h4>
+                    <h4><small>Rezervacija galima:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
+                    <h4><small>Apmokėjimo tipas:</small> {{x.taxID.taxTypeID.name}}</h4>
                     <p>{{x.description}}</p>
-                    <a class="btn btn-info" ng-href="#/admin/houses/{{x.id}}">Edit</a>
-                    <button class="btn btn-danger" ng-click="deleteHouse(x)">Delete</button>
+                    <a class="btn btn-info" ng-href="#/admin/houses/{{x.id}}">Keisti</a>
+                    <button class="btn btn-danger" ng-click="deleteHouse(x)">Ištrinti</button>
                 </div>
             </div>
         </td>

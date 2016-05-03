@@ -5,19 +5,9 @@
  */
 package RestControllers;
 
-import Entities.Summerhouse;
-
-import java.util.Date;
+import Entities.AdditionalService;
 import java.util.List;
-import java.util.Map;
-
-import Helpers.Helpers;
-import com.owlike.genson.*;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -32,46 +22,30 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author Dziugas
+ * @author Mindaugas
  */
 @Stateless
-@Path("summerhouse")
-public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
-
-    @Inject
-    TaxFacadeREST taxFacadeREST;
+@Path("entities.additionalservice")
+public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalService> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public SummerhouseFacadeREST() {
-        super(Summerhouse.class);
+    public AdditionalServiceFacadeREST() {
+        super(AdditionalService.class);
     }
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Summerhouse entity) {
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(AdditionalService entity) {
         super.create(entity);
-    }
-
-    @POST
-    @Path("postHashMap")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void getHouse(Map<Object, Object> summerhouseMap) {
-        Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
-        if (summerhouseMap.containsKey("editMode")) {
-            edit(summerhouse.getId(), summerhouse);
-        } else {
-            create(summerhouse);
-        }
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Summerhouse entity) {
-
+    public void edit(@PathParam("id") Integer id, AdditionalService entity) {
         super.edit(entity);
     }
 
@@ -84,23 +58,21 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Summerhouse find(@PathParam("id") Integer id) {
-        Summerhouse summerhouse = super.find(id);
-        return summerhouse;
+    public AdditionalService find(@PathParam("id") Integer id) {
+        return super.find(id);
     }
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Summerhouse> findAll() {
-        List<Summerhouse> summerhouses = super.findAll();
-        return summerhouses;
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<AdditionalService> findAll() {
+        return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Summerhouse> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<AdditionalService> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

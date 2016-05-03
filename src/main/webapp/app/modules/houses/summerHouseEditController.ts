@@ -34,6 +34,10 @@ module SummerHouses.houses {
             this.getHouse($routeParams.houseID);
             this.getSummerHouses();
             this.getTaxes();
+            //this.getAdditionalServices();
+            this.$scope.addService = (service: AdditionalService) => {
+                SummerHouseEditController.that.scope.house.additionalServices.push(service);
+            }
             this.$scope.saveHouse = (house: SummerHouse) => {
                 if (house.beginPeriod > house.endPeriod) {
                     $scope.datesDoNotMatch = true;
@@ -69,10 +73,25 @@ module SummerHouses.houses {
             });
         }
 
+        getAdditionalServices(): void{
+            SummerHouseEditController.that.$http.get('/rest/entities.additionalservice').success((services: AdditionalService[], status) => {
+                var house = SummerHouseEditController.that.scope.house;
+                for (let service of services) {
+                    for (let houseService of house.additionalServices) {
+                        if (houseService.id == service.id) {
+                            service.selected = true;
+                        }
+                    }
+                }
+                SummerHouseEditController.that.$scope.additionalServices = services;
+            });
+        }
+
         getHouse(houseID: string): void{
             if (houseID != "0") {
                 SummerHouseEditController.that.httpService.get('/rest/summerhouse/' + houseID).success((house: SummerHouse, status) => {
                     SummerHouseEditController.that.scope.house = house;
+                    SummerHouseEditController.that.getAdditionalServices();
                 });
             }
         }
