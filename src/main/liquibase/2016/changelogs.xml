@@ -293,4 +293,12 @@
             );
         </sql>
     </changeSet>
+    <changeSet id="min004" author="Mindaugas">
+        <sql>
+            insert into additionalservice (id, name, description, pricepoints) values (1, "hitleris nepadare nieko blogo", "aaaaaa", "1939");
+            insert into additionalservice (id, name, description, pricepoints) values (2, "holokaustas yra melas", "aha;]", "69");
+            insert into additionalservice (id, name, description, pricepoints) values (3, "9/11 was an inside job", "ne", "112");
+            insert into additionalservice (id, name, description, pricepoints) values (4, "reaktyvinis kuras negali lydyti plieniniu siju", "ne", "112");
+        </sql>
+    </changeSet>
 </databaseChangeLog>
