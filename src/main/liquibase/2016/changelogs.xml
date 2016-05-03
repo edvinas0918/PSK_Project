@@ -301,4 +301,15 @@
             insert into additionalservice (id, name, description, pricepoints) values (4, "reaktyvinis kuras negali lydyti plieniniu siju", "ne", "112");
         </sql>
     </changeSet>
+    <changeSet id="min005" author="Mindaugas">
+        <addColumn tableName="AdditionalServiceReservation">
+            <column name="ServiceStart" type="DATE"/>
+            <column name="ServiceEnd" type="DATE"/>
+            <column name="AdditionalServiceID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="AdditionalServiceID" constraintName="ADD_SERVICE_RESERVATION_FK" referencedTableName="additionalservice"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
 </databaseChangeLog>
