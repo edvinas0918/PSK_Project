@@ -16,8 +16,10 @@ public class PaymentService {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public void confirmPayment(Payment payment) {
-        payment.setConfirmed(true);
-        em.merge(payment);
+    public void confirmPayment(Payment[] payments) {
+        for (Payment item: payments) {
+            Payment payment = em.find(Payment.class, item.getId());
+            payment.setConfirmed(true);
+        }
     }
 }

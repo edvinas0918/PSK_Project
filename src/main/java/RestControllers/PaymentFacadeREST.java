@@ -45,8 +45,8 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @PUT
     @Path("confirm")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void confirmPayment(Payment entity){
-        paymentService.confirmPayment(entity);
+    public void confirmPayment(Payment[] payments){
+        paymentService.confirmPayment(payments);
     }
 
     @DELETE

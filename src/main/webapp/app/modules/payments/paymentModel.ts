@@ -11,11 +11,13 @@ module SummerHouses.payments {
     export class Tax {
         public id:number;
         public name:string;
+        public price:number;
     }
 
     export class Member {
         public id:number;
         public firstName:string;
         public lastName:string;
+        public email:string;
     }
 }

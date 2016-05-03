@@ -155,18 +155,7 @@
       }
     },
     {
-      "url": "/admin/settings/edit",
-      "config": {
-        "templateUrl": "app/modules/settings/templates/settingsEdit.html",
-        "controller": "settingsEditController",
-        "layout": "admin",
-        "allowedRoles": [
-          "Admin"
-        ]
-      }
-    },
-    {
-      "url": "/payments",
+      "url": "/admin/payments",
       "config": {
         "templateUrl": "app/modules/payments/templates/payments.html",
         "controller": "paymentsController",

@@ -1,19 +1,32 @@
-<h2>Mokėjimai</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Mokėjimo data</th>
-        <th>Mokestis</th>
-        <th>Narys</th>
-        <th>Patvirtinimas</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="x in payments">
-        <td>{{x.paymentDate}}</td>
-        <td>{{x.taxID.name}}</td>
-        <td>{{x.memberID.firstName}}</td>
-        <td>{{isConfirmed(x)}}</td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div class="alert alert-success" ng-if="showAlert">
+        <strong>Mokėjimai patvirtinti!</strong>
+    </div>
+    <form >
+        <h2>Mokėjimai</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Mokėjimo data</th>
+                <th>Mokestis</th>
+                <th>Kaina</th>
+                <th>Narys</th>
+                <th>Patvirtinimas</th>
+                <th>Patvirtinti</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="x in payments">
+                <td>{{x.paymentDate}}</td>
+                <td>{{x.taxID.name}}</td>
+                <td>{{x.taxID.price}}</td>
+                <td>{{x.memberID.firstName + " " + x.memberID.lastName}}</td>
+                <td>{{isConfirmed(x)}}</td>
+                <td ng-if="!x.confirmed"><input type="checkbox" ng-click="toggleCheck(x)"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success" ng-click="confirmPayments()">Patvirtinti</button>
+    </form>
+</div>
+
