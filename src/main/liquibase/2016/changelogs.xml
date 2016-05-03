@@ -293,4 +293,30 @@
             );
         </sql>
     </changeSet>
+    <changeSet author="Dziugas" id="dz002">
+        <sql>
+            drop table Settings;
+            CREATE TABLE Settings(
+                ID INTEGER NOT NULL AUTO_INCREMENT,
+                Name VARCHAR(40) NOT NULL,
+                Value VARCHAR(40) NOT NULL,
+                ReferenceCode VARCHAR(40) NOT NULL,
+                CONSTRAINT PRIMARY KEY PK_Settings (ID)
+            );
+
+            INSERT INTO Settings (Name, Value, ReferenceCode)
+            VALUES ('Maximum members count', '100', 'membersMax'),
+                ('Minimal recommendations count', '2', 'recommendationsMin'),
+                ("Rezervacijos atšaukimas","7", 'reservationCancellationDeadline');
+        </sql>
+    </changeSet>
+    <changeSet author="Dziugas" id="dz003">
+        <sql>
+            ALTER TABLE Settings
+            ADD UNIQUE (ReferenceCode);
+
+            INSERT INTO Settings (Name, Value,ReferenceCode)
+            VALUES ("Rezervacijos grupių skaičius", '5', 'reservationGroupNumber');
+        </sql>
+    </changeSet>
 </databaseChangeLog>

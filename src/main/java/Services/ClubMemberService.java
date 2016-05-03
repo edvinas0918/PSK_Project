@@ -7,6 +7,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.List;
+
 import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 /**
@@ -19,6 +21,14 @@ public class ClubMemberService {
 
     public Clubmember getMember(Integer id){
         return em.find(Clubmember.class, id);
+    }
+
+    public List<Clubmember> getAllMembers() {
+        return em.createNamedQuery("Clubmember.findAll").getResultList();
+    }
+
+    public void updateMember(Clubmember member) {
+        em.merge(member);
     }
 
     @Audit
