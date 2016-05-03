@@ -28,10 +28,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "additionalservice")
 @NamedQueries({
-    @NamedQuery(name = "Additionalservice.findAll", query = "SELECT a FROM Additionalservice a"),
-    @NamedQuery(name = "Additionalservice.findById", query = "SELECT a FROM Additionalservice a WHERE a.id = :id"),
-    @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM Additionalservice a WHERE a.name = :name"),
-    @NamedQuery(name = "Additionalservice.findByPricePoints", query = "SELECT a FROM Additionalservice a WHERE a.pricePoints = :pricePoints")})
+    @NamedQuery(name = "Additionalservice.findAll", query = "SELECT a FROM AdditionalService a"),
+    @NamedQuery(name = "Additionalservice.findById", query = "SELECT a FROM AdditionalService a WHERE a.id = :id"),
+    @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name"),
+    @NamedQuery(name = "Additionalservice.findByPricePoints", query = "SELECT a FROM AdditionalService a WHERE a.pricePoints = :pricePoints")})
 public class AdditionalService implements Serializable {
 
     private static final long serialVersionUID = 1L;
