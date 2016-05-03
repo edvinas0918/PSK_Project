@@ -44,4 +44,10 @@ public class SettingsService {
         Settings settings = em.find(Settings.class, settingsDto.getId());
         settings.setValue(settingsDto.getValue());
     }
+
+    public Settings getSetting(String referenceCode){
+        return (Settings)em.createNamedQuery("Settings.findByReferenceCode")
+                .setParameter("referenceCode", referenceCode).getSingleResult();
+    }
+
 }

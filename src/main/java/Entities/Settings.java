@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Gintautas
+ * @author Dziugas
  */
 @Entity
 @Table(name = "settings")
@@ -28,7 +28,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Settings.findAll", query = "SELECT s FROM Settings s"),
     @NamedQuery(name = "Settings.findById", query = "SELECT s FROM Settings s WHERE s.id = :id"),
     @NamedQuery(name = "Settings.findByName", query = "SELECT s FROM Settings s WHERE s.name = :name"),
-    @NamedQuery(name = "Settings.findByValue", query = "SELECT s FROM Settings s WHERE s.value = :value")})
+    @NamedQuery(name = "Settings.findByValue", query = "SELECT s FROM Settings s WHERE s.value = :value"),
+    @NamedQuery(name = "Settings.findByReferenceCode", query = "SELECT s FROM Settings s WHERE s.referenceCode = :referenceCode")})
 public class Settings implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,6 +48,11 @@ public class Settings implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "Value")
     private String value;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 40)
+    @Column(name = "ReferenceCode")
+    private String referenceCode;
 
     public Settings() {
     }
@@ -55,10 +61,11 @@ public class Settings implements Serializable {
         this.id = id;
     }
 
-    public Settings(Integer id, String name, String value) {
+    public Settings(Integer id, String name, String value, String referenceCode) {
         this.id = id;
         this.name = name;
         this.value = value;
+        this.referenceCode = referenceCode;
     }
 
     public Integer getId() {
@@ -85,20 +92,32 @@ public class Settings implements Serializable {
         this.value = value;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public String getReferenceCode() {
+        return referenceCode;
+    }
 
-        Settings settings = (Settings) o;
-
-        return name.equals(settings.name);
-
+    public void setReferenceCode(String referenceCode) {
+        this.referenceCode = referenceCode;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Settings)) {
+            return false;
+        }
+        Settings other = (Settings) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
     @Override

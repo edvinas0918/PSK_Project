@@ -6,11 +6,18 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,12 +28,23 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Additionalservicereservation.findAll", query = "SELECT a FROM Additionalservicereservation a"),
     @NamedQuery(name = "Additionalservicereservation.findBySummerhouseReservationID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.summerhouseReservationID = :summerhouseReservationID"),
-    @NamedQuery(name = "Additionalservicereservation.findByTaxID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.taxID = :taxID")})
+    @NamedQuery(name = "Additionalservicereservation.findByTaxID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.taxID = :taxID"),
+    @NamedQuery(name = "Additionalservicereservation.findByServiceStart", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceStart = :serviceStart"),
+    @NamedQuery(name = "Additionalservicereservation.findByServiceEnd", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceEnd = :serviceEnd")})
 public class Additionalservicereservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AdditionalservicereservationPK additionalservicereservationPK;
+    @Column(name = "ServiceStart")
+    @Temporal(TemporalType.DATE)
+    private Date serviceStart;
+    @Column(name = "ServiceEnd")
+    @Temporal(TemporalType.DATE)
+    private Date serviceEnd;
+    @JoinColumn(name = "AdditionalServiceID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private AdditionalService additionalServiceID;
 
     public Additionalservicereservation() {
     }
@@ -45,6 +63,30 @@ public class Additionalservicereservation implements Serializable {
 
     public void setAdditionalservicereservationPK(AdditionalservicereservationPK additionalservicereservationPK) {
         this.additionalservicereservationPK = additionalservicereservationPK;
+    }
+
+    public Date getServiceStart() {
+        return serviceStart;
+    }
+
+    public void setServiceStart(Date serviceStart) {
+        this.serviceStart = serviceStart;
+    }
+
+    public Date getServiceEnd() {
+        return serviceEnd;
+    }
+
+    public void setServiceEnd(Date serviceEnd) {
+        this.serviceEnd = serviceEnd;
+    }
+
+    public AdditionalService getAdditionalServiceID() {
+        return additionalServiceID;
+    }
+
+    public void setAdditionalServiceID(AdditionalService additionalServiceID) {
+        this.additionalServiceID = additionalServiceID;
     }
 
     @Override

@@ -5,26 +5,33 @@
  */
 package Entities;
 
-import com.owlike.genson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Mindaugas
+ * @author Dziugas
  */
 @Entity
-@Table(name = "AdditionalService")
-@XmlRootElement
+@Table(name = "additionalservice")
 @NamedQueries({
-    @NamedQuery(name = "AdditionalService.findAll", query = "SELECT a FROM AdditionalService a"),
-    @NamedQuery(name = "AdditionalService.findById", query = "SELECT a FROM AdditionalService a WHERE a.id = :id"),
-    @NamedQuery(name = "AdditionalService.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name")})
+    @NamedQuery(name = "Additionalservice.findAll", query = "SELECT a FROM AdditionalService a"),
+    @NamedQuery(name = "Additionalservice.findById", query = "SELECT a FROM AdditionalService a WHERE a.id = :id"),
+    @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name"),
+    @NamedQuery(name = "Additionalservice.findByPricePoints", query = "SELECT a FROM AdditionalService a WHERE a.pricePoints = :pricePoints")})
 public class AdditionalService implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,19 +52,21 @@ public class AdditionalService implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "PricePoints")
-    private int priceInPoints;
+    private int pricePoints;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalServiceID", fetch = FetchType.EAGER)
+    private List<Additionalservicereservation> additionalservicereservationList;
 
     public AdditionalService() {
-
     }
 
     public AdditionalService(Integer id) {
         this.id = id;
     }
 
-    public AdditionalService(Integer id, String name) {
+    public AdditionalService(Integer id, String name, int pricePoints) {
         this.id = id;
         this.name = name;
+        this.pricePoints = pricePoints;
     }
 
     public Integer getId() {
@@ -84,12 +93,20 @@ public class AdditionalService implements Serializable {
         this.description = description;
     }
 
-    public int getPriceInPoints() {
-        return priceInPoints;
+    public int getPricePoints() {
+        return pricePoints;
     }
 
-    public void setPriceInPoints(int priceInPoints) {
-        this.priceInPoints = priceInPoints;
+    public void setPricePoints(int pricePoints) {
+        this.pricePoints = pricePoints;
+    }
+
+    public List<Additionalservicereservation> getAdditionalservicereservationList() {
+        return additionalservicereservationList;
+    }
+
+    public void setAdditionalservicereservationList(List<Additionalservicereservation> additionalservicereservationList) {
+        this.additionalservicereservationList = additionalservicereservationList;
     }
 
     @Override
@@ -114,7 +131,7 @@ public class AdditionalService implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.AdditionalService[ id=" + id + " ]";
+        return "Entities.Additionalservice[ id=" + id + " ]";
     }
     
 }
