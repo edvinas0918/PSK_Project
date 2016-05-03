@@ -58,9 +58,9 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @POST
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void getHouse(Map<Object, Object> summerhouseMap) {
+    public void handleHouse(Map<Object, Object> summerhouseMap) {
         Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
-        if (summerhouseMap.containsKey("editMode")) {
+        if (summerhouse.getId() != null) {
             edit(summerhouse.getId(), summerhouse);
         } else {
             create(summerhouse);
@@ -71,7 +71,6 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Summerhouse entity) {
-
         super.edit(entity);
     }
 
@@ -85,8 +84,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Summerhouse find(@PathParam("id") Integer id) {
-        Summerhouse summerhouse = super.find(id);
-        return summerhouse;
+        return super.find(id);
     }
 
     @GET
