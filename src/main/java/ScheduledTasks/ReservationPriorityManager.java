@@ -18,7 +18,7 @@ public class ReservationPriorityManager {
     @Inject
     SettingsService settingsService;
 
-    @Schedule(minute="*", hour="*")
+    @Schedule(month="1")
     public void reassignReservationPriorities(){
         int numberOfGroups = Integer.parseInt(settingsService.getSetting("reservationGroupNumber").getValue());
         priorityStrategy.formPriorityGroups(numberOfGroups);
