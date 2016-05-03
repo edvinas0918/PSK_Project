@@ -60,7 +60,7 @@ public class Summerhouse implements Serializable {
     @JoinTable(name = "summerhouse_services", joinColumns = {
             @JoinColumn(name = "summerhouse_id")}, inverseJoinColumns = {
             @JoinColumn(name = "service_id")})
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<AdditionalService> additionalServices;
 
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
