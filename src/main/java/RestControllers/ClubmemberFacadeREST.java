@@ -6,11 +6,16 @@
 package RestControllers;
 
 import Entities.Clubmember;
+import Entities.Payment;
+import Entities.Tax;
+import Helpers.MembershipException;
 import Services.ClubMemberService;
 import Services.EmailService;
 import models.PointsGrant;
 
+import java.util.Calendar;
 import java.util.List;
+import javax.ejb.ApplicationException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -32,6 +37,7 @@ import javax.ws.rs.core.Response;
  * @author Dziugas
  */
 @Stateless
+@ApplicationException
 @Path("clubmember")
 public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
@@ -145,11 +151,8 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @PUT
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void renewMembership(Clubmember member) throws Exception {
-        //member.getMembershipExpirationDate().setYear(member.getMembershipExpirationDate().getYear() + 1);
-        //super.edit(member);
-        //TODO Update Points
-        //TODO Create Payment
+    public void renewMembership(Clubmember member) throws MembershipException {
+        clubMemberService.renewMembership(member);
     }
 
     @Override

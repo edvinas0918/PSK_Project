@@ -70,11 +70,11 @@ module SummerHouses.members {
             }
 
             this.$scope.renewMembership = () => {
-                this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).success(() => {
+                this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).then(() => {
+                    this.getMember(this.$scope.member.id);
                     this.showSuccessMessage();
-                    this.$scope.$apply();
                 })
-                .error(() => {
+                .catch((error) => {
                     this.showErrorMessage();
                 });
             }
