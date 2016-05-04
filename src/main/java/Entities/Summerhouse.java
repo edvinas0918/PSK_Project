@@ -6,6 +6,7 @@
 package Entities;
 
 import Helpers.Helpers;
+import com.owlike.genson.annotation.JsonIgnore;
 import org.joda.time.MonthDay;
 
 import javax.persistence.*;
@@ -54,6 +55,9 @@ public class Summerhouse implements Serializable {
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
+    //@JsonIgnore
+    @Column(columnDefinition = "LONGTEXT", name="image")
+    private String image;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
 
@@ -78,6 +82,14 @@ public class Summerhouse implements Serializable {
         this.id = id;
         this.number = number;
         this.capacity = capacity;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<AdditionalService> getAdditionalServices() {

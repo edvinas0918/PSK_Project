@@ -6,18 +6,15 @@
 package RestControllers;
 
 import Entities.Clubmember;
-import Entities.Payment;
-import Entities.Tax;
-import Helpers.MembershipException;
+import Interceptors.Authentication;
 import Services.ClubMemberService;
 import Services.EmailService;
 import models.PointsGrant;
 
-import java.util.Calendar;
 import java.util.List;
-import javax.ejb.ApplicationException;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -29,6 +26,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -37,7 +36,6 @@ import javax.ws.rs.core.Response;
  * @author Dziugas
  */
 @Stateless
-@ApplicationException
 @Path("clubmember")
 public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
@@ -83,7 +81,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         } catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email sending has failed").build();
         }
-
         return Response.status(Response.Status.OK).build();
     }
 
@@ -128,9 +125,10 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     }
 
     @GET
-    @Override
+    //@Override
+    @Authentication
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Clubmember> findAll() {
+    public List<Clubmember> findAll(@Context HttpHeaders headers) {
         return super.findAll();
     }
 
@@ -151,8 +149,11 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @PUT
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void renewMembership(Clubmember member) throws MembershipException {
-        clubMemberService.renewMembership(member);
+    public void renewMembership(Clubmember member) throws Exception {
+        //member.getMembershipExpirationDate().setYear(member.getMembershipExpirationDate().getYear() + 1);
+        //super.edit(member);
+        //TODO Update Points
+        //TODO Create Payment
     }
 
     @Override

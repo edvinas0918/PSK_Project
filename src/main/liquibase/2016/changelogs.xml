@@ -338,10 +338,9 @@
         <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="AdditionalServiceID" constraintName="ADD_SERVICE_RESERVATION_FK" referencedTableName="additionalservice"
                                  referencedColumnNames="ID"/>
     </changeSet>
-    <changeSet id="ar002" author="Aurimas">
-        <sql>
-            ALTER TABLE Tax
-            ADD UNIQUE (Name);
-        </sql>
+    <changeSet id="min006" author="Mindaugas">
+        <addColumn tableName="summerhouse">
+            <column name="Image" type="LONGTEXT"></column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>
