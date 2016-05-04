@@ -55,18 +55,27 @@ module SummerHouses.houses {
                             return;
                         }
                     }
+                }
+                if($scope.houseImage){
+                    this.saveHouseWithImage(house);
+                } else {
                     SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
                         $location.path("/houses");
                     });
-
-                } else {
-                    this.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
-                        $location.path("/houses");
-                    });
                 }
-
             }
+        }
 
+        saveHouseWithImage(house: SummerHouse):void {
+            var file = SummerHouseEditController.that.$scope.houseImage;
+            var fr = new FileReader();
+            fr.readAsDataURL(file);
+            fr.onload = function () {
+                house.image = fr.result;
+                SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
+                    SummerHouseEditController.that.$location.path("/houses");
+                });
+            };
         }
 
         getTaxes():void {
@@ -80,6 +89,9 @@ module SummerHouses.houses {
                 var house = SummerHouseEditController.that.scope.house;
                 if (house) {
                     for (let service of services) {
+                        _.find(house.additionalServices, function (houseService) {
+                            return houseService.id == service.id;
+                        });
                         for (let houseService of house.additionalServices) {
                             if (houseService.id == service.id) {
                                 service.selected = true;
@@ -104,9 +116,27 @@ module SummerHouses.houses {
             });
         }
 
+
+    }
+
+    function fileParse($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function () {
+                    scope.$apply(function () {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
     }
 
     angular
         .module('housesApp')
-        .controller('summerHouseEditController', SummerHouseEditController);
+        .controller('summerHouseEditController', SummerHouseEditController)
+        .directive('fileModel', fileParse);
 }
