@@ -129,7 +129,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Authentication
     @Produces({MediaType.APPLICATION_JSON})
     public List<Clubmember> findAll(@Context HttpHeaders headers) {
-        headers.return super.findAll();
+        return super.findAll();
     }
 
     @GET
