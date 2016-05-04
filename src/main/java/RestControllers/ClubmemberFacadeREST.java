@@ -7,6 +7,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Interceptors.Authentication;
+import Interceptors.Secured;
 import Services.ClubMemberService;
 import Services.EmailService;
 import models.PointsGrant;
@@ -126,7 +127,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @GET
     //@Override
-    @Authentication
     @Produces({MediaType.APPLICATION_JSON})
     public List<Clubmember> findAll(@Context HttpHeaders headers) {
         return super.findAll();
