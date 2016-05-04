@@ -91,7 +91,7 @@ public class TaxFacadeREST extends AbstractFacade<Tax> {
     @Path("MemberTax")
     @Produces(MediaType.TEXT_PLAIN)
     public Integer getMemberTax() {
-        return (Integer)em.createNamedQuery("Tax.findMemberTax").getSingleResult();
+        return ((Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult()).getPrice();
     }
 
     @Override

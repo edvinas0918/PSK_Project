@@ -150,10 +150,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
     public void renewMembership(Clubmember member) throws Exception {
-        //member.getMembershipExpirationDate().setYear(member.getMembershipExpirationDate().getYear() + 1);
-        //super.edit(member);
-        //TODO Update Points
-        //TODO Create Payment
+        clubMemberService.renewMembership(member);
     }
 
     @Override

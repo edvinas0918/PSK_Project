@@ -343,4 +343,10 @@
             <column name="Image" type="LONGTEXT"></column>
         </addColumn>
     </changeSet>
+    <changeSet id="ar002" author="Aurimas">
+        <sql>
+            ALTER TABLE Tax
+            ADD UNIQUE (Name);
+        </sql>
+    </changeSet>
 </databaseChangeLog>
