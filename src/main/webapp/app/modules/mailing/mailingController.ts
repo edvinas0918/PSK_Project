@@ -5,7 +5,14 @@
 module SummerHouses.mailing {
 
     import IAuthenticationService = SummerHouses.authentication.IAuthenticationService;
-    
+
+    class EmailAddress {
+        public value: string;
+        constructor(value: string){
+            this.value = value;
+        }
+    }
+
     class MailingController {
 
         private isSuccesful: boolean;
@@ -47,7 +54,7 @@ module SummerHouses.mailing {
             });
 
             this.$scope.emailAddresses = [];
-            this.$scope.emailAddresses.push("");
+            this.$scope.emailAddresses.push(new EmailAddress(''));
             this.$scope.isSuccesful = false;
             this.$scope.isError = false;
 
@@ -60,14 +67,12 @@ module SummerHouses.mailing {
             };
 
             this.$scope.addEmailAddresses = () => {
-                this.$scope.emailAddresses.push("");
+                this.$scope.emailAddresses.push(new EmailAddress(""));
             }
 
-            this.$scope.removeEmailAddresses = (email: string) => {
-                var index = this.$scope.emailAddresses.indexOf(email, 0);
-               if (index > -1) {
-                    this.$scope.emailAddresses.splice(index, 1);
-                }
+            this.$scope.removeEmailAddresses = (email: EmailAddress) => {
+                _.pull(this.$scope.emailAddresses, email);
+
             }
 
             this.$scope.sendMessage = () => {

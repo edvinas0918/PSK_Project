@@ -6,6 +6,7 @@
 package RestControllers;
 
 import Entities.Clubmember;
+import Helpers.MembershipException;
 import Interceptors.Authentication;
 import Services.ClubMemberService;
 import Services.EmailService;
@@ -149,8 +150,15 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @PUT
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void renewMembership(Clubmember member) throws Exception {
-        clubMemberService.renewMembership(member);
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response renewMembership(Clubmember member) {
+        try{
+            clubMemberService.renewMembership(member);
+        } catch(MembershipException exc){
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        return Response.status(Response.Status.OK).build();
+
     }
 
     @Override

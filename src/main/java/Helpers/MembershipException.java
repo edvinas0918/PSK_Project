@@ -6,8 +6,7 @@ import javax.ejb.ApplicationException;
  * Created by Aurimas on 2016-05-04.
  */
 
-@ApplicationException
-public class MembershipException extends RuntimeException  implements IApplicationException {
+public class MembershipException extends Exception{
 
     public MembershipException(String message) {
         super(message);

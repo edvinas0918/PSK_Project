@@ -31,6 +31,7 @@ module SummerHouses.members {
             this.$scope.newMember = false;
             this.$scope.memberTax = 0;
             this.$scope.nextMembershipExpiration = null;
+            this.$scope.errorMessage = '';
 
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             
@@ -75,7 +76,14 @@ module SummerHouses.members {
                     this.showSuccessMessage();
                 })
                 .catch((error) => {
-                    this.showErrorMessage();
+                    switch (error.status){
+                        case 406:
+                            this.showErrorMessage("Nepakankamas taškų skaičius");
+                            break;
+                        case 500:
+                            this.showErrorMessage("Sistemos klaida");
+                            break;
+                    }
                 });
             }
 
@@ -116,7 +124,8 @@ module SummerHouses.members {
             }, 4000)
         }
 
-        showErrorMessage(): void{
+        showErrorMessage(message: string): void{
+            this.$scope.errorMessage = message;
             this.$scope.showAlertError = true;
             setTimeout(() => {
                 this.$scope.$apply(() => {

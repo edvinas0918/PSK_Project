@@ -5,7 +5,7 @@
         <strong>Patvirtinta!</strong> Pakeitimai išsaugoti
     </div>
     <div class="alert alert-error" ng-if="showAlertError">
-        <strong>Klaida!</strong> Nepakankamas taškų skaičius
+        <strong>Klaida!</strong> {{errorMessage}}
     </div>
     <form role="form" ng-if="!editing" class="form-horizontal">
         <div class="form-group" ng-if="formFields.firstName">
