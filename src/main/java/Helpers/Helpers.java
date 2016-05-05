@@ -6,10 +6,10 @@ import org.joda.time.DateTime;
 import org.joda.time.MonthDay;
 import org.joda.time.format.DateTimeFormat;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Mindaugas on 23/04/16.
@@ -27,12 +27,6 @@ public class Helpers {
         return instance;
     }
 
-    public static MonthDay monthDayFromDate(Date date){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return new MonthDay(calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-    }
-
 
     public static Summerhouse getSummerhouseWithDates(Map<Object, Object> summerhouseMap){
         Date endPeriod = parseDateFromKey(summerhouseMap, "endPeriod");
@@ -47,17 +41,17 @@ public class Helpers {
     private static Date parseDateFromKey(Map<Object, Object> summerhouseMap, String key) {
         if(summerhouseMap.containsKey(key)) {
             String beginPeriod1 = (String)summerhouseMap.get(key);
-            String[] parts = beginPeriod1.split("T");
-            DateTime dateTime = DateTime.parse(parts[0],DateTimeFormat.forPattern("yyyy-MM-dd"));
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date date = null;
+            try {
+                date = format.parse(beginPeriod1);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             summerhouseMap.remove(key);
-            return dateTime.toDate();
+            return date;
         }
         return null;
-    }
-
-    public static Date dateFromMonthDay(MonthDay monthDay) {
-        Date date = new GregorianCalendar(0, monthDay.getMonthOfYear(), monthDay.getDayOfMonth()).getTime();
-        return date;
     }
 
 }

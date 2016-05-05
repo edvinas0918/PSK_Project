@@ -56,6 +56,8 @@ module SummerHouses.houses {
                         }
                     }
                 }
+                house.endPeriod = this.createDateAsUTC(house.endPeriod);
+                house.beginPeriod = this.createDateAsUTC(house.beginPeriod);
                 if($scope.houseImage){
                     this.saveHouseWithImage(house);
                 } else {
@@ -65,6 +67,11 @@ module SummerHouses.houses {
                 }
             }
         }
+
+        createDateAsUTC(date: Date):Date {
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+        }
+
 
         saveHouseWithImage(house: SummerHouse):void {
             var file = SummerHouseEditController.that.$scope.houseImage;
@@ -105,6 +112,8 @@ module SummerHouses.houses {
 
         getHouse(houseID:string):void {
             SummerHouseEditController.that.httpService.get('/rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
+                house.endPeriod = new Date(house.endPeriod);
+                house.beginPeriod = new Date(house.beginPeriod);
                 SummerHouseEditController.that.scope.house = house;
                 SummerHouseEditController.that.getAdditionalServices();
             });

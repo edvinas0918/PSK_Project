@@ -6,6 +6,7 @@
 package Entities;
 
 import Helpers.Helpers;
+import com.owlike.genson.annotation.JsonDateFormat;
 import com.owlike.genson.annotation.JsonIgnore;
 import org.joda.time.MonthDay;
 
@@ -15,6 +16,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -55,7 +58,6 @@ public class Summerhouse implements Serializable {
     @Size(max = 500)
     @Column(name = "Description")
     private String description;
-    //@JsonIgnore
     @Column(columnDefinition = "LONGTEXT", name="image")
     private String image;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
@@ -116,15 +118,6 @@ public class Summerhouse implements Serializable {
         this.number = number;
     }
 
-    public String getBeginPeriod() {
-        MonthDay monthDay = Helpers.monthDayFromDate(beginPeriod);
-        return monthDay.monthOfYear().getAsText() + " " + String.valueOf(monthDay.dayOfMonth().get());
-    }
-
-//    public void setBeginPeriod(MonthDay beginPeriod) {
-//        this.beginPeriod = Helpers.dateFromMonthDay(beginPeriod);
-//    }
-
     public void setBeginPeriod(Date beginPeriod) {
         this.beginPeriod = beginPeriod;
     }
@@ -133,14 +126,15 @@ public class Summerhouse implements Serializable {
         this.endPeriod = endPeriod;
     }
 
-    public String getEndPeriod() {
-        MonthDay monthDay = Helpers.monthDayFromDate(endPeriod);
-        return monthDay.monthOfYear().getAsText() + " " + String.valueOf(monthDay.dayOfMonth().get());
+    public String getBeginPeriod() {
+        DateFormat df = new SimpleDateFormat("yyyy MM dd");
+        return df.format(beginPeriod);
     }
 
-//    public void setEndPeriod(MonthDay endPeriod) {
-//        this.endPeriod = Helpers.dateFromMonthDay(endPeriod);
-//    }
+    public String getEndPeriod() {
+        DateFormat df = new SimpleDateFormat("yyyy MM dd");
+        return df.format(endPeriod);
+    }
 
     public int getCapacity() {
         return capacity;
