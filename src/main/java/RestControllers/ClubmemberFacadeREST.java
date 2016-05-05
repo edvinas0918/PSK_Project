@@ -7,6 +7,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Interceptors.Authentication;
+import Interceptors.Secured;
 import Services.ClubMemberService;
 import Services.EmailService;
 import models.PointsGrant;
@@ -126,7 +127,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @GET
     //@Override
-    @Authentication
     @Produces({MediaType.APPLICATION_JSON})
     public List<Clubmember> findAll(@Context HttpHeaders headers) {
         return super.findAll();
@@ -150,10 +150,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
     public void renewMembership(Clubmember member) throws Exception {
-        //member.getMembershipExpirationDate().setYear(member.getMembershipExpirationDate().getYear() + 1);
-        //super.edit(member);
-        //TODO Update Points
-        //TODO Create Payment
+        clubMemberService.renewMembership(member);
     }
 
     @Override
