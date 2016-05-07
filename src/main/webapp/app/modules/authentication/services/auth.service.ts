@@ -5,6 +5,7 @@ module SummerHouses.authentication {
         requestUserAccessToken(redirectUrl?:string, code?:string):ng.IPromise<any>;
         isLoggedIn():boolean;
         logout():void;
+        getCachedToken(): string;
         reissueToken():ng.IPromise<any>;
         getUser():ng.IPromise<IUser>;
         getCachedUser(): IUser;
@@ -112,7 +113,7 @@ module SummerHouses.authentication {
             return AuthenticationService.that.$q.when(true);
         }
 
-        public getToken():string {
+        public getCachedToken():string {
             return AuthenticationService.that.userToken;
         }
 

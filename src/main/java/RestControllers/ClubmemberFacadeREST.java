@@ -127,9 +127,10 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     }
 
     @GET
-    //@Override
+    @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Clubmember> findAll(@Context HttpHeaders headers) {
+    public List<Clubmember> findAll() {
         return super.findAll();
     }
 

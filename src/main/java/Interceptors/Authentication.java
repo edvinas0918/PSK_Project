@@ -1,7 +1,6 @@
 package Interceptors;
 
-import javax.interceptor.InterceptorBinding;
-import java.lang.annotation.Inherited;
+import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -12,9 +11,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Created by Edvinas.Barickis on 5/2/2016.
  */
-@Inherited
-@InterceptorBinding
+
+@NameBinding
 @Retention(RUNTIME)
-@Target({ METHOD, TYPE })
+@Target({TYPE, METHOD})
 public @interface Authentication {
+    String[] role() default {"Member", "Admin"};
 }

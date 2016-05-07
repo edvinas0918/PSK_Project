@@ -2,7 +2,7 @@
 
 module SummerHouses {
 
-    angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage', 'ui.bootstrap']);
+    var app = angular.module("housesApp", ['ngResource', 'ngRoute', 'swxSessionStorage', 'ui.bootstrap']);
 
     export class Application_PreLoad {
 
@@ -41,7 +41,26 @@ module SummerHouses {
 
 
     var Application = new Application_PreLoad();
-    angular.module("housesApp").run(['$route', function($route)  {
+
+    app.factory('authInterceptor', ['$sessionStorage', function ($sessionStorage) {
+        return {
+            request: function (config) {
+                var authToken = $sessionStorage.get("AuthorizationToken");
+                if (authToken) {
+                    config.headers = config.headers || {};
+                    config.headers.Authorization = "Token " + authToken;
+                }
+
+                return config;
+            }
+        };
+    }]);
+
+    app.config(function ($httpProvider) {
+        $httpProvider.interceptors.push("authInterceptor");
+    });
+
+    app.run(['$route', function($route)  {
         $route.reload();
     }]);
 }

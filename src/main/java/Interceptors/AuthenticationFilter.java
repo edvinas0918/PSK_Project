@@ -1,51 +1,75 @@
 package Interceptors;
 
+import Entities.Clubmember;
+import RestControllers.ClubmemberFacadeREST;
+
 import javax.annotation.Priority;
+import javax.inject.Inject;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ResourceInfo;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 
 /**
  * Created by Dziugas on 5/4/2016.
  */
-@Secured
+
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@Authentication(role = {"Candidate", "Member", "Admin"})
 public class AuthenticationFilter implements ContainerRequestFilter {
+
+
+    @Inject
+    ClubmemberFacadeREST userServiceREST;
+
+
+    @Context
+    ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        // Get the HTTP Authorization header from the request
         String authorizationHeader =
                 requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-
-        // Check if the HTTP Authorization header is present and formatted correctly
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new NotAuthorizedException("Authorization header must be provided");
-        }
-
-        // Extract the token from the HTTP Authorization header
-        String token = authorizationHeader.substring("Bearer".length()).trim();
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Token ")) {
+                throw new NotAuthorizedException("Authorization header must be provided");
+            }
+            String token = authorizationHeader.substring("Token".length()).trim();
 
         try {
-
-            // Validate the token
             validateToken(token);
+        } catch (AccessDeniedException ex) {
+            requestContext.abortWith(
+                    Response.status(Response.Status.FORBIDDEN).entity("FORBIDDEN").type(MediaType.APPLICATION_JSON_TYPE).build());
 
-        } catch (Exception e) {
+        } catch (Exception ex) {
             requestContext.abortWith(
                     Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
 
     private void validateToken(String token) throws Exception {
-        // Check if it was issued by the server and if it's not expired
-        // Throw an Exception if the token is invalid
+
+        Clubmember user = userServiceREST.findByToken(token);
+
+        if (user == null) {
+            throw new NotAuthorizedException("Unauthorized");
+        }
+
+        String[] allowedRoles = resourceInfo.getResourceMethod().getAnnotation(Authentication.class).role();
+
+        if (!Arrays.asList(allowedRoles).contains(user.getMemberStatus().getName())) {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 }
