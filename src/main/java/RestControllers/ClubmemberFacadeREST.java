@@ -93,18 +93,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     }
 
     @GET
-    @Path("/token/{token}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Clubmember findByToken(@PathParam("token") String token) {
-
-        TypedQuery<Clubmember> query =
-                em.createNamedQuery("Clubmember.findByToken", Clubmember.class).setParameter("token", token);
-        List<Clubmember> results = query.getResultList();
-
-        return results.get(0);
-    }
-
-    @GET
     @Path("/fbUserId/{fbUserId}")
     @Produces({MediaType.APPLICATION_JSON})
     public Clubmember findByFbUserId(@PathParam("fbUserId") String fbUserId) {

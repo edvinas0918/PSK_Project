@@ -5,18 +5,16 @@ import RestControllers.ClubmemberFacadeREST;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;
-import javax.ws.rs.NotAuthorizedException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 
 /**
@@ -32,6 +30,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Inject
     ClubmemberFacadeREST userServiceREST;
 
+    @Context
+    HttpServletRequest webRequest;
 
     @Context
     ResourceInfo resourceInfo;
@@ -39,37 +39,20 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
 
-        String authorizationHeader =
-                requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-            if (authorizationHeader == null || !authorizationHeader.startsWith("Token ")) {
-                throw new NotAuthorizedException("Authorization header must be provided");
-            }
-            String token = authorizationHeader.substring("Token".length()).trim();
+        HttpSession session = webRequest.getSession();
 
-        try {
-            validateToken(token);
-        } catch (AccessDeniedException ex) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.FORBIDDEN).entity("FORBIDDEN").type(MediaType.APPLICATION_JSON_TYPE).build());
-
-        } catch (Exception ex) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).build());
-        }
-    }
-
-    private void validateToken(String token) throws Exception {
-
-        Clubmember user = userServiceREST.findByToken(token);
+        Clubmember user = (Clubmember) session.getAttribute("User");
 
         if (user == null) {
-            throw new NotAuthorizedException("Unauthorized");
-        }
+            requestContext.abortWith(
+                    Response.status(Response.Status.UNAUTHORIZED).build());
+        } else {
+            String[] allowedRoles = resourceInfo.getResourceMethod().getAnnotation(Authentication.class).role();
 
-        String[] allowedRoles = resourceInfo.getResourceMethod().getAnnotation(Authentication.class).role();
-
-        if (!Arrays.asList(allowedRoles).contains(user.getMemberStatus().getName())) {
-            throw new AccessDeniedException("Access denied");
+            if (!Arrays.asList(allowedRoles).contains(user.getMemberStatus().getName())) {
+                requestContext.abortWith(
+                        Response.status(Response.Status.FORBIDDEN).build());
+            }
         }
     }
 }

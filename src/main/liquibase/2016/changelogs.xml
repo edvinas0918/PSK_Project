@@ -349,4 +349,10 @@
             ADD UNIQUE (Name);
         </sql>
     </changeSet>
+    <changeSet id="011" author="Edvinas">
+        <sql>
+            ALTER TABLE clubmember
+            DROP COLUMN token;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -4,11 +4,11 @@ module SummerHouses.authentication {
     export interface IAuthenticationService {
         requestUserAccessToken(redirectUrl?:string, code?:string):ng.IPromise<any>;
         isLoggedIn():boolean;
-        logout():void;
-        getCachedToken(): string;
-        reissueToken():ng.IPromise<any>;
+        logout(): ng.IPromise<any>;
+        setUser(user: IUser): void;
         getUser():ng.IPromise<IUser>;
         getCachedUser(): IUser;
+        getSessionUser(): ng.IPromise<IUser>;
     }
 
     export interface IUser {
@@ -47,8 +47,7 @@ module SummerHouses.authentication {
                     private $routeParams:any,
                     private $sessionStorage:any) {
             AuthenticationService.that = this;
-            AuthenticationService.that.userToken = AuthenticationService.that.$sessionStorage.get("AuthorizationToken");
-
+            AuthenticationService.that.user = AuthenticationService.that.$sessionStorage.get("User");
             this.$rootScope.$on('$routeChangeError', this.onRouteChangeError);
         }
 
@@ -83,11 +82,11 @@ module SummerHouses.authentication {
 
                             console.log("Facebook login passed");
                             var token = responseData.message.replace("access_token=", '');
-                            AuthenticationService.that.userToken = token;
-                            AuthenticationService.that.$sessionStorage.put("AuthorizationToken", token);
-                            return AuthenticationService.that.getUser()
+                            return AuthenticationService.that.getSessionUser()
                                 .then(function (user) {
-                                    return AuthenticationService.that.$q.when(token);
+                                    AuthenticationService.that.user = user;
+                                    AuthenticationService.that.$sessionStorage.put("User", user);
+                                    return token;
                                 });
                         } else {
                             // shit happened
@@ -100,52 +99,55 @@ module SummerHouses.authentication {
         }
 
         public isLoggedIn():boolean {
-            return AuthenticationService.that.userToken !== undefined;
+            return AuthenticationService.that.getCachedUser() !== undefined;
         }
 
-        public logout():void {
-            AuthenticationService.that.userToken = "";
-            AuthenticationService.that.$sessionStorage.put("AuthorizationToken", "");
-            AuthenticationService.that.user = null;
-        }
+        public logout():ng.IPromise<any> {
+            AuthenticationService.that.$sessionStorage.put("User", "");
+            AuthenticationService.that.setUser(null);
 
-        public reissueToken():ng.IPromise<any> {
-            return AuthenticationService.that.$q.when(true);
-        }
+            var params = {
+                url: "rest/authentication/logout",
+                method: "GET"
+            };
 
-        public getCachedToken():string {
-            return AuthenticationService.that.userToken;
+            return AuthenticationService.that.$http(params).then(function(response) {
+                return true;
+            }, function (error) {
+                return error;
+            });
         }
 
         public getUser():ng.IPromise<IUser> {
-            if (AuthenticationService.that.user) {
-                return AuthenticationService.that.$q.when(AuthenticationService.that.user);
+            if (AuthenticationService.that.getCachedUser()) {
+                return AuthenticationService.that.$q.when(AuthenticationService.that.getCachedUser());
             }
 
-            var token = AuthenticationService.that.userToken;
+            return AuthenticationService.that.getSessionUser();
+        }
 
-            if (token) {
-                var params = {
-                    url: 'rest/clubmember/token/' + token,
-                    method: 'GET'
-                };
-
-                return AuthenticationService.that.$http(params).then((response:any) => {
-                        return AuthenticationService.that.user = response.data;
-                    }
-                );
-            } else {
-                return AuthenticationService.that.$q.reject("Unauthorized");
-            }
-
+        public setUser(user :IUser): void {
+            AuthenticationService.that.user = user;
         }
         
         public getCachedUser(): IUser {
             return AuthenticationService.that.user;
         }
+        
+        public getSessionUser(): ng.IPromise<IUser> {
+            var params = {
+                url: "rest/authentication/getUser",
+                method: "GET"
+            };
+
+            return AuthenticationService.that.$http(params)
+                .then (function (response: any) {
+                    return response.data;
+                });
+        }
 
         onRouteChangeError(event, next, previous, rejection) {
-            AuthenticationService.that.$rootScope.lastError = rejection;
+            AuthenticationService.that.$rootScope["lastError"] = rejection;
             AuthenticationService.that.$location.path("/error");
         }
     }

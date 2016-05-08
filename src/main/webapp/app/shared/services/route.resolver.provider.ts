@@ -24,52 +24,63 @@ module SummerHouses.shared {
                                   $rootScope:any,
                                   $route:any,
                                   $location:ng.ILocationService,
-                                  authService:SummerHouses.authentication.AuthenticationService):ng.IPromise<any> => {
+                                  authService:SummerHouses.authentication.AuthenticationService,
+                                  $window:ng.IWindowService):ng.IPromise<any> => {
 
-                if ($location.path() == "/login" && authService.getCachedUser() != null) {
-                    RouteResolverProvider.that.redirectDefault($location, authService);
-                }
+                var initialRedirectPromise;
 
-                var url = $location.absUrl();
-                var code = RouteResolverProvider.that.getCodeFromUrl(url);
-
-                if (code) {
-                    return authService.requestUserAccessToken("http://localhost:8080", code)
-                        .then(function (token) {
-                            RouteResolverProvider.that.redirectDefault($location, authService);
-                            return $q.when(true);
-                        }, function (error) {
-                            return $q.reject(error);
+                if ($location.path() == "/login") {
+                    initialRedirectPromise = $q.when(authService.getSessionUser())
+                        .then(function (user:IUser) {
+                            if (user) {
+                                authService.setUser(user);
+                                RouteResolverProvider.that.redirectDefault($window, user);
+                            }
                         });
                 }
 
-                var routeDefinition = $route.current;
+                return $q.when(initialRedirectPromise).then(function () {
+                    var url = $location.absUrl();
+                    var code = RouteResolverProvider.that.getCodeFromUrl(url);
 
-                var requireAuth = false;
-                if (routeDefinition.allowedRoles.indexOf('Candidate') == -1) {
-                    requireAuth = true;
-                }
+                    if (code) {
+                        return authService.requestUserAccessToken("http://localhost:8080", code)
+                            .then(function (token) {
+                                RouteResolverProvider.that.redirectDefault($window, authService.getCachedUser());
+                                return $q.when(true);
+                            }, function (error) {
+                                return $q.reject(error);
+                            });
+                    }
 
-                var authenticationPromise:ng.IPromise<any>;
+                    var routeDefinition = $route.current;
 
-                if (requireAuth) {
-                    authenticationPromise = this.authHandler($q, authService);
-                }
+                    var requireAuth = false;
+                    if (routeDefinition.allowedRoles.indexOf('Candidate') == -1) {
+                        requireAuth = true;
+                    }
 
-                return $q.when(authenticationPromise).then(function (userInfo:IUser) {
-                    //check for roles
-                    if (userInfo) {
-                        var userRole = userInfo.memberStatus.name;
-                        if (routeDefinition.allowedRoles.indexOf(userRole) == -1) {
-                            return $q.reject({errorMessage: "Permission denied!"});
+                    var authenticationPromise:ng.IPromise<any>;
+
+                    if (requireAuth) {
+                        authenticationPromise = RouteResolverProvider.that.authHandler($q, authService);
+                    }
+
+                    return $q.when(authenticationPromise).then(function (userInfo:IUser) {
+                        //check for roles
+                        if (userInfo) {
+                            var userRole = userInfo.memberStatus.name;
+                            if (routeDefinition.allowedRoles.indexOf(userRole) == -1) {
+                                return $q.reject({errorMessage: "Permission denied!"});
+                            } else {
+                                return $q.when(true);
+                            }
                         } else {
                             return $q.when(true);
                         }
-                    } else {
-                        return $q.when(true);
-                    }
-                }, function (error) {
-                    $location.path('/login');
+                    }, function (error) {
+                        $location.path('/login');
+                    });
                 });
             };
 
@@ -79,6 +90,7 @@ module SummerHouses.shared {
                 '$route',
                 '$location',
                 'sh-authentication-service',
+                '$window',
                 this.routeResolver
             ];
         }
@@ -97,10 +109,10 @@ module SummerHouses.shared {
             return null;
         }
 
-        private redirectDefault($location:ng.ILocationService,
-                         authService:SummerHouses.authentication.IAuthenticationService) {
-            authService.getUser().then(function (user) {
-                var redirectPath;
+        private redirectDefault($window:ng.IWindowService,
+                                user:IUser) {
+            if (user) {
+                var redirectPath:string;
                 switch (user.memberStatus.name.toLowerCase()) {
                     case "admin":
                         redirectPath = "/admin/houses";
@@ -112,9 +124,8 @@ module SummerHouses.shared {
                         redirectPath = "/anketa";
                 }
 
-                authService.$window.location.href = 'http://localhost:8080/#' + redirectPath;
-                $location.path(redirectPath);
-            });
+            }
+            $window.location.href = 'http://localhost:8080/#' + redirectPath;
         }
 
         public defaultRouteResolver:any;
@@ -123,7 +134,8 @@ module SummerHouses.shared {
                                $rootScope:any,
                                $route:any,
                                $location:ng.ILocationService,
-                               authService:SummerHouses.authentication.AuthenticationService) => ng.IPromise < any >;
+                               authService:SummerHouses.authentication.AuthenticationService,
+                               $window:ng.IWindowService) => ng.IPromise < any >;
 
         public $get = ["$q", this.get];
 

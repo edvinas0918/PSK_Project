@@ -17,8 +17,9 @@ module SummerHouses {
         ) {
             LogoutController.that=this;
 
-            authService.logout();
-            $location.path("/login");
+            authService.logout().then (function () {
+                $location.path("/login");
+            });
         }
     }
 

@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "Clubmember.findByEmail", query = "SELECT c FROM Clubmember c WHERE c.email = :email"),
         @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
         @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup"),
-        @NamedQuery(name = "Clubmember.findByToken", query = "SELECT c FROM Clubmember c WHERE c.token = :token"),
         @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId"),
         @NamedQuery(name = "Clubmember.findByMembershipExpirationDate", query = "SELECT c FROM Clubmember c WHERE c.membershipExpirationDate = :membershipExpirationDate")
 })
@@ -36,9 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Clubmember implements Serializable {
 
-    @Size(max = 200)
-    @Column(name = "token")
-    private String token;
     @Size(max = 20)
     @Column(name = "fbUserId")
     private String fbUserId;
@@ -243,14 +239,6 @@ public class Clubmember implements Serializable {
     @Override
     public String toString() {
         return "Entities.Clubmember[ id=" + id + " ]";
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public String getFbUserId() {

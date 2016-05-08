@@ -9,11 +9,15 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,6 +43,9 @@ public class AuthenticationControllerREST {
     @Inject
     ClubmemberFacadeREST userServiceREST;
 
+    @Context
+    HttpServletRequest webRequest;
+
     @GET
     @Path("getUserAccessToken")
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,28 +69,40 @@ public class AuthenticationControllerREST {
 
         Clubmember user = userServiceREST.findByFbUserId(userInfo.getString("id"));
 
-        if (user != null) {
-            if (!user.getToken().equals(accessToken)) {
-                user.setToken(accessToken);
-                userServiceREST.edit(user.getId(), user);
-            }
-        } else {
+        HttpSession session = webRequest.getSession();
+
+        if (user == null){
             user = new Clubmember();
             String[] name = userInfo.getString("name").split(" ");
             user.setFirstName(name[0]);
             user.setLastName(name[1]);
             user.setMemberStatus(new Memberstatus(1));
             user.setFbUserId(userInfo.getString("id"));
-            user.setToken(accessToken);
             user.setEmail(userInfo.getString("email"));
             user.setReservationGroup(1);
             user.setPoints(0);
             userServiceREST.create(user);
         }
+        session.setAttribute("User", user);
 
         return new AuthResponse(200, accessToken);
     }
 
+    @GET
+    @Path("getUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Clubmember getSessionUser() {
+        return (Clubmember)webRequest.getSession().getAttribute("User");
+    }
+
+    @GET
+    @Path("logout")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response LogOut() {
+        webRequest.getSession().removeAttribute("User");
+
+        return Response.ok().build();
+    }
 
     private class FBConnection {
         public static final String FB_APP_ID = "1597719040467242";
