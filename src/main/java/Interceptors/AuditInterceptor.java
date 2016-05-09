@@ -10,6 +10,9 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
 
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -26,24 +29,27 @@ public class AuditInterceptor {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
     private EntityManager em;
 
+    @Context
+    HttpServletRequest webRequest;
+
     @Inject
     ClubMemberService memberService;
 
     @AroundInvoke
     public Object logMoneyOperationInfo(InvocationContext ctx) throws Exception {
-//        Moneyoperationlogentry logEntry = new Moneyoperationlogentry();
-//
-//
-//        Clubmember member = memberService.getMember(7);
-//        logEntry.setMember(member);
-//        logEntry.setMemberFirstName(member.getFirstName());
-//        logEntry.setMemberLastName(member.getLastName());
-//        logEntry.setMemberStatus(member.getMemberStatus());
-//        Method method = ctx.getMethod();
-//        logEntry.setInvokedMethod(method.getDeclaringClass().getName() + "." + method.getName());
-//        logEntry.setOperationTime(new Date());
-//
-//        em.persist(logEntry);
+        Moneyoperationlogentry logEntry = new Moneyoperationlogentry();
+
+        HttpSession session = webRequest.getSession();
+        Clubmember member = (Clubmember)session.getAttribute("User");
+        logEntry.setMember(member);
+        logEntry.setMemberFirstName(member.getFirstName());
+        logEntry.setMemberLastName(member.getLastName());
+        logEntry.setMemberStatus(member.getMemberStatus());
+        Method method = ctx.getMethod();
+        logEntry.setInvokedMethod(method.getDeclaringClass().getName() + "." + method.getName());
+        logEntry.setOperationTime(new Date());
+
+        em.persist(logEntry);
 
         return ctx.proceed();
     }
