@@ -1,14 +1,19 @@
 package Services;
 
 import Entities.Clubmember;
+import Entities.Memberstatus;
 import Entities.Payment;
 import Entities.Tax;
 import Helpers.MembershipException;
 import Interceptors.Audit;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Context;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,6 +27,15 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 public class ClubMemberService {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
     private EntityManager em;
+
+    @Context
+    HttpServletRequest webRequest;
+
+    @Inject
+    SettingsService settingsService;
+
+    @Inject
+    EmailService emailService;
 
     public Clubmember getMember(Integer id){
         return em.find(Clubmember.class, id);
@@ -68,5 +82,41 @@ public class ClubMemberService {
         payment.setTaxID((Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult());
         payment.setConfirmed(false);
         em.persist(payment);
+    }
+
+    public void recommendCandidate(int candidateId){
+        Clubmember currentUser = getCurrentUser();
+        Clubmember candidate = getMember(candidateId);
+        if (currentUser.getRecommendedMembers().contains(candidate)){
+            return;
+        }
+        currentUser.getRecommendedMembers().add(candidate);
+        candidate.getRecommenders().add(currentUser);
+
+        Integer requiredRecommendations = Integer.parseInt(settingsService.getSetting("recommendationsMin").getValue());
+        if (candidate.getRecommenders().size() >= requiredRecommendations){
+            promoteCandidate(candidate);
+        }
+
+        updateMember(currentUser);
+        updateMember(candidate);
+    }
+
+    private void promoteCandidate(Clubmember candidate){
+        candidate.setMemberStatus(getMemberStatusByName("Member"));
+
+        try {
+            emailService.sendCandidatePromotionEmail(candidate.getEmail());
+        } catch(Exception e){ }
+    }
+
+    private Clubmember getCurrentUser(){
+        HttpSession session = webRequest.getSession();
+        return (Clubmember)session.getAttribute("User");
+    }
+
+    private Memberstatus getMemberStatusByName(String name){
+        return (Memberstatus)em.createNamedQuery("Memberstatus.findByName")
+                .setParameter("name", name).getSingleResult();
     }
 }

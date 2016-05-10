@@ -1,8 +1,16 @@
 <div class="container">
-    <h2 ng-if="!editable">Nario informacija</h2>
-    <h2 ng-if="editable">Jūsų informacija</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h2 ng-if="!editable">Nario informacija</h2>
+            <h2 ng-if="editable">Jūsų informacija</h2>
+        </div>
+        <div class="col-md-2" style="margin-top: 20px;"s>
+            <button class="btn btn-success" ng-if="candidate" ng-click="recommendCandidate()">Rekomenduoti šį kandidatą</button>
+        </div>
+    </div>
+
     <div class="alert alert-success" ng-if="showAlert">
-        <strong>Patvirtinta!</strong> Pakeitimai išsaugoti
+        <strong>Patvirtinta!</strong> {{successMessage}}
     </div>
     <div class="alert alert-error" ng-if="showAlertError">
         <strong>Klaida!</strong> {{errorMessage}}
