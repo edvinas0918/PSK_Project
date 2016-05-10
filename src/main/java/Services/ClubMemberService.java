@@ -115,7 +115,7 @@ public class ClubMemberService {
         return (Clubmember)session.getAttribute("User");
     }
 
-    private Memberstatus getMemberStatusByName(String name){
+    public Memberstatus getMemberStatusByName(String name){
         return (Memberstatus)em.createNamedQuery("Memberstatus.findByName")
                 .setParameter("name", name).getSingleResult();
     }

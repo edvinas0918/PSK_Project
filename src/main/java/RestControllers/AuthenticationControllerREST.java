@@ -2,6 +2,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Entities.Memberstatus;
+import Services.ClubMemberService;
 import models.AuthResponse;
 import org.json.JSONObject;
 
@@ -46,6 +47,9 @@ public class AuthenticationControllerREST {
     @Context
     HttpServletRequest webRequest;
 
+    @Inject
+    ClubMemberService userService;
+
     @GET
     @Path("getUserAccessToken")
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,7 +80,7 @@ public class AuthenticationControllerREST {
             String[] name = userInfo.getString("name").split(" ");
             user.setFirstName(name[0]);
             user.setLastName(name[1]);
-            user.setMemberStatus(new Memberstatus(1));
+            user.setMemberStatus(userService.getMemberStatusByName("Candidate"));
             user.setFbUserId(userInfo.getString("id"));
             user.setEmail(userInfo.getString("email"));
             user.setReservationGroup(1);
