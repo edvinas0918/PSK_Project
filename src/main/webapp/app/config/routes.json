@@ -164,6 +164,18 @@
           "Admin"
         ]
       }
+    },
+
+    {
+      "url": "/candidate/form",
+      "config": {
+        "templateUrl": "app/modules/members/templates/memberEdit.html",
+        "controller": "candidateFormController",
+        "layout": "candidate",
+        "allowedRoles": [
+          "Candidate", "Admin"
+        ]
+      }
     }
   ]
 }

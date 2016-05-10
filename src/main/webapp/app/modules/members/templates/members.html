@@ -17,7 +17,7 @@
         <td ng-if="formFields.firstName">{{x.firstName}}</td>
         <td ng-if="formFields.lastName">{{x.lastName}}</td>
         <td ng-if="formFields.email">{{x.email}}</td>
-        <td ng-if="formFields.status">{{x.memberStatus.name}}</td>
+        <td ng-if="formFields.status">{{x.statusString}}</td>
         <td ng-if="formFields.points">{{x.points}}</td>
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td>

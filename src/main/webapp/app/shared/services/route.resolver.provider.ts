@@ -121,7 +121,7 @@ module SummerHouses.shared {
                         redirectPath = "/houses";
                         break;
                     case "candidate":
-                        redirectPath = "/anketa";
+                        redirectPath = "/candidate/form";
                 }
 
             }

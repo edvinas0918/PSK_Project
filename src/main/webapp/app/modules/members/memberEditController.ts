@@ -2,6 +2,7 @@
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="memberModel.ts"/>
 ///<reference path="memberFormFieldModel.ts"/>
+///<reference path="../utilities/utilities.ts"/>
 
 module SummerHouses.members {
 
@@ -40,10 +41,11 @@ module SummerHouses.members {
                 this.$scope.editable = user.id == this.$routeParams.memberID;
             }, (error) => {
             });
-
+            
             this.$scope.formFields = { }
 
             this.getMember($routeParams.memberID);
+
             this.getFormFields();
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
@@ -97,16 +99,13 @@ module SummerHouses.members {
         }
 
         getMember(memberID: string): void{
-            if (this.$scope.newMember){
-                this.$scope.member = new Member();
-            } else {
-                this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
-                    this.$scope.member = member;
-                    if (member.memberStatus.name.toLowerCase() === "candidate"){
-                        this.$scope.candidate = true;
-                    }
-                });
-            }
+            this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
+                this.$scope.member = member;
+                if (member.memberStatus.name.toLowerCase() === "candidate"){
+                    this.$scope.candidate = true;
+                }
+                this.$scope.member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
+            });
         }
 
         getFormFields(): void{

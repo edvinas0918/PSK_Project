@@ -2,6 +2,7 @@
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="memberModel.ts"/>
 ///<reference path="memberFormFieldModel.ts"/>
+///<reference path="../utilities/utilities.ts"/>
 
 module SummerHouses.members {
 
@@ -52,6 +53,9 @@ module SummerHouses.members {
         getMembers(): void{
             this.$http.get('/rest/clubmember').success((members: Member[], status) => {
                 this.$scope.members = members;
+                _.forEach(members, (member) => {
+                    member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
+                })
             });
         }
 

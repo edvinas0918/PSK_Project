@@ -19,6 +19,7 @@ module SummerHouses.members {
         public points:number;
         public reservationGroup:number;
         public membershipExpirationDate:Date;
+        public statusString: string;
 
         constructor(){
             this.id = null;
