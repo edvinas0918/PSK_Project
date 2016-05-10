@@ -355,4 +355,77 @@
             DROP COLUMN token;
         </sql>
     </changeSet>
+    <changeSet id="dropMin" author="Mindaugas">
+        <dropTable tableName="AdditionalServiceReservation"/>
+        <dropTable tableName="Summerhouse_Services"/>
+        <dropForeignKeyConstraint baseTableName="summerhouse" constraintName="FK_AVAILABLE_SERVICES"/>
+        <dropTable tableName="AdditionalService"/>
+    </changeSet>
+    <changeSet id="min007" author="Mindaugas">
+        <createTable tableName="AdditionalService">
+            <column name="ID" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ADDITIONAL_SERVICE_PK" />
+            </column>
+            <column name="Name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Description" type="TEXT"></column>
+            <column name="PricePoints" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE `AdditionalService` CHANGE `id` `id` INT( 11 ) NOT NULL AUTO_INCREMENT;
+        </sql>
+        <sql>
+            CREATE TABLE AdditionalServiceReservation(
+            SummerhouseReservationID INTEGER NOT NULL,
+            TaxID INTEGER NOT NULL,
+            CONSTRAINT PRIMARY KEY PK_AdditionalServiceReservation (SummerhouseReservationID, TaxID)
+            );
+        </sql>
+        <addColumn tableName="AdditionalServiceReservation">
+            <column name="ServiceStart" type="DATE"/>
+            <column name="ServiceEnd" type="DATE"/>
+            <column name="AdditionalServiceID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="AdditionalServiceID" constraintName="ADD_SERVICE_RESERVATION_FK" referencedTableName="additionalservice"
+                                 referencedColumnNames="ID"/>
+        <sql>
+            CREATE TABLE Summerhouse_Services
+            (
+            summerhouse_id INT NOT NULL,
+            service_id INT NOT NULL,
+            PRIMARY KEY (summerhouse_id, service_id),
+            FOREIGN KEY (summerhouse_id) REFERENCES Summerhouse(id) ON UPDATE CASCADE,
+            FOREIGN KEY (service_id) REFERENCES AdditionalService(id) ON UPDATE CASCADE
+            );
+        </sql>
+        <addForeignKeyConstraint baseTableName="summerhouse" baseColumnNames="AvailableServices" constraintName="FK_AVAILABLE_SERVICES"
+                                 referencedTableName="AdditionalService"
+                                 referencedColumnNames="ID"/>
+    </changeSet>
+    <changeSet id="min008" author="Mindaugas">
+        <sql>
+            insert into additionalservice (id, name, description, pricepoints) values (1, "hitleris nepadare nieko blogo", "aaaaaa", "1939");
+            insert into additionalservice (id, name, description, pricepoints) values (2, "holokaustas yra melas", "aha;]", "69");
+            insert into additionalservice (id, name, description, pricepoints) values (3, "9/11 was an inside job", "ne", "112");
+            insert into additionalservice (id, name, description, pricepoints) values (4, "reaktyvinis kuras negali lydyti plieniniu siju", "ne", "112");
+        </sql>
+    </changeSet>
+    <changeSet id="min009" author="Mindaugas">
+        <dropTable tableName="Summerhouse_Services"/>
+        <sql>
+            CREATE TABLE Summerhouse_Services
+            (
+            summerhouse_id INT NOT NULL,
+            service_id INT NOT NULL,
+            PRIMARY KEY (summerhouse_id, service_id),
+            FOREIGN KEY (summerhouse_id) REFERENCES Summerhouse(id) ON DELETE CASCADE ON UPDATE CASCADE,
+            FOREIGN KEY (service_id) REFERENCES AdditionalService(id) ON DELETE CASCADE ON UPDATE CASCADE
+            );
+        </sql>
+    </changeSet>
 </databaseChangeLog>

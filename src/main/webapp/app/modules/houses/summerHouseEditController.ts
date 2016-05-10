@@ -69,7 +69,7 @@ module SummerHouses.houses {
         }
 
         createDateAsUTC(date: Date):Date {
-        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
         }
 
 
@@ -92,7 +92,7 @@ module SummerHouses.houses {
         }
 
         getAdditionalServices():void {
-            SummerHouseEditController.that.$http.get('/rest/entities.additionalservice').success((services:AdditionalService[], status) => {
+            SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
                 var house = SummerHouseEditController.that.scope.house;
                 if (house) {
                     for (let service of services) {

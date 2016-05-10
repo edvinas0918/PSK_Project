@@ -96,6 +96,41 @@
       }
     },
     {
+      "url": "/admin/services",
+      "config": {
+        "name": "services",
+        "templateUrl": "app/modules/houses/templates/services.html",
+        "controller": "summerHouseServices",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
+    },
+    {
+      "url": "/admin/createService",
+      "config": {
+        "name": "createService",
+        "templateUrl": "app/modules/houses/templates/createService.html",
+        "controller": "summerHouseServicesEdit",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
+    },
+    {
+      "url": "/admin/editService/:serviceID",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/createService.html",
+        "controller": "summerHouseServicesEdit",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
+    },
+    {
       "url": "/admin/houses/:houseID",
       "config": {
         "templateUrl": "app/modules/houses/templates/editHouse.html",
