@@ -1,0 +1,20 @@
+<a class="btn btn-success pull-right" ng-href="#/admin/createService">Pridėti paslaugą</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Pavadinimas</th>
+        <th>Kaina klubo taškais</th>
+        <th>Valdymas</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="service in additionalServices">
+        <td>{{service.name}}</td>
+        <td>{{service.pricePoints}}</td>
+        <td>
+            <a class="btn btn-info" ng-href="#/admin/editService/{{service.id}}">Keisti</a>
+            <button class="btn btn-danger" ng-click="deleteService(service)">Ištrinti</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
