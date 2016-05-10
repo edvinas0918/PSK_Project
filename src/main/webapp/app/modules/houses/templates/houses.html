@@ -3,7 +3,7 @@
         <h2>Vasarnamiai</h2>
     </div>
 </div>
-<a class="btn btn-success pull-right" ng-href="#/admin/houses/0">Pridėti naują namą</a>
+<a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
 <table class="table">
     <tbody>
     <tr ng-repeat="x in summerhouses">
@@ -20,8 +20,10 @@
                     <h4><small>Rezervacija galima:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
                     <h4><small>Apmokėjimo tipas:</small> {{x.taxID.taxTypeID.name}}</h4>
                     <p>{{x.description}}</p>
-                    <a class="btn btn-info" ng-href="#/admin/houses/{{x.id}}">Keisti</a>
-                    <button class="btn btn-danger" ng-click="deleteHouse(x)">Ištrinti</button>
+                    <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/houses/{{x.id}}">Keisti</a>
+                    <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteHouse(x)">Ištrinti</button>
+                    <button class="btn btn-success" ng-if="!isAdminPage" ng-click="">Rezervuoti</button>
+                    <button class="btn btn-info" ng-if="!isAdminPage" ng-click="">Plačiau</button>
                 </div>
             </div>
         </td>
