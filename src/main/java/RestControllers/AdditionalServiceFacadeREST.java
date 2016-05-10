@@ -38,7 +38,7 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(AdditionalService entity) {
+    public void create(AdditionalService entity) throws Exception {
         super.create(entity);
     }
 

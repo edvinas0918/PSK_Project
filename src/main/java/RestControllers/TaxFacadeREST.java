@@ -42,7 +42,7 @@ public class TaxFacadeREST extends AbstractFacade<Tax> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Tax entity) {
+    public void create(Tax entity) throws Exception {
         super.create(entity);
     }
 
