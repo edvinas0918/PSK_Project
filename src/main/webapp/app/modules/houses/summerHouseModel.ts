@@ -18,9 +18,17 @@ module SummerHouses.houses {
     }
 
     export class AdditionalService {
+        public id:number;
+        public pricePoints:number;
+        public description:string;
+        public name:string;
+        public selected:Boolean;
+        public additionalservicereservationList:Array<SummerHouse>;
 
-        constructor(public id:number, public priceInPoints:number, public description:string, public name:string, public selected:Boolean) {
-
+        constructor() {
+            this.pricePoints = 0;
+            this.description = "";
+            this.name = "";
         }
 
     }

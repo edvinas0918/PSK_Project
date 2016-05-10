@@ -6,7 +6,11 @@
 package RestControllers;
 
 import Entities.AdditionalService;
+import Entities.Summerhouse;
+import Helpers.Helpers;
+
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,12 +24,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import static Helpers.Helpers.getGensonInstance;
+
 /**
  *
  * @author Mindaugas
  */
 @Stateless
-@Path("entities.additionalservice")
+@Path("additionalservice")
 public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalService> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
@@ -37,7 +43,8 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("createService")
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(AdditionalService entity) throws Exception {
         super.create(entity);
     }

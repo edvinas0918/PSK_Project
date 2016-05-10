@@ -9,7 +9,6 @@ import Entities.Clubmember;
 import Entities.Settings;
 import Helpers.MembershipException;
 import Interceptors.Authentication;
-import Interceptors.Secured;
 import Services.ClubMemberService;
 import Services.EmailService;
 import Services.SettingsService;
@@ -18,7 +17,6 @@ import models.PointsGrant;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -30,8 +28,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -90,6 +86,14 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         } catch (Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email sending has failed").build();
         }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PUT
+    @Path("recommend/{candidateId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response recommend(@PathParam("candidateId") Integer candidateId){
+        clubMemberService.recommendCandidate(candidateId);
         return Response.status(Response.Status.OK).build();
     }
 

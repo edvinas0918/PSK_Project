@@ -141,4 +141,14 @@ public class EmailService {
         sendHtmlEmail(mailTo, subject, message);
     }
 
+    public void sendCandidatePromotionEmail(String mailTo) throws Exception {
+        String subject = "Anketa patvirtinta";
+
+        String message = "Sveiki,<br>";
+        message += String.format("Jūsų anketa patvirtinta! Nuo šiol prisijungę į puslapį matysite visas klubo nariams " +
+                "suteikiamas paslaugas.");
+        message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
+
+        sendHtmlEmail(new String[] {mailTo}, subject, message);
+    }
 }

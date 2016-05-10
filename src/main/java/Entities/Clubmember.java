@@ -78,9 +78,9 @@ public class Clubmember implements Serializable {
             @JoinColumn(name = "MemberID", referencedColumnName = "ID")}, inverseJoinColumns = {
             @JoinColumn(name = "RecommendedMemberID", referencedColumnName = "ID")})
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Clubmember> clubmemberList;
-    @ManyToMany(mappedBy = "clubmemberList", fetch = FetchType.EAGER)
-    private List<Clubmember> clubmemberList1;
+    private List<Clubmember> recommendedMembers;
+    @ManyToMany(mappedBy = "recommendedMembers", fetch = FetchType.EAGER)
+    private List<Clubmember> recommenders;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
     @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
@@ -164,21 +164,21 @@ public class Clubmember implements Serializable {
     }
 
     @XmlTransient
-    public List<Clubmember> getClubmemberList() {
-        return clubmemberList;
+    public List<Clubmember> getRecommendedMembers() {
+        return recommendedMembers;
     }
 
-    public void setClubmemberList(List<Clubmember> clubmemberList) {
-        this.clubmemberList = clubmemberList;
+    public void setRecommendedMembers(List<Clubmember> recommendedMembers) {
+        this.recommendedMembers = recommendedMembers;
     }
 
     @XmlTransient
-    public List<Clubmember> getClubmemberList1() {
-        return clubmemberList1;
+    public List<Clubmember> getRecommenders() {
+        return recommenders;
     }
 
-    public void setClubmemberList1(List<Clubmember> clubmemberList1) {
-        this.clubmemberList1 = clubmemberList1;
+    public void setRecommenders(List<Clubmember> recommenders) {
+        this.recommenders = recommenders;
     }
 
     @XmlTransient
