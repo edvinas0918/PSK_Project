@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="memberModel.ts"/>
+///<reference path="memberFormFieldModel.ts"/>
 
 module SummerHouses.members {
 
@@ -24,8 +25,10 @@ module SummerHouses.members {
             private $route: any,
             private $location: any
         ) {
+            this.$scope.formFields = { }
 
             this.getMembers();
+            this.getFormFields();
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
 
             this.$scope.deleteMember = (member: Member) => {
@@ -49,6 +52,15 @@ module SummerHouses.members {
         getMembers(): void{
             this.$http.get('/rest/clubmember').success((members: Member[], status) => {
                 this.$scope.members = members;
+            });
+        }
+
+        getFormFields(): void{
+            this.$http.get('/rest/memberFormField').success((fields: MemberFormField[]) => {
+                this.$scope.originalFieldOptions = fields;
+                _.forEach(fields, (field) => {
+                    this.$scope.formFields[field.fieldName] = field.visible;
+                });
             });
         }
 

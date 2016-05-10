@@ -41,13 +41,7 @@ module SummerHouses.members {
             }, (error) => {
             });
 
-            this.$scope.formFields = {
-                firstName: false,
-                lastName: false,
-                email: false,
-                status: false,
-                points: false
-            }
+            this.$scope.formFields = { }
 
             this.getMember($routeParams.memberID);
             this.getFormFields();

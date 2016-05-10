@@ -3,22 +3,22 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Vardas</th>
-        <th>Pavardė</th>
-        <th>El. paštas</th>
-        <th>Statusas</th>
-        <th>Taškai</th>
+        <th ng-if="formFields.firstName">Vardas</th>
+        <th ng-if="formFields.lastName">Pavardė</th>
+        <th ng-if="formFields.email">El. paštas</th>
+        <th ng-if="formFields.status">Statusas</th>
+        <th ng-if="formFields.points">Taškai</th>
         <th ng-if="isAdminPage">Narystės galiojimas</th>
         <th ></th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="x in members">
-        <td>{{x.firstName}}</td>
-        <td>{{x.lastName}}</td>
-        <td>{{x.email}}</td>
-        <td>{{x.memberStatus.name}}</td>
-        <td>{{x.points}}</td>
+        <td ng-if="formFields.firstName">{{x.firstName}}</td>
+        <td ng-if="formFields.lastName">{{x.lastName}}</td>
+        <td ng-if="formFields.email">{{x.email}}</td>
+        <td ng-if="formFields.status">{{x.memberStatus.name}}</td>
+        <td ng-if="formFields.points">{{x.points}}</td>
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td>
             <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
