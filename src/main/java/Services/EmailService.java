@@ -7,6 +7,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import javax.ejb.Stateful;
+import javax.inject.Inject;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -25,12 +26,14 @@ import java.util.Properties;
 @Stateful
 public class EmailService {
 
+    @Inject
+    ClubMemberService clubMemberService;
+
     private String host;
     private String port;
     private String userName;
     private String password;
     private String reccomendationTemplate;
-    private String invitationTemplate;
 
     public EmailService(){
         setEmailServerValues();
@@ -44,7 +47,6 @@ public class EmailService {
             userName = (String) context.lookup("java:comp/env/emailUsername");
             password = (String) context.lookup("java:comp/env/emailPassword");
             reccomendationTemplate = (String) context.lookup("java:comp/env/reccomendationTemplate");
-            invitationTemplate = (String) context.lookup("java:comp/env/invitationTemplate");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -105,12 +107,13 @@ public class EmailService {
         return writer.toString();
     }
 
-    public void sendInvitationEmail(String [] mailTo, String user) throws Exception {
+    public void sendInvitationEmail(String [] mailTo) throws Exception {
         String subject = "Kvietimas prisijungti prie „Labanoro draugų“";
 
         // message contains HTML markups
         String message = "Sveiki,<br>";
-        message += String.format("<i>%s</i> Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti <a href=\"http://localhost:8080\">mūsų puslapyje</a>.", user);
+        message += String.format("<i>%s</i> Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti <a href=\"http://localhost:8080\">mūsų puslapyje</a>.",
+                clubMemberService.getCurrentUser().getFirstName() + " " + clubMemberService.getCurrentUser().getLastName());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
         sendHtmlEmail(mailTo, subject, message);

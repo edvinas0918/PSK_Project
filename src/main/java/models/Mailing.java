@@ -7,22 +7,12 @@ import java.io.Serializable;
  */
 public class Mailing  implements Serializable {
 
-    private String currentUser;
     private String [] emailAddresses;
 
     public Mailing() {}
 
-    public Mailing(String currentUser, String[] emailAddresses) {
-        this.currentUser = currentUser;
-        this.emailAddresses = emailAddresses;
-    }
-
-    public String getCurrentUser() {
-        return currentUser;
-    }
-
-    public void setCurrentUser(String currentUser) {
-        this.currentUser = currentUser;
+    public Mailing(String[] emailAddresses) {
+       this.emailAddresses = emailAddresses;
     }
 
     public String[] getEmailAddresses() {

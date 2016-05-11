@@ -111,7 +111,7 @@ public class ClubMemberService {
         } catch(Exception e){ }
     }
 
-    private Clubmember getCurrentUser(){
+    public Clubmember getCurrentUser(){
         HttpSession session = webRequest.getSession();
         return (Clubmember)session.getAttribute("User");
     }
