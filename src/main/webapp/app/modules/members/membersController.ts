@@ -5,6 +5,8 @@
 
 module SummerHouses.members {
 
+    import IAuthenticationService = SummerHouses.authentication.IAuthenticationService;
+
     class MembersController {
 
         static $inject = [
@@ -13,9 +15,9 @@ module SummerHouses.members {
             '$uibModal',
             '$http',
             '$route',
-            '$location'
+            '$location',
+            'sh-authentication-service'
         ];
-        
 
         constructor(
             private $rootScope:any,
@@ -23,9 +25,11 @@ module SummerHouses.members {
             private $uibModal: any,
             private $http: any,
             private $route: any,
-            private $location: any
+            private $location: any,
+            private authService: IAuthenticationService
         ) {
             this.$scope.formFields = { }
+
 
             this.getMembers();
             this.getFormFields();
@@ -51,7 +55,11 @@ module SummerHouses.members {
 
         getMembers(): void{
             this.$http.get('/rest/clubmember').success((members: Member[], status) => {
-                this.$scope.members = members;
+                this.authService.getUser().then((user:AuthenticationService.IUser) => {
+                    this.$scope.members = members.filter(function (member) {
+                        return member.id !== user.id;
+                    });
+                });
             });
         }
 
