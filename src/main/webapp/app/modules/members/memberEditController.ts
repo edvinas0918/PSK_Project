@@ -82,11 +82,17 @@ module SummerHouses.members {
             }
 
             this.$scope.collectMembershipData = () => {
-                this.$http.get('/rest/entities.tax/MemberTax').success((memberTax: number) => {
+                this.$http.get('/rest/entities.tax/MemberTax').success((memberTax:number) => {
                     this.$scope.memberTax = memberTax;
                 });
-                this.$scope.nextMembershipExpiration = new Date(this.$scope.member.membershipExpirationDate);
-                this.$scope.nextMembershipExpiration.setFullYear(this.$scope.nextMembershipExpiration.getFullYear() + 1)
+
+                if (this.$scope.member.membershipExpirationDate == null) {
+                    this.$scope.nextMembershipExpiration = new Date();
+                }else {
+                    this.$scope.nextMembershipExpiration = new Date(this.$scope.member.membershipExpirationDate);
+                }
+
+                this.$scope.nextMembershipExpiration.setFullYear(this.$scope.nextMembershipExpiration.getFullYear() + 1);
             }
 
             this.$scope.recommendCandidate = () => {
