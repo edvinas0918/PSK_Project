@@ -43,7 +43,7 @@ module SummerHouses.shared {
                     var url = $location.absUrl();
                     var code = RouteResolverProvider.that.getCodeFromUrl(url);
 
-                    if (code) {
+                    if (code && url.indexOf("/error") == -1) {
                         return authService.requestUserAccessToken("http://localhost:8080", code)
                             .then(function (token) {
                                 RouteResolverProvider.that.redirectDefault($window, authService.getCachedUser());

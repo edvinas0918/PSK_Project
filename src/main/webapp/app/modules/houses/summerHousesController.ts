@@ -34,7 +34,7 @@ module SummerHouses.houses {
                 $scope.summerhouses.push(sm);
                 $scope.$apply();
             }
-
+            this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             this.$scope.deleteHouse = (house: SummerHouse) => {
                 this.$http.delete('/rest/summerhouse/' + house.id).success(() => {
                     var index = this.$scope.summerhouses.indexOf(house, 0);

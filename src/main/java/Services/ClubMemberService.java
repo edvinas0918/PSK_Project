@@ -60,7 +60,8 @@ public class ClubMemberService {
     public void renewMembership(Clubmember member) throws MembershipException{
         //Adding year to membership year
         Calendar c = Calendar.getInstance();
-        c.setTime(member.getMembershipExpirationDate());
+        if (member.getMembershipExpirationDate() != null)
+            c.setTime(member.getMembershipExpirationDate());
         c.add(Calendar.YEAR, 1);
         member.setMembershipExpirationDate(c.getTime());
 

@@ -38,7 +38,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Memberstatus entity) {
+    public void create(Memberstatus entity) throws Exception {
         super.create(entity);
     }
 

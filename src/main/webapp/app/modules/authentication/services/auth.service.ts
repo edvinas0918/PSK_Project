@@ -89,8 +89,7 @@ module SummerHouses.authentication {
                                     return token;
                                 });
                         } else {
-                            // shit happened
-                            return AuthenticationService.that.$q.reject({info: "Shit happened"});
+                            return AuthenticationService.that.$q.reject(responseData.message);
                         }
                     }, (error:any) => {
                         return AuthenticationService.that.$q.reject(error);

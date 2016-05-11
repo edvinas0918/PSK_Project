@@ -358,7 +358,9 @@
     <changeSet id="dropMin" author="Mindaugas">
         <dropTable tableName="AdditionalServiceReservation"/>
         <dropTable tableName="Summerhouse_Services"/>
+        <!--
         <dropForeignKeyConstraint baseTableName="summerhouse" constraintName="FK_AVAILABLE_SERVICES"/>
+        -->
         <dropTable tableName="AdditionalService"/>
     </changeSet>
     <changeSet id="min007" author="Mindaugas">
@@ -403,9 +405,11 @@
             FOREIGN KEY (service_id) REFERENCES AdditionalService(id) ON UPDATE CASCADE
             );
         </sql>
+        <!--
         <addForeignKeyConstraint baseTableName="summerhouse" baseColumnNames="AvailableServices" constraintName="FK_AVAILABLE_SERVICES"
                                  referencedTableName="AdditionalService"
                                  referencedColumnNames="ID"/>
+         -->
     </changeSet>
     <changeSet id="min008" author="Mindaugas">
         <sql>

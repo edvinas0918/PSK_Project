@@ -38,14 +38,14 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Summerhouse entity) {
+    public void create(Summerhouse entity) throws Exception {
         super.create(entity);
     }
 
     @POST
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void handleHouse(Map<Object, Object> summerhouseMap) {
+    public void handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
         Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
         if (summerhouse.getId() != null) {
             edit(summerhouse.getId(), summerhouse);

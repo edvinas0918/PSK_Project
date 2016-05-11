@@ -38,7 +38,7 @@ public class TaxtypeFacadeREST extends AbstractFacade<Taxtype> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Taxtype entity) {
+    public void create(Taxtype entity) throws Exception {
         super.create(entity);
     }
 

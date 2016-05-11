@@ -31,7 +31,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Payment entity) {
+    public void create(Payment entity) throws Exception {
         super.create(entity);
     }
 

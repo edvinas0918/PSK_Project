@@ -45,7 +45,7 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @Override
     @Path("createService")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(AdditionalService entity) {
+    public void create(AdditionalService entity) throws Exception {
         super.create(entity);
     }
 

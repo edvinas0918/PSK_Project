@@ -6,10 +6,12 @@
 package RestControllers;
 
 import Entities.Clubmember;
+import Entities.Settings;
 import Helpers.MembershipException;
 import Interceptors.Authentication;
 import Services.ClubMemberService;
 import Services.EmailService;
+import Services.SettingsService;
 import models.PointsGrant;
 
 import java.util.List;
@@ -44,6 +46,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     private ClubMemberService clubMemberService;
 
     @Inject
+    private SettingsService settingsService;
+
+    @Inject
     private EmailService emailService;
 
     public ClubmemberFacadeREST() {
@@ -53,8 +58,10 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(Clubmember entity) {
-        // TODO: Check if number of members does not exceed maximum
+    public void create(Clubmember entity) throws Exception {
+        Settings memberMax = settingsService.getSetting("membersMax");
+        if(super.count() >= Integer.parseInt(memberMax.getValue()))
+            throw new Exception("Registracija nepavyko. Pasiektas maksimalus vartotojų skaičius. Pabandykite vėliau.");
         super.create(entity);
     }
 
