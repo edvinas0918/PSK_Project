@@ -2,31 +2,39 @@
     <div class="alert alert-success" ng-if="showAlert">
         <strong>Mokėjimai patvirtinti!</strong>
     </div>
-    <form >
+    <form>
         <h2>Mokėjimai</h2>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Mokėjimo data</th>
-                <th>Mokestis</th>
-                <th>Kaina</th>
-                <th>Narys</th>
-                <th>Patvirtinimas</th>
-                <th>Patvirtinti</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="x in payments">
-                <td>{{x.paymentDate}}</td>
-                <td>{{x.taxID.name}}</td>
-                <td>{{x.taxID.price}}</td>
-                <td>{{x.memberID.firstName + " " + x.memberID.lastName}}</td>
-                <td>{{isConfirmed(x)}}</td>
-                <td ng-if="!x.confirmed"><input type="checkbox" ng-click="toggleCheck(x)"></td>
-            </tr>
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-success" ng-click="confirmPayments()">Patvirtinti</button>
+        <ul class="nav nav-tabs" id="paymentTab">
+            <li class="active" ><a ng-click="viewChange(0)" data-toggle="tab">Visi</a></li>
+            <li><a ng-click="viewChange(1)" data-toggle="tab">Patvirtinti</a></li>
+            <li><a ng-click="viewChange(2)" data-toggle="tab">Nepatvirtinti</a></li>
+        </ul>
+
+        <div id="paymentMain">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Mokėjimo data</th>
+                    <th>Mokestis</th>
+                    <th>Kaina</th>
+                    <th>Narys</th>
+                    <th>Patvirtinimas</th>
+                    <th>Patvirtinti</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="x in shownPayments">
+                    <td>{{x.paymentDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td>{{x.taxID.name}}</td>
+                    <td>{{x.taxID.price}}</td>
+                    <td>{{x.memberID.firstName + " " + x.memberID.lastName}}</td>
+                    <td>{{isConfirmed(x)}}</td>
+                    <td ng-if="!x.confirmed"><input type="checkbox" ng-click="toggleCheck(x)"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-success" ng-if="viewId != 1" ng-click="confirmPayments()">Patvirtinti</button>
     </form>
 </div>
 
