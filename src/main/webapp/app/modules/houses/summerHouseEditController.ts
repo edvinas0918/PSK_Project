@@ -47,7 +47,7 @@ module SummerHouses.houses {
                     $scope.datesDoNotMatch = true;
                     return;
                 }
-                if (!house.id) {
+                if (!house.id && SummerHouseEditController.that.$scope.summerhouses) {
                     $scope.houseWithNumberExists = false;
                     for (let existingHouse of SummerHouseEditController.that.$scope.summerhouses) {
                         if (existingHouse.number == house.number && existingHouse.id) {

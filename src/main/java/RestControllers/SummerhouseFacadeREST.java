@@ -25,11 +25,11 @@ import java.util.Map;
 @Path("summerhouse")
 public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
-    @Inject
-    TaxFacadeREST taxFacadeREST;
-
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+
+    @Inject
+    TaxFacadeREST taxFacadeREST;
 
     public SummerhouseFacadeREST() {
         super(Summerhouse.class);
@@ -78,8 +78,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Override
     @Produces({MediaType.APPLICATION_JSON})
     public List<Summerhouse> findAll() {
-        List<Summerhouse> summerhouses = super.findAll();
-        return summerhouses;
+        return super.findAll();
     }
 
     @GET

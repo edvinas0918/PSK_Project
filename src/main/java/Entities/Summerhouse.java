@@ -126,7 +126,7 @@ public class Summerhouse implements Serializable {
         this.endPeriod = endPeriod;
     }
 
-    public String getBeginPeriod() {
+   /* public String getBeginPeriod() {
         DateFormat df = new SimpleDateFormat("yyyy MM dd");
         return df.format(beginPeriod);
     }
@@ -134,7 +134,7 @@ public class Summerhouse implements Serializable {
     public String getEndPeriod() {
         DateFormat df = new SimpleDateFormat("yyyy MM dd");
         return df.format(endPeriod);
-    }
+    }*/
 
     public int getCapacity() {
         return capacity;
