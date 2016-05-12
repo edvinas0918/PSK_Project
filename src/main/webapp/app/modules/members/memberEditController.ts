@@ -29,7 +29,7 @@ module SummerHouses.members {
         ) {
             this.$scope.editing = false;
             this.$scope.editable = false;
-            this.$scope.candidate = false;
+            this.$scope.candidateReview = false;
             this.$scope.memberTax = 0;
             this.$scope.nextMembershipExpiration = null;
             this.$scope.errorMessage = '';
@@ -108,7 +108,7 @@ module SummerHouses.members {
             this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
                 this.$scope.member = member;
                 if (member.memberStatus.name.toLowerCase() === "candidate"){
-                    this.$scope.candidate = true;
+                    this.$scope.candidateReview = true;
                 }
                 this.$scope.member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
             });
