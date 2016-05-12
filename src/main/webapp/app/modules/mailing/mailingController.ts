@@ -77,8 +77,7 @@ module SummerHouses.mailing {
 
             this.$scope.sendMessage = () => {
                 var btn =$("#load").button('loading');
-                this.$scope.emailAddresses.push("aurimas.repecka@gmail.com")
-                var mailing = new Mailing(this.$scope.user, this.$scope.emailAddresses);
+                var mailing = new Mailing(_.map(this.$scope.emailAddresses, (email) => {return email.value;}));
                 this.$http.post('/rest/mailing/invitation', mailing ).success(() => {
                     btn.button('reset');
                     this.$scope.isSuccesful = true;

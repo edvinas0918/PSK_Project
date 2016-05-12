@@ -6,6 +6,9 @@ module SummerHouses.payments {
 
     class PaymentsController {
 
+        private shownPayments: Payment[];
+        private viewId : number;
+
         static $inject = [
             '$rootScope',
             '$scope',
@@ -17,7 +20,9 @@ module SummerHouses.payments {
             private $scope: any,
             private $http: any
         ) {
+            this.$scope.viewId = 0;
             this.getPayments();
+            this.getShownPayments();
 
             this.$scope.isConfirmed  = (payment: Payment) => {
                 return payment.confirmed ?  "Patvirtinas" : "Nepatvirtintas";
@@ -28,6 +33,11 @@ module SummerHouses.payments {
                     this.getPayments();
                     this.showSuccessMessage();
                 });
+            }
+
+            this.$scope.viewChange = (viewId : number) => {
+                this.getPayments();
+                this.viewChanged(viewId);
             }
 
             this.$scope.checked = [];
@@ -46,13 +56,43 @@ module SummerHouses.payments {
             });
         }
 
+        getShownPayments(): void{
+            this.$http.get('/rest/payments').success((payments: Payment[]) => {
+                this.$scope.shownPayments = payments;
+            });
+        }
+
         showSuccessMessage(): void{
             this.$scope.showAlert = true;
             setTimeout(() => {
                 this.$scope.$apply(() => {
                     this.$scope.showAlert = false;
+                    this.viewChanged(this.$scope.viewId);
                 })
-            }, 4000)
+            }, 2000)
+        }
+
+        viewChanged(viewId : number) : void{
+            switch (viewId){
+                case 0:
+                    this.$scope.viewId = viewId;
+                    this.$scope.shownPayments = this.$scope.payments;
+                    break;
+                case 1:
+                    this.$scope.viewId = viewId;
+                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment) => {
+                        if(payment.confirmed)
+                            return payment;
+                    });
+                    break;
+                case 2:
+                    this.$scope.viewId = viewId;
+                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment) => {
+                        if(!payment.confirmed)
+                            return payment;
+                    });
+                    break;
+            }
         }
     }
 

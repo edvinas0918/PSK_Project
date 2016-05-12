@@ -25,7 +25,7 @@ public class MailingInvitationFacadeREST {
     @Path("invitation")
     @Consumes({MediaType.APPLICATION_JSON})
     public void sendInvitationMessage(Mailing mailing) throws Exception {
-        emailService.sendInvitationEmail(mailing.getEmailAddresses(), mailing.getCurrentUser());
+        emailService.sendInvitationEmail(mailing.getEmailAddresses());
     }
 
     @POST
