@@ -49,6 +49,15 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
         super.create(entity);
     }
 
+    @POST
+    @Path("postServiceMap")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void handleService(Map<Object, Object> serviceMap) throws Exception {
+        String serialized = getGensonInstance().serialize(serviceMap);
+        AdditionalService additionalService = getGensonInstance().deserialize(serialized, AdditionalService.class);
+        create(additionalService);
+    }
+
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

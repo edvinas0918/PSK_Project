@@ -25,7 +25,8 @@ module SummerHouses.houses {
                 var service = this.$scope.service;
                 if (!$routeParams.serviceID){
                     service.additionalservicereservationList = [];
-                    this.$http.post('/rest/additionalservice/createService/', service).success(() => {
+                    service.id = null;
+                    this.$http.post('/rest/additionalservice/postServiceMap/', service).success(() => {
                         //this.showSuccessMessage();
                         $location.path("/admin/services");
                         //alert("zjbs created");
