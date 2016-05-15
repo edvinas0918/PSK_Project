@@ -453,4 +453,9 @@
                                  referencedColumnNames="ID" onDelete="CASCADE" onUpdate="CASCADE"></addForeignKeyConstraint>
         <addPrimaryKey tableName="HouseServicePrice" columnNames="houseID,serviceID"></addPrimaryKey>
     </changeSet>
+    <changeSet id="gin01" author="Gintautas">
+        <sql>
+            alter table labanorasfriends.clubmember add IsActive bit not null default 1;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

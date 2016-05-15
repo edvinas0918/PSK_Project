@@ -120,4 +120,13 @@ public class ClubMemberService {
         return (Memberstatus)em.createNamedQuery("Memberstatus.findByName")
                 .setParameter("name", name).getSingleResult();
     }
+
+    public void DeactivateMember (int id){
+        Clubmember member = em.find(Clubmember.class, id);
+        member.setIsActive(false);
+    }
+
+    public int countActiveMembers() {
+        return em.createNamedQuery("Clubmember.findAll").getResultList().size();
+    }
 }
