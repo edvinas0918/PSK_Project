@@ -13,14 +13,16 @@ module SummerHouses.houses {
             '$rootScope',
             '$scope',
             '$http',
-            '$route'
+            '$route',
+            '$location'
         ];
 
         constructor(
             private $rootScope:any,
             private $scope: any,
             private $http: any,
-            private $route: any
+            private $route: any,
+            private $location: any
         ) {
             SummerHousesController.that = this;
             this.getSummerHouses();
@@ -49,6 +51,10 @@ module SummerHouses.houses {
 
             }
 
+            this.$scope.previewHouse = (house: SummerHouse) => {
+                this.$location.path("/previewHouse/" + house.id);
+            }
+
         }
 
         getTaxes(): void{
@@ -59,6 +65,10 @@ module SummerHouses.houses {
 
         getSummerHouses(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
+                for (let summerhouse of summerhouses) {
+                    summerhouse.endPeriod = new Date(summerhouse.endPeriod);
+                    summerhouse.beginPeriod = new Date(summerhouse.beginPeriod);
+                }
                 this.$scope.summerhouses = summerhouses;
             });
         }

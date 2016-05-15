@@ -126,15 +126,17 @@ public class Summerhouse implements Serializable {
         this.endPeriod = endPeriod;
     }
 
-   /* public String getBeginPeriod() {
+   public Date getBeginPeriod() {
         DateFormat df = new SimpleDateFormat("yyyy MM dd");
-        return df.format(beginPeriod);
-    }
+        //return df.format(beginPeriod);
+        return beginPeriod;
+   }
 
-    public String getEndPeriod() {
+    public Date getEndPeriod() {
         DateFormat df = new SimpleDateFormat("yyyy MM dd");
-        return df.format(endPeriod);
-    }*/
+        //return df.format(endPeriod);
+        return endPeriod;
+    }
 
     public int getCapacity() {
         return capacity;
