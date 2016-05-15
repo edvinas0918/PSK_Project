@@ -35,6 +35,11 @@ import java.util.List;
 @XmlRootElement
 public class Summerhouse implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -169,6 +174,14 @@ public class Summerhouse implements Serializable {
 
     public void setTaxID(Tax taxID) {
         this.taxID = taxID;
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
 
     @Override

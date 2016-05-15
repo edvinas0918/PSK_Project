@@ -36,6 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Clubmember implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
     @Size(max = 20)
     @Column(name = "fbUserId")
     private String fbUserId;
@@ -263,4 +268,11 @@ public class Clubmember implements Serializable {
         this.fbUserId = fbUserId;
     }
 
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
 }

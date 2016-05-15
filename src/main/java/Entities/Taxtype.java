@@ -7,18 +7,7 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,6 +39,11 @@ public class Taxtype implements Serializable {
     private String name;
     @OneToMany(orphanRemoval = true, mappedBy = "taxTypeID", fetch = FetchType.EAGER)
     private List<Tax> taxList;
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     public Taxtype() {
     }
@@ -86,6 +80,14 @@ public class Taxtype implements Serializable {
 
     public void setTaxList(List<Tax> taxList) {
         this.taxList = taxList;
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
 
     @Override

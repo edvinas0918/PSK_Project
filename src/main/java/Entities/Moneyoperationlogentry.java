@@ -7,20 +7,8 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -37,6 +25,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Moneyoperationlogentry.findByOperationTime", query = "SELECT m FROM Moneyoperationlogentry m WHERE m.operationTime = :operationTime"),
     @NamedQuery(name = "Moneyoperationlogentry.findByInvokedMethod", query = "SELECT m FROM Moneyoperationlogentry m WHERE m.invokedMethod = :invokedMethod")})
 public class Moneyoperationlogentry implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -149,6 +143,14 @@ public class Moneyoperationlogentry implements Serializable {
     @Override
     public String toString() {
         return "Entities.Moneyoperationlogentry[ id=" + id + " ]";
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
     
 }

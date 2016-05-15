@@ -23,6 +23,11 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name")})
 public class AdditionalService implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,6 +113,13 @@ public class AdditionalService implements Serializable {
     @Override
     public String toString() {
         return "Entities.Additionalservice[ id=" + id + " ]";
+    }
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
     
 }
