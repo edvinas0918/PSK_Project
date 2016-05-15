@@ -73,6 +73,10 @@ public class AuthenticationControllerREST {
 
         Clubmember user = userServiceREST.findByFbUserId(userInfo.getString("id"));
 
+        if(user != null && user.getIsActive() == false){
+            return new AuthResponse(400, "Vartotojas yra deaktyvuotas. Prisijungimas negalimas.");
+        }
+
         HttpSession session = webRequest.getSession();
 
         if (user == null){
