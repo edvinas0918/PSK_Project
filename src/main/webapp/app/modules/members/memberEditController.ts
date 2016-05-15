@@ -51,11 +51,14 @@ module SummerHouses.members {
             this.getFormFields();
 
             this.$scope.deactivateMember = () => {
-                this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
-                    authService.logout().then (function () {
-                        $location.path("/login");
+                var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
+                if (result){
+                    this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
+                        authService.logout().then (function () {
+                            $location.path("/login");
+                        });
                     });
-                });
+                }
             }
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
