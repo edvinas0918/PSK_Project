@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 
 module SummerHouses.houses {
 
@@ -66,8 +67,8 @@ module SummerHouses.houses {
         getSummerHouses(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
                 for (let summerhouse of summerhouses) {
-                    summerhouse.endPeriod = new Date(summerhouse.endPeriod);
-                    summerhouse.beginPeriod = new Date(summerhouse.beginPeriod);
+                    summerhouse.endPeriod = moment(summerhouse.endPeriod).format('MMMM Do');
+                    summerhouse.beginPeriod = moment(summerhouse.beginPeriod).format('MMMM Do');
                 }
                 this.$scope.summerhouses = summerhouses;
             });
