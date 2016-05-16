@@ -31,6 +31,8 @@ module SummerHouses.houses {
             this.httpService = $http;
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
+            } else {
+                SummerHouseEditController.that.scope.house = new SummerHouse(new Date(), new Date(), "", 0, 0, null, []);
             }
             this.getSummerHouses();
             this.getTaxes();
@@ -106,7 +108,7 @@ module SummerHouses.houses {
         getAdditionalServices():void {
             SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHouseEditController.that.scope.house;
-                if (house) {
+                if (house.id) {
                     SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServices/' + house.id).success((prices:HouseServicePrice[], status) => {
                         for (let service of services) {
                             for (let houseServicePrice of prices) {
