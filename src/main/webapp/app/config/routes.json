@@ -84,6 +84,32 @@
       }
     },
     {
+      "url": "/houses/:houseID",
+      "config": {
+        "name": "houseInfoPage",
+        "templateUrl": "app/modules/houses/templates/houses.html",
+        "controller": "summerHousesController",
+        "layout": "member",
+        "allowedRoles": [
+          "Admin",
+          "Member"
+        ]
+      }
+    },
+    {
+      "url": "/houses/:summerhouseID/reservation",
+      "config": {
+        "name": "houseReservation",
+        "templateUrl": "app/modules/reservation/templates/reservation.html",
+        "controller": "reservationController",
+        "layout": "member",
+        "allowedRoles": [
+          "Admin",
+          "Member"
+        ]
+      }
+    },
+    {
       "url": "/admin/houses",
       "config": {
         "name": "houses",

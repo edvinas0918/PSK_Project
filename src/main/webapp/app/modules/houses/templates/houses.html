@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <a href="portfolio-item.html">
-                        <img class="img-responsive img-hover" ng-src="{{x.image}}" alt="">
+                        <img class="img-responsive img-hover" ng-src="{{x.image}}" alt="" style="width:600px; height:250px;">
                     </a>
                 </div>
                 <div class="col-md-6">
@@ -22,8 +22,8 @@
                     <p>{{x.description}}</p>
                     <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/houses/{{x.id}}">Keisti</a>
                     <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteHouse(x)">Ištrinti</button>
-                    <button class="btn btn-success" ng-if="!isAdminPage" ng-click="">Rezervuoti</button>
-                    <button class="btn btn-info" ng-if="!isAdminPage" ng-click="">Plačiau</button>
+                    <a class="btn btn-success" ng-if="!isAdminPage" ng-href="#/houses/{{x.id}}/reservation">Rezervuoti</a>
+                    <a class="btn btn-info" ng-if="!isAdminPage" ng-click="">Plačiau</a>
                 </div>
             </div>
         </td>
