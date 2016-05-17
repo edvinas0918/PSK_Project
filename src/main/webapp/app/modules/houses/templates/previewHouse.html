@@ -14,9 +14,11 @@
             <h4><small>mokėti: </small>{{house.taxID.taxTypeID.name}}</h4>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <h4><small>aprašymas: </small></h4>
-            <p>{{house.description}}</p>
+            <textarea rows="5" class="textarea-none" disabled>
+                {{house.description}}
+            </textarea>
         </div>
     </div>
     <div class="row">
@@ -25,20 +27,22 @@
                 <thead>
                 <tr>
                     <th>Pavadinimas</th>
-                    <th>Kaina klubo taškais</th>
+                    <th>Kaina taškais</th>
                     <th>Aprašymas</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="service in additionalServices">
-                    <td>
+                    <td class="col-xs-2">
                         <p>{{service.name}}</p>
                     </td>
-                    <td>
+                    <td class="col-xs-1">
                         <p>{{service.pricePoints}}</p>
                     </td>
-                    <td>
-                        <p>{{service.description}}</p>
+                    <td class="col-xs-9">
+                        <textarea rows="5" class="textarea-none" disabled>
+                            {{service.description}}
+                        </textarea>
                     </td>
                 </tr>
                 </tbody>
