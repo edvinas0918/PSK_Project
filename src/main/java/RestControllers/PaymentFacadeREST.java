@@ -1,6 +1,7 @@
 package RestControllers;
 
 import Entities.Payment;
+import Services.IPaymentService;
 import Services.PaymentService;
 
 import javax.ejb.Stateless;
@@ -22,7 +23,8 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    @Inject private PaymentService paymentService;
+    @Inject
+    private IPaymentService paymentService;
 
     public PaymentFacadeREST() {
         super(Payment.class);

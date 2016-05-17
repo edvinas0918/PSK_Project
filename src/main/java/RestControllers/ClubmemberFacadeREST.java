@@ -7,7 +7,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Entities.Settings;
-import Helpers.MembershipException;
+import Helpers.InsufficientFundsException;
 import Interceptors.Authentication;
 import Services.ClubMemberService;
 import Services.EmailService;
@@ -155,7 +155,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     public Response renewMembership(Clubmember member) {
         try{
             clubMemberService.renewMembership(member);
-        } catch(MembershipException exc){
+        } catch(InsufficientFundsException exc){
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
         return Response.status(Response.Status.OK).build();

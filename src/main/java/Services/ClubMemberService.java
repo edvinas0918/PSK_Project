@@ -4,7 +4,7 @@ import Entities.Clubmember;
 import Entities.Memberstatus;
 import Entities.Payment;
 import Entities.Tax;
-import Helpers.MembershipException;
+import Helpers.InsufficientFundsException;
 import Interceptors.Audit;
 
 import javax.ejb.Stateless;
@@ -37,6 +37,9 @@ public class ClubMemberService {
     @Inject
     EmailService emailService;
 
+    @Inject
+    IPaymentService paymentService;
+
     public Clubmember getMember(Integer id){
         return em.find(Clubmember.class, id);
     }
@@ -57,7 +60,7 @@ public class ClubMemberService {
         }
     }
 
-    public void renewMembership(Clubmember member) throws MembershipException{
+    public void renewMembership(Clubmember member) throws InsufficientFundsException {
         //Adding year to membership year
         Calendar c = Calendar.getInstance();
         if (member.getMembershipExpirationDate() != null)
@@ -65,24 +68,7 @@ public class ClubMemberService {
         c.add(Calendar.YEAR, 1);
         member.setMembershipExpirationDate(c.getTime());
 
-        //Updating member points
-        Integer memberTax = ((Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult()).getPrice();
-        Integer memberPoints = member.getPoints();
-
-        if (memberPoints < memberTax)
-            throw new MembershipException("Nepakankamas taškų skaičius.");
-
-        member.setPoints(memberPoints - memberTax);
-        em.merge(member);
-
-        //Creating Payment
-        Calendar cal = Calendar.getInstance();
-        Payment payment = new Payment();
-        payment.setMemberID(member);
-        payment.setPaymentDate(cal.getTime());
-        payment.setTaxID((Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult());
-        payment.setConfirmed(false);
-        em.persist(payment);
+        paymentService.makePayment(member, (Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult());
     }
 
     public void recommendCandidate(int candidateId){
