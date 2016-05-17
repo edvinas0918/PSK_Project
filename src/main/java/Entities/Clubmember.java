@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "clubmember")
 @NamedQueries({
-        @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c WHERE c.isActive = 1"),
+        @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c WHERE c.isActive = true"),
         @NamedQuery(name = "Clubmember.findById", query = "SELECT c FROM Clubmember c WHERE c.id = :id"),
         @NamedQuery(name = "Clubmember.findByFirstName", query = "SELECT c FROM Clubmember c WHERE c.firstName = :firstName"),
         @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
