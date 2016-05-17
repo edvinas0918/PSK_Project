@@ -478,4 +478,41 @@
             alter table labanorasfriends.taxtype add OPT_LOCK_VERSION INTEGER NOT NULL;
         </sql>
     </changeSet>
+    <changeSet id="gin03" author="Gintautas">
+        <sql>
+            alter table labanorasfriends.additionalservice drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.additionalservicereservation drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.clubmember drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.houseserviceprice drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.invitation drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.memberformfield drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.memberstatus drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.moneyoperationlogentry drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.payment drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.recommendation drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.settings drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.summerhouse drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.summerhouse_services drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.summerhousereservation drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.tax drop column OPT_LOCK_VERSION;
+            alter table labanorasfriends.taxtype drop column OPT_LOCK_VERSION;
+
+            alter table labanorasfriends.additionalservice add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.additionalservicereservation add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.clubmember add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.houseserviceprice add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.invitation add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.memberformfield add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.memberstatus add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.moneyoperationlogentry add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.payment add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.recommendation add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.settings add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.summerhouse add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.summerhouse_services add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.summerhousereservation add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.tax add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+            alter table labanorasfriends.taxtype add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

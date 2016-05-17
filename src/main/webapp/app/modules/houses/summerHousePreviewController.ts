@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
 module SummerHouses.houses {
     class SummerHousePreviewController {
@@ -21,8 +22,8 @@ module SummerHouses.houses {
 
         getHouse(houseID:string):void {
             SummerHousePreviewController.that.$http.get('/rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
-                house.endPeriod = new Date(house.endPeriod);
-                house.beginPeriod = new Date(house.beginPeriod);
+                house.endPeriod = moment(house.endPeriod).format('MMMM Do');
+                house.beginPeriod = moment(house.beginPeriod).format('MMMM Do');
                 SummerHousePreviewController.that.$scope.house = house;
                 this.getAdditionalServices();
             });
