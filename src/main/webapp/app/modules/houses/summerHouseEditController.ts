@@ -41,9 +41,12 @@ module SummerHouses.houses {
                 if (_.filter(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id}).length > 0) {
                     _.remove(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id});
                 } else {
+                    if (!SummerHouseEditController.that.scope.house.additionalServices) {
+                        SummerHouseEditController.that.scope.house.additionalServices = [];
+                    }
                     SummerHouseEditController.that.scope.house.additionalServices.push(service);
                 }
-            }
+            };
             this.$scope.saveHouse = (house:SummerHouse) => {
                 if (house.beginPeriod > house.endPeriod) {
                     $scope.datesDoNotMatch = true;

@@ -34,10 +34,10 @@ module SummerHouses.houses {
                     description: null,
                     capacity: null,
                     number: null
-                }
+                };
                 $scope.summerhouses.push(sm);
                 $scope.$apply();
-            }
+            };
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             this.$scope.deleteHouse = (house: SummerHouse) => {
                 this.$http.delete('/rest/summerhouse/' + house.id).success(() => {
@@ -46,7 +46,7 @@ module SummerHouses.houses {
                         this.$scope.summerhouses.splice(index, 1);
                     }
                 });
-            }
+            };
 
             this.$scope.editHouse = (house: SummerHouse) => {
                 house.editMode = true;
