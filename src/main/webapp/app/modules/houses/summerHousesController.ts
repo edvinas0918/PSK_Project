@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../utilities/weekPicker.ts"/>
 
 module SummerHouses.houses {
 
@@ -54,6 +55,7 @@ module SummerHouses.houses {
             this.$scope.previewHouse = (house: SummerHouse) => {
                 this.$location.path("/previewHouse/" + house.id);
             }
+            this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
 
         }
 

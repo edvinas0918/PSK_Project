@@ -1,0 +1,11 @@
+.unselected-date > a {
+    border-color: #c5c5c5 !important;
+    background-color: rgb(246, 246, 246) !important;
+    color: #454545 !important;
+}
+
+.selected-date > a {
+    border-color: #003eff !important;
+    background-color: #007fff !important;
+    color: #fff !important;
+}
