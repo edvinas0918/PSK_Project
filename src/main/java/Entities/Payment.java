@@ -7,20 +7,7 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -35,6 +22,12 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
     @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed")})
 public class Payment implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -134,6 +127,14 @@ public class Payment implements Serializable {
     @Override
     public String toString() {
         return "Entities.Payment[ id=" + id + " ]";
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
     
 }

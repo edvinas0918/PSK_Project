@@ -31,6 +31,8 @@ module SummerHouses.houses {
             this.httpService = $http;
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
+            } else {
+                SummerHouseEditController.that.scope.house = new SummerHouse(new Date(), new Date(), "", 0, 0, null, []);
             }
             this.getSummerHouses();
             this.getTaxes();
@@ -64,9 +66,7 @@ module SummerHouses.houses {
                 if($scope.houseImage){
                     this.saveHouseWithImage(house);
                 } else {
-                    SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
-                        $location.path("/houses");
-                    });
+                    SummerHouseEditController.that.postHouse(house);
                 }
             }
         }
@@ -82,10 +82,24 @@ module SummerHouses.houses {
             fr.readAsDataURL(file);
             fr.onload = function () {
                 house.image = fr.result;
-                SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success(() => {
-                    SummerHouseEditController.that.$location.path("/houses");
-                });
+                SummerHouseEditController.that.postHouse(house);
             };
+        }
+
+        postHouse(house: SummerHouse):void {
+            SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success((houseID:number, status) => {
+                if (SummerHouseEditController.that.$scope.additionalServices) {
+                    var houseServicePrices = Array<HouseServicePrice>();
+                    for (let service of SummerHouseEditController.that.$scope.additionalServices) {
+                        houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.pricePoints));
+                    }
+                    SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
+                        SummerHouseEditController.that.$location.path("/houses");
+                    });
+                } else {
+                    SummerHouseEditController.that.$location.path("/houses");
+                }
+            });
         }
 
         getTaxes():void {
@@ -96,20 +110,28 @@ module SummerHouses.houses {
 
         getAdditionalServices():void {
             SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
-                var house = SummerHouseEditController.that.scope.house;
-                if (house) {
-                    for (let service of services) {
-                        _.find(house.additionalServices, function (houseService) {
-                            return houseService.id == service.id;
-                        });
-                        for (let houseService of house.additionalServices) {
-                            if (houseService.id == service.id) {
-                                service.selected = true;
+                let house = SummerHouseEditController.that.scope.house;
+                if (house.id) {
+                    SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServices/' + house.id).success((prices:HouseServicePrice[], status) => {
+                        for (let service of services) {
+                            for (let houseServicePrice of prices) {
+                                if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
+                                    service.pricePoints = houseServicePrice.price;
+                                }
+                            }
+                            for (let houseService of house.additionalServices) {
+                                if (houseService.id == service.id) {
+                                    service.selected = true;
+                                }
                             }
                         }
-                    }
+                        // editing a house with specified services
+                        SummerHouseEditController.that.$scope.additionalServices = services;
+                    });
+                } else {
+                    // new house, all services
+                    SummerHouseEditController.that.$scope.additionalServices = services;
                 }
-                SummerHouseEditController.that.$scope.additionalServices = services;
             });
         }
 

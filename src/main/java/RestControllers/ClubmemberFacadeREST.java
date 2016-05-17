@@ -60,7 +60,8 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Clubmember entity) throws Exception {
         Settings memberMax = settingsService.getSetting("membersMax");
-        if(super.count() >= Integer.parseInt(memberMax.getValue()))
+        if(clubMemberService.countActiveMembers()
+                >= Integer.parseInt(memberMax.getValue()))
             throw new Exception("Registracija nepavyko. Pasiektas maksimalus vartotojų skaičius. Pabandykite vėliau.");
         super.create(entity);
     }
@@ -99,8 +100,8 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void remove(@PathParam("id") int id) {
+        clubMemberService.DeactivateMember(id);
     }
 
     @GET
@@ -130,7 +131,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Clubmember> findAll() {
-        return super.findAll();
+        return em.createNamedQuery("Clubmember.findAll").getResultList();
     }
 
     @GET

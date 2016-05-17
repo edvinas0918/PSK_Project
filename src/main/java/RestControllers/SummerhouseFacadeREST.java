@@ -45,13 +45,14 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @POST
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
+    public Integer handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
         Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
         if (summerhouse.getId() != null) {
             edit(summerhouse.getId(), summerhouse);
         } else {
             create(summerhouse);
         }
+        return summerhouse.getId();
     }
 
     @PUT

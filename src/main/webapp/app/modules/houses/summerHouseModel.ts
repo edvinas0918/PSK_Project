@@ -4,8 +4,7 @@ module SummerHouses.houses {
         public id:number;
         public taxID:number;
         public editMode:boolean;
-        public additionalServices:AdditionalService[];
-        constructor(public endPeriod:Date, beginPeriod:Date, public description:string, public capacity:number, public number:number, public image:any) {
+        constructor(public endPeriod:Date, public beginPeriod:Date, public description:string, public capacity:number, public number:number, public image:any, public additionalServices:AdditionalService[]) {
 
         }
     }
@@ -15,6 +14,14 @@ module SummerHouses.houses {
         constructor(public id:number, public price:number) {
 
         }
+    }
+
+    export class HouseServicePrice {
+
+        constructor(public houseID: number, public serviceID: number, public price: number) {
+
+        }
+
     }
 
     export class AdditionalService {

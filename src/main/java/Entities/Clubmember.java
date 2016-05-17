@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "clubmember")
 @NamedQueries({
-        @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c"),
+        @NamedQuery(name = "Clubmember.findAll", query = "SELECT c FROM Clubmember c WHERE c.isActive = true"),
         @NamedQuery(name = "Clubmember.findById", query = "SELECT c FROM Clubmember c WHERE c.id = :id"),
         @NamedQuery(name = "Clubmember.findByFirstName", query = "SELECT c FROM Clubmember c WHERE c.firstName = :firstName"),
         @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
@@ -28,13 +28,19 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
         @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup"),
         @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId"),
-        @NamedQuery(name = "Clubmember.findByMembershipExpirationDate", query = "SELECT c FROM Clubmember c WHERE c.membershipExpirationDate = :membershipExpirationDate")
+        @NamedQuery(name = "Clubmember.findByMembershipExpirationDate", query = "SELECT c FROM Clubmember c WHERE c.membershipExpirationDate = :membershipExpirationDate"),
+        @NamedQuery(name = "Clubmember.findByIsActive", query = "SELECT c FROM Clubmember c WHERE c.isActive = :isActive")
 })
 
 
 @XmlRootElement
 public class Clubmember implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
     @Size(max = 20)
     @Column(name = "fbUserId")
     private String fbUserId;
@@ -90,6 +96,10 @@ public class Clubmember implements Serializable {
     private List<Invitation> invitationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IsActive")
+    private boolean isActive;
 
     public Clubmember() {
     }
@@ -98,13 +108,14 @@ public class Clubmember implements Serializable {
         this.id = id;
     }
 
-    public Clubmember(Integer id, String firstName, String lastName, String email, int points, int reservationGroup) {
+    public Clubmember(Integer id, String firstName, String lastName, String email, int points, int reservationGroup, boolean isActive) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.points = points;
         this.reservationGroup = reservationGroup;
+        this.isActive = isActive;
     }
 
     public Integer getId() {
@@ -212,8 +223,16 @@ public class Clubmember implements Serializable {
         return paymentList;
     }
 
+    public boolean getIsActive() {
+        return isActive;
+    }
+
     public void setPaymentList(List<Payment> paymentList) {
         this.paymentList = paymentList;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Override
@@ -249,4 +268,11 @@ public class Clubmember implements Serializable {
         this.fbUserId = fbUserId;
     }
 
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
 }

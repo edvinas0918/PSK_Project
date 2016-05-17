@@ -73,7 +73,9 @@
                         <td>
                             <input type="checkbox" ng-click="manageService(service)" ng-checked="{{service.selected}}"> {{service.name}}</input>
                         </td>
-                        <td>{{service.pricePoints}}</td>
+                        <td>
+                            <input type="number" min="1" ng-model="service.pricePoints" />
+                        </td>
                     </tr>
                     </tbody>
                 </table>

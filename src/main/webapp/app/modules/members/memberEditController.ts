@@ -15,7 +15,8 @@ module SummerHouses.members {
             '$http',
             '$route',
             '$window',
-            'sh-authentication-service'
+            'sh-authentication-service',
+            '$location'
         ];
 
         constructor(
@@ -25,7 +26,8 @@ module SummerHouses.members {
             private $http: any,
             private $route: any,
             private $window: any,
-            private authService: any
+            private authService: any,
+            private $location: ng.ILocationService
         ) {
             this.$scope.editing = false;
             this.$scope.editable = false;
@@ -47,6 +49,17 @@ module SummerHouses.members {
             this.getMember($routeParams.memberID);
 
             this.getFormFields();
+
+            this.$scope.deactivateMember = () => {
+                var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
+                if (result){
+                    this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
+                        authService.logout().then (function () {
+                            $location.path("/login");
+                        });
+                    });
+                }
+            }
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 if (this.$scope.newMember){

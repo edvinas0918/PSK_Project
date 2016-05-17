@@ -58,6 +58,18 @@
       }
     },
     {
+      "url": "/previewHouse/:houseID",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/previewHouse.html",
+        "controller": "summerHousePreviewController",
+        "layout": "member",
+        "allowedRoles": [
+          "Member",
+          "Admin"
+        ]
+      }
+    },
+    {
       "url": "/",
       "config": {
         "name": "houses",

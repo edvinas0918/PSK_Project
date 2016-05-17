@@ -7,17 +7,8 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -32,6 +23,12 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Additionalservicereservation.findByServiceStart", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceStart = :serviceStart"),
     @NamedQuery(name = "Additionalservicereservation.findByServiceEnd", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceEnd = :serviceEnd")})
 public class Additionalservicereservation implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -112,6 +109,14 @@ public class Additionalservicereservation implements Serializable {
     @Override
     public String toString() {
         return "Entities.Additionalservicereservation[ additionalservicereservationPK=" + additionalservicereservationPK + " ]";
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
     
 }

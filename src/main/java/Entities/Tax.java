@@ -6,17 +6,7 @@
 package Entities;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -50,6 +40,11 @@ public class Tax implements Serializable {
     @JoinColumn(name = "TaxTypeID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Taxtype taxTypeID;
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     public Tax() {
     }
@@ -93,6 +88,14 @@ public class Tax implements Serializable {
 
     public void setTaxTypeID(Taxtype taxTypeID) {
         this.taxTypeID = taxTypeID;
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
 
     @Override

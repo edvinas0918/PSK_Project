@@ -20,10 +20,14 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Additionalservice.findAll", query = "SELECT a FROM AdditionalService a"),
     @NamedQuery(name = "Additionalservice.findById", query = "SELECT a FROM AdditionalService a WHERE a.id = :id"),
-    @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name"),
-    @NamedQuery(name = "Additionalservice.findByPricePoints", query = "SELECT a FROM AdditionalService a WHERE a.pricePoints = :pricePoints")})
+    @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name")})
 public class AdditionalService implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,10 +43,6 @@ public class AdditionalService implements Serializable {
     @Size(max = 65535)
     @Column(name = "Description")
     private String description;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "PricePoints")
-    private int pricePoints;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalServiceID", fetch = FetchType.EAGER)
     private List<Additionalservicereservation> additionalservicereservationList;
 
@@ -53,10 +53,9 @@ public class AdditionalService implements Serializable {
         this.id = id;
     }
 
-    public AdditionalService(Integer id, String name, int pricePoints) {
+    public AdditionalService(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.pricePoints = pricePoints;
     }
 
     public Integer getId() {
@@ -81,14 +80,6 @@ public class AdditionalService implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getPricePoints() {
-        return pricePoints;
-    }
-
-    public void setPricePoints(int pricePoints) {
-        this.pricePoints = pricePoints;
     }
 
     public List<Additionalservicereservation> getAdditionalservicereservationList() {
@@ -122,6 +113,13 @@ public class AdditionalService implements Serializable {
     @Override
     public String toString() {
         return "Entities.Additionalservice[ id=" + id + " ]";
+    }
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
     
 }

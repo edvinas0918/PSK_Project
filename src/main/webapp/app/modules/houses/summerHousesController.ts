@@ -1,6 +1,8 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../utilities/weekPicker.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 
 module SummerHouses.houses {
 
@@ -13,14 +15,16 @@ module SummerHouses.houses {
             '$rootScope',
             '$scope',
             '$http',
-            '$route'
+            '$route',
+            '$location'
         ];
 
         constructor(
             private $rootScope:any,
             private $scope: any,
             private $http: any,
-            private $route: any
+            private $route: any,
+            private $location: any
         ) {
             SummerHousesController.that = this;
             this.getSummerHouses();
@@ -49,6 +53,11 @@ module SummerHouses.houses {
 
             }
 
+            this.$scope.previewHouse = (house: SummerHouse) => {
+                this.$location.path("/previewHouse/" + house.id);
+            }
+            this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
+
         }
 
         getTaxes(): void{
@@ -59,6 +68,10 @@ module SummerHouses.houses {
 
         getSummerHouses(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
+                for (let summerhouse of summerhouses) {
+                    summerhouse.endPeriod = moment(summerhouse.endPeriod).format('MMMM Do');
+                    summerhouse.beginPeriod = moment(summerhouse.beginPeriod).format('MMMM Do');
+                }
                 this.$scope.summerhouses = summerhouses;
             });
         }

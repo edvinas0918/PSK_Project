@@ -1,0 +1,52 @@
+<div class="container">
+    <div class="col-md-6">
+        <img align="middle" class="img-responsive" src="{{house.image}}" alt="">
+    </div>
+    <div class="row">
+
+        <!-- Blog Post Content Column -->
+        <div class="col-md-12">
+
+            <!-- Title -->
+            <h1>Vasarnamis nr. {{house.number}}</h1>
+            <h4><small>rezervacija galima: </small>{{house.beginPeriod}} - {{house.endPeriod}}</h4>
+            <h4><small>talpina: </small>{{house.capacity}} gyventojus(-ą)</h4>
+            <h4><small>mokėti: </small>{{house.taxID.taxTypeID.name}}</h4>
+        </div>
+
+        <div class="col-md-12">
+            <h4><small>aprašymas: </small></h4>
+            <textarea rows="5" class="textarea-none" disabled>
+                {{house.description}}
+            </textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Pavadinimas</th>
+                    <th>Kaina taškais</th>
+                    <th>Aprašymas</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="service in additionalServices">
+                    <td class="col-xs-2">
+                        <p>{{service.name}}</p>
+                    </td>
+                    <td class="col-xs-1">
+                        <p>{{service.pricePoints}}</p>
+                    </td>
+                    <td class="col-xs-9">
+                        <textarea rows="5" class="textarea-none" disabled>
+                            {{service.description}}
+                        </textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

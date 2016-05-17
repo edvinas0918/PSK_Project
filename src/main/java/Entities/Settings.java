@@ -6,15 +6,7 @@
 package Entities;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -53,6 +45,11 @@ public class Settings implements Serializable {
     @Size(min = 1, max = 40)
     @Column(name = "ReferenceCode")
     private String referenceCode;
+    @Basic(optional = false)
+    @NotNull
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private int optLockVersion;
 
     public Settings() {
     }
@@ -98,6 +95,14 @@ public class Settings implements Serializable {
 
     public void setReferenceCode(String referenceCode) {
         this.referenceCode = referenceCode;
+    }
+
+    public int getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(int optLockVersion) {
+        this.optLockVersion = optLockVersion;
     }
 
     @Override
