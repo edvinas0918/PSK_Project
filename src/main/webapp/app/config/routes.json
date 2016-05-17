@@ -134,6 +134,28 @@
       }
     },
     {
+      "url": "/houses/available",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/availableHouses.html",
+        "controller": "availableHousesController",
+        "layout": "member",
+        "allowedRoles": [
+          "Member"
+        ]
+      }
+    },
+    {
+      "url": "/admin/houses/available",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/availableHouses.html",
+        "controller": "availableHousesController",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
+    },
+    {
       "url": "/admin/services",
       "config": {
         "name": "services",

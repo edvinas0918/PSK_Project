@@ -6,6 +6,7 @@
 package RestControllers;
 
 import Entities.Summerhouse;
+import Entities.Summerhousereservation;
 import Helpers.Helpers;
 
 import javax.ejb.Stateless;
@@ -14,6 +15,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +59,39 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
             create(summerhouse);
         }
         return summerhouse.getId();
+    }
+
+    @GET
+    @Path("available")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Summerhouse> getAvailableSummerhouses(
+            @QueryParam("from") String fromDateString,
+            @QueryParam("until") String untilDateString) throws ParseException {
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDate = format.parse(fromDateString);
+        Date untilDate = format.parse(untilDateString);
+
+        List<Summerhouse> houses = super.findAll();
+        List<Summerhouse> availableHouses = new ArrayList<>();
+
+        for (Summerhouse house: houses) {
+            List<Summerhousereservation> reservations = house.getSummerhousereservationList();
+
+            boolean result = true;
+            for(Summerhousereservation reservation: reservations){
+                if((reservation.getFromDate().after(fromDate) || reservation.getFromDate().equals(fromDate)) &&
+                        reservation.getFromDate().before(untilDate) ||
+                    reservation.getUntilDate().after(fromDate)
+                            && (reservation.getUntilDate().before(untilDate) || reservation.getUntilDate().equals(untilDate))){
+                    result = false;
+                    break;
+                }
+            }
+            if(result) availableHouses.add(house);
+        }
+
+        return availableHouses;
     }
 
     @PUT
