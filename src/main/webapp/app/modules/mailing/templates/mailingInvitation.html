@@ -15,7 +15,7 @@
                                             <div class="input-group">
                                                 <input type="email" class="form-control" ng-model="x.value" ng-required="!$last || mailing.emailAddresses.length == 1" >
                                                 <span class="input-group-btn" ng-show="$last">
-                                                    <button type="button" class="btn btn-success" ng-click="addEmailAddresses()">Pridėti</button>
+                                                    <button type="button" class="btn btn-success" ng-click="addEmailAddresses()" ng-disabled="!canAdd">Pridėti</button>
                                                 </span>
                                                 <span class="input-group-btn" ng-show="!$last">
                                                     <button type="button" class="btn btn-danger" ng-click="removeEmailAddresses(x)">Ištrinti</button>
