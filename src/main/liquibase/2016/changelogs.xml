@@ -547,4 +547,10 @@
                                  referencedColumnNames="ID" onUpdate="CASCADE" onDelete="CASCADE"/>
         <addPrimaryKey tableName="additionalservicereservation" columnNames="id"></addPrimaryKey>
     </changeSet>
+
+    <changeSet id="ar004" author="Aurimas">
+        <sql>
+            ALTER TABLE Invitation DROP INDEX UN_Invitation_Email
+        </sql>
+    </changeSet>
 </databaseChangeLog>

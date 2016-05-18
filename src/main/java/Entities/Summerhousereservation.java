@@ -20,6 +20,8 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name = "Summerhousereservation.findAll", query = "SELECT s FROM Summerhousereservation s"),
     @NamedQuery(name = "Summerhousereservation.findById", query = "SELECT s FROM Summerhousereservation s WHERE s.id = :id"),
+    @NamedQuery(name = "Summerhousereservation.findBySummerhouseId", query = "SELECT s FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
+    @NamedQuery(name = "Summerhousereservation.findByClubmemberId", query = "SELECT s FROM Summerhousereservation s WHERE s.member.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByFromDate", query = "SELECT s FROM Summerhousereservation s WHERE s.fromDate = :fromDate"),
     @NamedQuery(name = "Summerhousereservation.findByUntilDate", query = "SELECT s FROM Summerhousereservation s WHERE s.untilDate = :untilDate")})
 public class Summerhousereservation implements Serializable {
@@ -47,24 +49,21 @@ public class Summerhousereservation implements Serializable {
     private Date untilDate;
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Clubmember memberID;
+    private Clubmember member;
     @JoinColumn(name = "SummerhouseID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Summerhouse summerhouseID;
+    private Summerhouse summerhouse;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservationID", fetch = FetchType.EAGER)
     private List<Additionalservicereservation> additionalServiceReservations;
 
     public Summerhousereservation() {
     }
 
-    public Summerhousereservation(Integer id) {
-        this.id = id;
-    }
-
-    public Summerhousereservation(Integer id, Date fromDate, Date untilDate) {
-        this.id = id;
+    public Summerhousereservation(Date fromDate, Date untilDate, Clubmember member, Summerhouse summerhouse) {
         this.fromDate = fromDate;
         this.untilDate = untilDate;
+        this.member = member;
+        this.summerhouse = summerhouse;
     }
 
     public Integer getId() {
@@ -91,20 +90,20 @@ public class Summerhousereservation implements Serializable {
         this.untilDate = untilDate;
     }
 
-    public Clubmember getMemberID() {
-        return memberID;
+    public Clubmember getMember() {
+        return member;
     }
 
-    public void setMemberID(Clubmember memberID) {
-        this.memberID = memberID;
+    public void setMember(Clubmember member) {
+        this.member = member;
     }
 
-    public Summerhouse getSummerhouseID() {
-        return summerhouseID;
+    public Summerhouse getSummerhouse() {
+        return summerhouse;
     }
 
-    public void setSummerhouseID(Summerhouse summerhouseID) {
-        this.summerhouseID = summerhouseID;
+    public void setSummerhouse(Summerhouse summerhouse) {
+        this.summerhouse = summerhouse;
     }
 
     public int getOptLockVersion() {
