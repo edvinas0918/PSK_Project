@@ -29,10 +29,10 @@ public class MailingInvitationFacadeREST {
     }
 
     @POST
-    @Path("reccomendation")
+    @Path("recommendation")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void sendReccomendationMessage(String [] emails, String user, String link) throws Exception {
-        emailService.sendReccomendationEmail(emails, user, link);
+    public void sendRecommendationMessage(Mailing mailing) throws Exception {
+        emailService.sendRecommendationEmail(mailing.getEmailAddresses());
     }
 
     @POST

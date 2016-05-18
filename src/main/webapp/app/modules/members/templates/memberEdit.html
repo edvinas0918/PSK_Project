@@ -64,6 +64,11 @@
                             data-target="#confirm-delete">Pratęsti narystę</button>
                 </div>
             </div>
+            <div class="form-group" ng-if="candidate">
+                <div class="col-sm-10">
+                    <button type="button" class="btn btn-success" ng-click="requestRecommendations()">Rekomendacijų užklausimas</button>
+                </div>
+            </div>
             <div class="form-group" ng-if="editable">
                 <div class="col-sm-10">
                     <button type="button" class="btn btn-danger" ng-click="deactivateMember()">Išsiregistruoti iš sistemos</button>

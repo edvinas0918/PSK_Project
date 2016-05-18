@@ -133,12 +133,13 @@ public class EmailService {
         sendHtmlEmail(mailTo, subject, message);
     }
 
-    public void sendReccomendationEmail(String [] mailTo, String user, String link) throws Exception {
+    public void sendRecommendationEmail(String [] mailTo) throws Exception {
         String subject = "Naujo nario rekomendacija";
 
         // message contains HTML markups
         String message = "Sveiki,<br>";
-        message += String.format("Naujas kandidatas <i> %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"%s\">mūsų puslapyje</a>.", user, link);
+        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"http://localhost:8080/#/members/%d\">mūsų puslapyje</a>.",
+                clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
         sendHtmlEmail(mailTo, subject, message);

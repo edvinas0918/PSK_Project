@@ -12,6 +12,7 @@ module SummerHouses.members {
             '$rootScope',
             '$scope',
             '$routeParams',
+            '$uibModal',
             '$http',
             '$route',
             '$window',
@@ -22,6 +23,7 @@ module SummerHouses.members {
             private $rootScope:any,
             private $scope: any,
             private $routeParams: any,
+            private $uibModal: any,
             private $http: any,
             private $route: any,
             private $window: any,
@@ -55,6 +57,31 @@ module SummerHouses.members {
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
+            }
+
+            this.$scope.requestRecommendations = () => {
+                this.$uibModal.open({
+                    templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
+                    controller: 'mailingController',
+                    resolve: {
+                        emailSubject: () => {
+                            return "Naujo nario rekomendacija";
+                        },
+                        emailBody: () => {
+                            return "Sveiki,\nNaujas kandidatas " + this.$scope.member.firstName + " " + this.$scope.member.lastName
+                                + " laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
+                        },
+                        maxRecipients: () => {
+                            return 2;
+                        },
+                        method: () => {
+                            return "recommendation";
+                        },
+                        title: () => {
+                            return "Prašyk rekomendacijų!";
+                        }
+                    }
+                });
             }
 
         }
