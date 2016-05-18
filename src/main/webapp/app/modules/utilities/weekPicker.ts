@@ -71,6 +71,11 @@ module Utilities{
                     return date.format(this.format) == d.format(this.format);
                 });
             });
+            if (this.dates.length > 7 && _.some(this.dates, (date) => {
+                    return this.weekIsIsolated(date);
+                })){
+                this.removeAllDates();
+            }
         }
 
         addWeekByDate(date: moment.Moment){

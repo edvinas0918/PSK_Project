@@ -1,5 +1,6 @@
 package Services;
 
+import Entities.Invitation;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -15,6 +16,8 @@ import javax.mail.internet.MimeUtility;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.Properties;
@@ -25,6 +28,9 @@ import java.util.Properties;
 
 @Stateful
 public class EmailService {
+
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
 
     @Inject
     ClubMemberService clubMemberService;
@@ -52,7 +58,7 @@ public class EmailService {
         }
     }
 
-   private void sendHtmlEmail(String toAddresses[], String subject, String message)
+   private void sendHtmlEmail(String toAddresses[], String subject, String message, boolean isLogged)
            throws Exception {
 
         // sets SMTP server properties
@@ -90,21 +96,16 @@ public class EmailService {
 
            // sends the e-mail
            Transport.send(msg);
+
+           if(isLogged){
+               Invitation invitation = new Invitation();
+               invitation.setMemberID(clubMemberService.getCurrentUser());
+               invitation.setInvitationDate(new Date());
+               invitation.setEmail(toAddress);
+               em.persist(invitation);
+               em.flush();
+           }
        }
-    }
-
-    private String getEmailTemplate() throws Exception {
-        VelocityEngine ve = new VelocityEngine();
-        ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-        ve.init();
-        VelocityContext context = new VelocityContext();
-        Template t = ve.getTemplate(reccomendationTemplate);
-
-        StringWriter writer = new StringWriter();
-        t.merge( context, writer );
-
-        return writer.toString();
     }
 
     public void sendInvitationEmail(String [] mailTo) throws Exception {
@@ -116,7 +117,7 @@ public class EmailService {
                 clubMemberService.getCurrentUser().getFirstName() + " " + clubMemberService.getCurrentUser().getLastName());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        sendHtmlEmail(mailTo, subject, message);
+        sendHtmlEmail(mailTo, subject, message, false);
     }
 
     public void sendPointsReceivedEmail(String [] mailTo, Integer pointsReceived, String reason) throws Exception {
@@ -130,18 +131,19 @@ public class EmailService {
         message += String.format(" Jums skirta <i>%d</i> taškų. <br>Priežastis: %s", pointsReceived, reason);
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        sendHtmlEmail(mailTo, subject, message);
+        sendHtmlEmail(mailTo, subject, message, false);
     }
 
-    public void sendReccomendationEmail(String [] mailTo, String user, String link) throws Exception {
+    public void sendRecommendationEmail(String [] mailTo) throws Exception {
         String subject = "Naujo nario rekomendacija";
 
         // message contains HTML markups
         String message = "Sveiki,<br>";
-        message += String.format("Naujas kandidatas <i> %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"%s\">mūsų puslapyje</a>.", user, link);
+        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"http://localhost:8080/#/members/%d\">mūsų puslapyje</a>.",
+                clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        sendHtmlEmail(mailTo, subject, message);
+        sendHtmlEmail(mailTo, subject, message, true);
     }
 
     public void sendCandidatePromotionEmail(String mailTo) throws Exception {
@@ -152,6 +154,6 @@ public class EmailService {
                 "suteikiamas paslaugas.");
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        sendHtmlEmail(new String[] {mailTo}, subject, message);
+        sendHtmlEmail(new String[] {mailTo}, subject, message, false);
     }
 }

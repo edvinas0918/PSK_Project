@@ -3,7 +3,7 @@
         <div class="control-group">
             <div class="modal-header">
                 <button type="button" class="close" ng-click="cancel()">&times;</button>
-                <h4 class="modal-title">Pakviesk draugą!</h4>
+                <h4 class="modal-title">{{title}}</h4>
             </div>
             <div class="modal-body">
                         <div class="control-group form-group">
@@ -15,7 +15,7 @@
                                             <div class="input-group">
                                                 <input type="email" class="form-control" ng-model="x.value" ng-required="!$last || mailing.emailAddresses.length == 1" >
                                                 <span class="input-group-btn" ng-show="$last">
-                                                    <button type="button" class="btn btn-success" ng-click="addEmailAddresses()">Pridėti</button>
+                                                    <button type="button" class="btn btn-success" ng-click="addEmailAddresses()" ng-disabled="!canAdd">Pridėti</button>
                                                 </span>
                                                 <span class="input-group-btn" ng-show="!$last">
                                                     <button type="button" class="btn btn-danger" ng-click="removeEmailAddresses(x)">Ištrinti</button>
@@ -29,28 +29,28 @@
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Tema:</label>
-                                <input type="text" class="form-control" id="subject" value="Kvietimas prisijungti prie „Labanoro draugų“" readonly >
+                                <input type="text" class="form-control" id="subject" value="{{emailSubject}}" readonly >
                             </div>
                         </div>
                         <div class="control-group form-group">
                             <div class="controls">
                                 <label>Žinutė:</label>
-                                <textarea rows="6" cols="100" class="form-control" id="message" maxlength="999" style="resize:none" readonly>Sveiki,&#13;&#10;{{user}} Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.&#13;&#10;&#13;&#10;Pagarbiai,&#13;&#10;„Labanoro draugų“ klubas</textarea>
+                                <textarea rows="6" cols="100" class="form-control" id="message" maxlength="999" style="resize:none" readonly>{{emailBody}}</textarea>
                             </div>
                         </div>
                 </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary pull-left" id="load"
-                        data-loading-text="<i class='fa fa-spinner fa-spin'></i> Siunčiamas pakvietimas...">Išsiųsti pakvietimą</button>
+                        data-loading-text="<i class='fa fa-spinner fa-spin'></i> Siunčiama...">Išsiųsti</button>
                 <button class="btn btn-default" ng-click="cancel()">Atšaukti</button>
             </div>
             <div class="alert alert-success fade in" ng-show="isSuccesful">
                 <a href="" class="close" data-dismiss="alert">&times;</a>
-                <strong>Patvirtinta!</strong> Jūsu pakvietimas išsiųstas sėkmingai.
+                <strong>Patvirtinta!</strong> Išsiųsta sėkmingai.
             </div>
             <div class="alert alert-danger fade in" ng-show="isError">
                 <a href="" class="close" data-dismiss="alert">&times;</a>
-                <strong>Klaida!</strong> Pakvietimo išsiuntimas nesėkmingas.
+                <strong>Klaida!</strong> Išsiuntimas nesėkmingas.
             </div>
         </div>
     </form>

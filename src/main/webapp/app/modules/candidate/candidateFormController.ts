@@ -6,12 +6,14 @@
 
 module SummerHouses.members {
 
+    import Settings = SummerHouses.settings.Settings;
     class CandidateFormController {
 
         static $inject = [
             '$rootScope',
             '$scope',
             '$routeParams',
+            '$uibModal',
             '$http',
             '$route',
             '$window',
@@ -22,6 +24,7 @@ module SummerHouses.members {
             private $rootScope:any,
             private $scope: any,
             private $routeParams: any,
+            private $uibModal: any,
             private $http: any,
             private $route: any,
             private $window: any,
@@ -35,6 +38,11 @@ module SummerHouses.members {
             this.$scope.errorMessage = '';
             this.$scope.successMessage = '';
 
+            this.$scope.recommendationsRequests =  0;
+            this.$scope.recommendationsRequestsMax = 0;
+            this.$scope.recommendationsReceived = 0;
+            this.$scope.recommendationsReceivedMin = 0;
+
             this.$scope.isAdminPage = false;
 
             this.authService.getUser().then((user) => {
@@ -45,6 +53,7 @@ module SummerHouses.members {
 
             this.$scope.formFields = { };
             this.getFormFields();
+            this.getRecommendationInformation();
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 this.$http.put('rest/clubmember/' + this.$scope.member.id, this.$scope.member).success(() => {
@@ -57,6 +66,31 @@ module SummerHouses.members {
                 this.$scope.editing = true;
             }
 
+            this.$scope.requestRecommendations = () => {
+                this.$uibModal.open({
+                    templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
+                    controller: 'mailingController',
+                    resolve: {
+                        emailSubject: () => {
+                            return "Naujo nario rekomendacija";
+                        },
+                        emailBody: () => {
+                            return "Sveiki,\nNaujas kandidatas " + this.$scope.member.firstName + " " + this.$scope.member.lastName
+                                + " laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
+                        },
+                        maxRecipients: () => {
+                            return 2;
+                        },
+                        method: () => {
+                            return "recommendation";
+                        },
+                        title: () => {
+                            return "Prašyk rekomendacijų!";
+                        }
+                    }
+                });
+            }
+
         }
 
         getFormFields(): void{
@@ -66,6 +100,18 @@ module SummerHouses.members {
                     this.$scope.formFields[field.fieldName] = field.visible;
                 });
             });
+        }
+
+        getRecommendationInformation(): void{
+            this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
+                this.$scope.recommendationsRequestsMax = settings.value;
+            });
+            this.$http.get('/rest/settings/recommendationsMin').success((settings: Settings) => {
+                this.$scope.recommendationsReceivedMin = settings.value;
+            });
+           /* this.$http.get('/rest/member/invitation', this.$scope.member.id).success((invitationCount: number) => {
+                this.$scope.recommendationsRequests = invitationCount;
+            });*/
         }
 
         showSuccessMessage(message: string): void{

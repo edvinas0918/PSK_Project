@@ -515,4 +515,15 @@
             alter table labanorasfriends.taxtype add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
         </sql>
     </changeSet>
+    <changeSet id="ar003" author="Aurimas">
+        <sql>
+            INSERT INTO Settings (Name, Value,ReferenceCode)
+            VALUES ("Rekomendacijų užklausų skaičius", '3', 'reccommendationRequestMax');
+        </sql>
+    </changeSet>
+    <changeSet id="ar004" author="Aurimas">
+        <sql>
+            ALTER TABLE Invitation DROP INDEX UN_Invitation_Email
+        </sql>
+    </changeSet>
 </databaseChangeLog>

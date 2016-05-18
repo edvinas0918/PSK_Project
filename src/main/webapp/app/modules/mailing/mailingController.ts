@@ -19,6 +19,7 @@ module SummerHouses.mailing {
         private isError: boolean;
         private user: string;
         private emailAddresses: string [];
+        private canAdd: boolean;
 
         static that:MailingController;
 
@@ -28,7 +29,12 @@ module SummerHouses.mailing {
             '$timeout',
             '$uibModalInstance',
             '$http',
-            'sh-authentication-service'
+            'sh-authentication-service',
+            'emailSubject',
+            'emailBody',
+            'maxRecipients',
+            'method',
+            'title'
         ];
 
         private scope: any;
@@ -40,12 +46,23 @@ module SummerHouses.mailing {
             private $timeout: any,
             private $uibModalInstance: any,
             private $http: any,
-            private authService: IAuthenticationService
+            private authService: IAuthenticationService,
+            private emailSubject: string,
+            private emailBody: string,
+            private maxRecipients: number,
+            private method: string,
+            private title: string
         ) {
             MailingController.that = this;
 
             this.scope = $scope;
             this.httpService = $http;
+            this.$scope.emailBody = emailBody;
+            this.$scope.emailSubject = emailSubject;
+            this.$scope.maxRecipients = maxRecipients;
+            this.$scope.method = method;
+            this.$scope.title = title;
+            this.$scope.canAdd = true;
 
             MailingController.that.authService.getUser().then((user:AuthenticationService.IUser) => {
                 this.$scope.user = user.firstName + " " + user.lastName;
@@ -68,17 +85,19 @@ module SummerHouses.mailing {
 
             this.$scope.addEmailAddresses = () => {
                 this.$scope.emailAddresses.push(new EmailAddress(""));
+                this.$scope.canAdd = (this.$scope.emailAddresses.length < this.$scope.maxRecipients);
             }
 
             this.$scope.removeEmailAddresses = (email: EmailAddress) => {
                 _.pull(this.$scope.emailAddresses, email);
-
+                this.$scope.canAdd = (this.$scope.emailAddresses.length < this.$scope.maxRecipients);
             }
 
             this.$scope.sendMessage = () => {
+                var url = '/rest/mailing/' + this.$scope.method;
                 var btn =$("#load").button('loading');
                 var mailing = new Mailing(_.map(this.$scope.emailAddresses, (email) => {return email.value;}));
-                this.$http.post('/rest/mailing/invitation', mailing ).success(() => {
+                this.$http.post(url, mailing ).success(() => {
                     btn.button('reset');
                     this.$scope.isSuccesful = true;
                     setTimeout(function() {

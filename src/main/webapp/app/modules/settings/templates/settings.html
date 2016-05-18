@@ -44,6 +44,14 @@
                            ng-model="settings[3].value" ng-required="true">
                 </td>
             </tr>
+            <tr>
+                <td>Maksimalus rekomendacijų užklausimų skaičius</td>
+                <td ng-if="!editing">{{settings[4].value}}</td>
+                <td ng-if="editing">
+                    <input min="1" class="form-control" type="text"
+                           ng-model="settings[4].value" ng-required="true">
+                </td>
+            </tr>
             </tbody>
         </table>
 

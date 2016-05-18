@@ -10,6 +10,8 @@ module SummerHouses.members {
 
     class MembersController {
 
+        private user: string;
+
         static $inject = [
             '$rootScope',
             '$scope',
@@ -31,6 +33,11 @@ module SummerHouses.members {
         ) {
             this.$scope.formFields = { }
 
+            this.authService.getUser().then((user:AuthenticationService.IUser) => {
+                this.$scope.user = user.firstName + " " + user.lastName;
+            }, function (error) {
+                this.$scope.user = "Anonimas";
+            });
 
             this.getMembers();
             this.getFormFields();
@@ -43,10 +50,27 @@ module SummerHouses.members {
             }
 
             this.$scope.openInvitationForm = () => {
-               this.$uibModal.open({
-                  templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
-                   controller: 'mailingController'
-               });
+                this.$uibModal.open({
+                    templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
+                    controller: 'mailingController',
+                    resolve: {
+                        emailSubject: () => {
+                            return "Kvietimas prisijungti prie „Labanoro draugų“";
+                        },
+                        emailBody: () => {
+                            return "Sveiki,\n" + this.$scope.user + " Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
+                        },
+                        maxRecipients: () => {
+                            return 5;
+                        },
+                        method: () => {
+                            return "invitation";
+                        },
+                        title: () => {
+                            return "Pakviesk draugą!";
+                        }
+                    }
+                });
             }
 
             this.$scope.redirectToMemberEdit = (member: Member) => {

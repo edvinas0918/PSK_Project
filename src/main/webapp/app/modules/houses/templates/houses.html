@@ -6,6 +6,8 @@
 <div class="form-inline">
     <div week-picker picker="weekPicker"></div>
     <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
+    <a class="btn btn-success pull-right" ng-if="!isAdminPage" ng-href="#/houses/available">Ieškoti laisvų vasarnamių</a>
+    <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/available">Ieškoti laisvų vasarnamių</a>
 </div>
 
 <table class="table">

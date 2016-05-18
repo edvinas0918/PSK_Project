@@ -52,6 +52,18 @@
                 <p class="form-control-static">{{member.membershipExpirationDate | date:'yyyy-MM-dd'}}</p>
             </div>
         </div>
+        <div class="form-group" ng-if="candidate">
+            <label class="control-label col-sm-2">Išiųstos rekomendacijų užklausos:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{recommendationsRequests}}/{{recommendationsRequestsMax}}</p>
+            </div>
+        </div>
+        <div class="form-group" ng-if="candidate">
+            <label class="control-label col-sm-2">Gautos rekomendacijos:</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{recommendationsReceived}}/{{recommendationsReceivedMin}}</p>
+            </div>
+        </div>
         <div class="form-inline col-sm-offset-2 ">
             <div class="form-group" ng-if="editable">
                 <div class="col-sm-10">
@@ -62,6 +74,11 @@
                 <div class="col-sm-10">
                     <button type="button" class="btn btn-success" ng-click="collectMembershipData()" data-toggle="modal"
                             data-target="#confirm-delete">Pratęsti narystę</button>
+                </div>
+            </div>
+            <div class="form-group" ng-if="candidate">
+                <div class="col-sm-10">
+                    <button type="button" class="btn btn-success" ng-click="requestRecommendations()">Rekomendacijų užklausimas</button>
                 </div>
             </div>
             <div class="form-group" ng-if="editable">
