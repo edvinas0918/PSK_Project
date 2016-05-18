@@ -521,4 +521,9 @@
             VALUES ("Rekomendacijų užklausų skaičius", '3', 'reccommendationRequestMax');
         </sql>
     </changeSet>
+    <changeSet id="ar004" author="Aurimas">
+        <sql>
+            ALTER TABLE Invitation DROP INDEX UN_Invitation_Email
+        </sql>
+    </changeSet>
 </databaseChangeLog>

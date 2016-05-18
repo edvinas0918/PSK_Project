@@ -6,6 +6,7 @@
 
 module SummerHouses.members {
 
+    import Settings = SummerHouses.settings.Settings;
     class CandidateFormController {
 
         static $inject = [
@@ -37,6 +38,11 @@ module SummerHouses.members {
             this.$scope.errorMessage = '';
             this.$scope.successMessage = '';
 
+            this.$scope.recommendationsRequests =  0;
+            this.$scope.recommendationsRequestsMax = 0;
+            this.$scope.recommendationsReceived = 0;
+            this.$scope.recommendationsReceivedMin = 0;
+
             this.$scope.isAdminPage = false;
 
             this.authService.getUser().then((user) => {
@@ -47,6 +53,7 @@ module SummerHouses.members {
 
             this.$scope.formFields = { };
             this.getFormFields();
+            this.getRecommendationInformation();
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 this.$http.put('rest/clubmember/' + this.$scope.member.id, this.$scope.member).success(() => {
@@ -93,6 +100,18 @@ module SummerHouses.members {
                     this.$scope.formFields[field.fieldName] = field.visible;
                 });
             });
+        }
+
+        getRecommendationInformation(): void{
+            this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
+                this.$scope.recommendationsRequestsMax = settings.value;
+            });
+            this.$http.get('/rest/settings/recommendationsMin').success((settings: Settings) => {
+                this.$scope.recommendationsReceivedMin = settings.value;
+            });
+           /* this.$http.get('/rest/member/invitation', this.$scope.member.id).success((invitationCount: number) => {
+                this.$scope.recommendationsRequests = invitationCount;
+            });*/
         }
 
         showSuccessMessage(message: string): void{

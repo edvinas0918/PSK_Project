@@ -40,6 +40,13 @@ public class SettingsControllerREST{
         return settings;
     }
 
+    @GET
+    @Path("{referenceCode}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Settings findbByRefernceCode(@PathParam("referenceCode") String referenceCode) {
+        return settingsService.getSetting(referenceCode);
+    }
+
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     public void saveSettings(List<SettingsDto> settingsDto) {
