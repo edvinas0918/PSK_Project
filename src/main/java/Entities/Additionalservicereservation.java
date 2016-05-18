@@ -9,57 +9,83 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Dziugas
+ * @author Mindaugas
  */
 @Entity
 @Table(name = "additionalservicereservation")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Additionalservicereservation.findAll", query = "SELECT a FROM Additionalservicereservation a"),
-    @NamedQuery(name = "Additionalservicereservation.findBySummerhouseReservationID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.summerhouseReservationID = :summerhouseReservationID"),
-    @NamedQuery(name = "Additionalservicereservation.findByTaxID", query = "SELECT a FROM Additionalservicereservation a WHERE a.additionalservicereservationPK.taxID = :taxID"),
+    @NamedQuery(name = "Additionalservicereservation.findById", query = "SELECT a FROM Additionalservicereservation a WHERE a.id = :id"),
     @NamedQuery(name = "Additionalservicereservation.findByServiceStart", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceStart = :serviceStart"),
     @NamedQuery(name = "Additionalservicereservation.findByServiceEnd", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceEnd = :serviceEnd")})
 public class Additionalservicereservation implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
     @Basic(optional = false)
     @NotNull
-    @Version
-    @Column(name = "OPT_LOCK_VERSION")
-    private int optLockVersion;
-
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AdditionalservicereservationPK additionalservicereservationPK;
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "ServiceStart")
     @Temporal(TemporalType.DATE)
     private Date serviceStart;
     @Column(name = "ServiceEnd")
     @Temporal(TemporalType.DATE)
     private Date serviceEnd;
-    @JoinColumn(name = "AdditionalServiceID", referencedColumnName = "ID")
+    @JoinColumn(name = "SummerhouseReservationID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private AdditionalService additionalServiceID;
+    private Summerhousereservation summerhouseReservationID;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "AdditionalServiceID")
+    private int additionalServiceID;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "TaxID")
+    private int taxID;
 
     public Additionalservicereservation() {
     }
 
-    public Additionalservicereservation(AdditionalservicereservationPK additionalservicereservationPK) {
-        this.additionalservicereservationPK = additionalservicereservationPK;
+    public Summerhousereservation getSummerhouseReservationID() {
+        return summerhouseReservationID;
     }
 
-    public Additionalservicereservation(int summerhouseReservationID, int taxID) {
-        this.additionalservicereservationPK = new AdditionalservicereservationPK(summerhouseReservationID, taxID);
+    public void setSummerhouseReservationID(Summerhousereservation summerhouseReservationID) {
+        this.summerhouseReservationID = summerhouseReservationID;
     }
 
-    public AdditionalservicereservationPK getAdditionalservicereservationPK() {
-        return additionalservicereservationPK;
+    public int getAdditionalServiceID() {
+        return additionalServiceID;
     }
 
-    public void setAdditionalservicereservationPK(AdditionalservicereservationPK additionalservicereservationPK) {
-        this.additionalservicereservationPK = additionalservicereservationPK;
+    public void setAdditionalServiceID(int additionalServiceID) {
+        this.additionalServiceID = additionalServiceID;
+    }
+
+    public int getTaxID() {
+        return taxID;
+    }
+
+    public void setTaxID(int taxID) {
+        this.taxID = taxID;
+    }
+
+    public Additionalservicereservation(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getServiceStart() {
@@ -78,18 +104,10 @@ public class Additionalservicereservation implements Serializable {
         this.serviceEnd = serviceEnd;
     }
 
-    public AdditionalService getAdditionalServiceID() {
-        return additionalServiceID;
-    }
-
-    public void setAdditionalServiceID(AdditionalService additionalServiceID) {
-        this.additionalServiceID = additionalServiceID;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (additionalservicereservationPK != null ? additionalservicereservationPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -100,7 +118,7 @@ public class Additionalservicereservation implements Serializable {
             return false;
         }
         Additionalservicereservation other = (Additionalservicereservation) object;
-        if ((this.additionalservicereservationPK == null && other.additionalservicereservationPK != null) || (this.additionalservicereservationPK != null && !this.additionalservicereservationPK.equals(other.additionalservicereservationPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -108,15 +126,7 @@ public class Additionalservicereservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Additionalservicereservation[ additionalservicereservationPK=" + additionalservicereservationPK + " ]";
-    }
-
-    public int getOptLockVersion() {
-        return optLockVersion;
-    }
-
-    public void setOptLockVersion(int optLockVersion) {
-        this.optLockVersion = optLockVersion;
+        return "Entities.Additionalservicereservation[ id=" + id + " ]";
     }
     
 }

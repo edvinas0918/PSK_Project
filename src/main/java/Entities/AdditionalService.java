@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -21,6 +23,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Additionalservice.findAll", query = "SELECT a FROM AdditionalService a"),
     @NamedQuery(name = "Additionalservice.findById", query = "SELECT a FROM AdditionalService a WHERE a.id = :id"),
     @NamedQuery(name = "Additionalservice.findByName", query = "SELECT a FROM AdditionalService a WHERE a.name = :name")})
+@XmlRootElement
 public class AdditionalService implements Serializable {
 
     @Basic(optional = false)
@@ -43,8 +46,6 @@ public class AdditionalService implements Serializable {
     @Size(max = 65535)
     @Column(name = "Description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalServiceID", fetch = FetchType.EAGER)
-    private List<Additionalservicereservation> additionalservicereservationList;
 
     public AdditionalService() {
     }
@@ -80,14 +81,6 @@ public class AdditionalService implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Additionalservicereservation> getAdditionalservicereservationList() {
-        return additionalservicereservationList;
-    }
-
-    public void setAdditionalservicereservationList(List<Additionalservicereservation> additionalservicereservationList) {
-        this.additionalservicereservationList = additionalservicereservationList;
     }
 
     @Override

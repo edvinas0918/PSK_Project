@@ -7,6 +7,7 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -50,6 +51,8 @@ public class Summerhousereservation implements Serializable {
     @JoinColumn(name = "SummerhouseID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhouse summerhouseID;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservationID", fetch = FetchType.EAGER)
+    private List<Additionalservicereservation> additionalServiceReservations;
 
     public Summerhousereservation() {
     }
