@@ -521,6 +521,33 @@
             VALUES ("Rekomendacijų užklausų skaičius", '3', 'reccommendationRequestMax');
         </sql>
     </changeSet>
+    <changeSet id="min014" author="Mindaugas">
+        <dropTable tableName="additionalservicereservation"></dropTable>
+    </changeSet>
+    <changeSet id="min015" author="Mindaugas">
+        <createTable tableName="AdditionalServiceReservation">
+            <column name="id" type="integer"></column>
+            <column name="ServiceStart" type="DATE"/>
+            <column name="ServiceEnd" type="DATE"/>
+            <column name="AdditionalServiceID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SummerhouseReservationID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TaxID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="AdditionalServiceID" constraintName="SERVICE_RES_SERVICE_FK" referencedTableName="additionalservice"
+                                 referencedColumnNames="ID" onUpdate="CASCADE" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="SummerhouseReservationID" constraintName="SERVICE_RES_SUMMERHOUSE_FK" referencedTableName="summerhousereservation"
+                                 referencedColumnNames="ID" onUpdate="CASCADE" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="TaxID" constraintName="SERVICE_RES_TAX_FK" referencedTableName="tax"
+                                 referencedColumnNames="ID" onUpdate="CASCADE" onDelete="CASCADE"/>
+        <addPrimaryKey tableName="additionalservicereservation" columnNames="id"></addPrimaryKey>
+    </changeSet>
+
     <changeSet id="ar004" author="Aurimas">
         <sql>
             ALTER TABLE Invitation DROP INDEX UN_Invitation_Email

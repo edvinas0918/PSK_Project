@@ -65,7 +65,7 @@ public class Summerhouse implements Serializable {
     private String description;
     @Column(columnDefinition = "LONGTEXT", name="image")
     private String image;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseID", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
 
     @JoinTable(name = "summerhouse_services", joinColumns = {

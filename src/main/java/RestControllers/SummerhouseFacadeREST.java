@@ -139,5 +139,5 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

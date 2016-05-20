@@ -13,7 +13,7 @@ module SummerHouses {
 
         private static that:Application_PreLoad;
 
-        
+
         constructor() {
             console.log("Application PreLoad!");
 
@@ -61,31 +61,32 @@ module SummerHouses {
         $httpProvider.interceptors.push("authInterceptor");
     });
 
-    app.run(['$route', function($route)  {
+    app.run(['$route', function ($route) {
         $route.reload();
     }]);
 
     app.directive('weekPicker', function () {
         function link(scope, element, attrs) {
             element.datepicker({
-                    firstDay: 1,
-                    onSelect: function (dateText, inst) {
-                        if (attrs.picker && scope[attrs.picker]) {
-                            scope[attrs.picker].handleDateSelect(dateText);
-                        }
-                    },
-                    beforeShowDay: function (date) {
-
-                        if (attrs.picker && scope[attrs.picker].dateIsUnavailable(date)){
-                            return [false];
-                        }
-                        if (attrs.picker && scope[attrs.picker].hasDateSelected(date)){
-                            return [true, "selected-date"];
-                        }
-                        return [true, "unselected-date"];
+                firstDay: 1,
+                onSelect: function (dateText, inst) {
+                    if (attrs.picker && scope[attrs.picker]) {
+                        scope[attrs.picker].handleDateSelect(dateText);
                     }
-                });
+                },
+                beforeShowDay: function (date) {
+
+                    if (attrs.picker && scope[attrs.picker] && scope[attrs.picker].dateIsUnavailable(date)) {
+                        return [false];
+                    }
+                    if (attrs.picker && scope[attrs.picker] && scope[attrs.picker].hasDateSelected(date)) {
+                        return [true, "selected-date"];
+                    }
+                    return [true, "unselected-date"];
+                }
+            });
         }
+        
         return {
             link: link,
         };
