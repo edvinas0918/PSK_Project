@@ -2,6 +2,7 @@
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="../members/memberModel.ts"/>
 ///<reference path="../members/memberFormFieldModel.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="../utilities/utilities.ts"/>
 
 module SummerHouses.members {
@@ -33,12 +34,14 @@ module SummerHouses.members {
             this.$scope.editing = false;
             this.$scope.editable = true;
             this.$scope.candidate = true;
+            this.$scope.tooltip = true;
             this.$scope.memberTax = 0;
             this.$scope.nextMembershipExpiration = null;
             this.$scope.errorMessage = '';
             this.$scope.successMessage = '';
 
-            this.$scope.recommendationsRequests =  0;
+            this.$scope.recommendationsRequests =  [];
+            this.$scope.recommendationsRequestsText = '';
             this.$scope.recommendationsRequestsMax = 0;
             this.$scope.recommendationsReceived = 0;
             this.$scope.recommendationsReceivedMin = 0;
@@ -90,7 +93,6 @@ module SummerHouses.members {
                     }
                 });
             }
-
         }
 
         getFormFields(): void{
@@ -103,14 +105,15 @@ module SummerHouses.members {
         }
 
         getRecommendationInformation(): void{
-            this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
+            /*this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
                 this.$scope.recommendationsRequestsMax = settings.value;
             });
             this.$http.get('/rest/settings/recommendationsMin').success((settings: Settings) => {
                 this.$scope.recommendationsReceivedMin = settings.value;
             });
-           /* this.$http.get('/rest/member/invitation', this.$scope.member.id).success((invitationCount: number) => {
-                this.$scope.recommendationsRequests = invitationCount;
+           this.$http.get('/rest/invitation').success((invitations: Invitation[]) => {
+                this.$scope.recommendationsRequests = invitations;
+                this.formInvitationText(invitations);
             });*/
         }
 
@@ -132,6 +135,14 @@ module SummerHouses.members {
                     this.$scope.showAlertError = false;
                 })
             }, 4000)
+        }
+        
+        formInvitationText(invitations): void{
+            var invitationString = "";
+            _.forEach(invitations, (invitation) => {
+                invitationString = invitationString + moment(invitation.invitationDate).locale("LT").calendar() + " " + invitation.email +"\n";
+            });
+            this.$scope.recommendationsRequestsText =  invitationString;
         }
     }
 

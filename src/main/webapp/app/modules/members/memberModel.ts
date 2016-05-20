@@ -1,5 +1,17 @@
 module SummerHouses.members {
 
+    export class Invitation {
+        public id: number;
+        public email: string;
+        public invitationDate: Date;
+
+        constructor(id: number, email: string, invitationDate: Date){
+            this.id = id;
+            this.email = email;
+            this.invitationDate = invitationDate;
+        }
+    }
+
     export class MemberStatus {
         public id:number;
         public name:string;

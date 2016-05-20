@@ -148,13 +148,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         return String.valueOf(super.count());
     }
 
-    @GET
-    @Path("invitations")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Integer countInvitations(Integer id) {
-        return super.find(id).getInvitationList().size();
-    }
-
     @PUT
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
