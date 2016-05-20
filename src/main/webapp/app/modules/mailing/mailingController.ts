@@ -20,6 +20,7 @@ module SummerHouses.mailing {
         private user: string;
         private emailAddresses: string [];
         private canAdd: boolean;
+        private errrorMessage: string;
 
         static that:MailingController;
 
@@ -62,7 +63,6 @@ module SummerHouses.mailing {
             this.$scope.maxRecipients = maxRecipients;
             this.$scope.method = method;
             this.$scope.title = title;
-            this.$scope.canAdd = true;
 
             MailingController.that.authService.getUser().then((user:AuthenticationService.IUser) => {
                 this.$scope.user = user.firstName + " " + user.lastName;
@@ -74,6 +74,8 @@ module SummerHouses.mailing {
             this.$scope.emailAddresses.push(new EmailAddress(''));
             this.$scope.isSuccesful = false;
             this.$scope.isError = false;
+            this.$scope.canAdd = (this.$scope.emailAddresses.length < this.$scope.maxRecipients);
+            this.$scope.errorMessage = "";
 
             this.$scope.$on('$viewContentLoaded', () => {
                 this.$scope.$apply();
@@ -97,15 +99,24 @@ module SummerHouses.mailing {
                 var url = '/rest/mailing/' + this.$scope.method;
                 var btn =$("#load").button('loading');
                 var mailing = new Mailing(_.map(this.$scope.emailAddresses, (email) => {return email.value;}));
-                this.$http.post(url, mailing ).success(() => {
+                this.$http.post(url, mailing ).then(() => {
                     btn.button('reset');
                     this.$scope.isSuccesful = true;
                     setTimeout(function() {
                         $uibModalInstance.close();
-                    }, 3000);
+                        $rootScope.$broadcast('refreshPage');
+                    }, 2000);
                 }).
-                error(() => {
+                catch((error) => {
                     btn.button('reset');
+                    switch (error.status){
+                        case 406:
+                            this.$scope.errorMessage = "Nurodyti gavėjai/gavėjas nėra klubo nariai";
+                            break;
+                        case 500:
+                            this.$scope.errorMessage = "Siuntimas nesėkmingas";
+                            break;
+                    }
                     this.$scope.isError = true;
                 })
             }

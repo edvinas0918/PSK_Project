@@ -1,5 +1,6 @@
 package Services;
 
+import Entities.Clubmember;
 import Entities.Invitation;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -18,8 +19,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -155,5 +158,16 @@ public class EmailService {
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
         sendHtmlEmail(new String[] {mailTo}, subject, message, false);
+    }
+
+    public boolean isMember(String emails []){
+        for (String email: emails) {
+            TypedQuery<Clubmember> query = em.createNamedQuery("Clubmember.findByEmail", Clubmember.class).setParameter("email", email);
+            if (query.getResultList().isEmpty())
+                return false;
+            if(query.getSingleResult().getMemberStatus().getId() == 1)
+                return false;
+        }
+        return true;
     }
 }

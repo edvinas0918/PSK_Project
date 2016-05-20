@@ -41,9 +41,8 @@ module SummerHouses.members {
             this.$scope.successMessage = '';
 
             this.$scope.recommendationsRequests =  [];
-            this.$scope.recommendationsRequestsText = '';
             this.$scope.recommendationsRequestsMax = 0;
-            this.$scope.recommendationsReceived = 0;
+            this.$scope.recommendationsReceived = [];
             this.$scope.recommendationsReceivedMin = 0;
 
             this.$scope.isAdminPage = false;
@@ -69,6 +68,11 @@ module SummerHouses.members {
                 this.$scope.editing = true;
             }
 
+            this.$scope.$on("refreshPage", () => {
+                this.getRecommendationInformation();
+                this.$scope.$apply();
+            });
+
             this.$scope.requestRecommendations = () => {
                 this.$uibModal.open({
                     templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
@@ -82,7 +86,7 @@ module SummerHouses.members {
                                 + " laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
                         },
                         maxRecipients: () => {
-                            return 2;
+                            return this.$scope.recommendationsRequestsMax - this.$scope.recommendationsRequests.length;
                         },
                         method: () => {
                             return "recommendation";
@@ -105,7 +109,7 @@ module SummerHouses.members {
         }
 
         getRecommendationInformation(): void{
-            /*this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
+            this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
                 this.$scope.recommendationsRequestsMax = settings.value;
             });
             this.$http.get('/rest/settings/recommendationsMin').success((settings: Settings) => {
@@ -113,8 +117,10 @@ module SummerHouses.members {
             });
            this.$http.get('/rest/invitation').success((invitations: Invitation[]) => {
                 this.$scope.recommendationsRequests = invitations;
-                this.formInvitationText(invitations);
-            });*/
+            });
+            this.$http.get('/rest/clubmember/recommendations').success((clubmembers: Member[]) => {
+                this.$scope.recommendationsReceived = clubmembers;
+            });
         }
 
         showSuccessMessage(message: string): void{
@@ -135,14 +141,6 @@ module SummerHouses.members {
                     this.$scope.showAlertError = false;
                 })
             }, 4000)
-        }
-        
-        formInvitationText(invitations): void{
-            var invitationString = "";
-            _.forEach(invitations, (invitation) => {
-                invitationString = invitationString + moment(invitation.invitationDate).locale("LT").calendar() + " " + invitation.email +"\n";
-            });
-            this.$scope.recommendationsRequestsText =  invitationString;
         }
     }
 

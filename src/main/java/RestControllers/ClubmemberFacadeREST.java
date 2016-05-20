@@ -127,6 +127,13 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     }
 
     @GET
+    @Path("recommendations")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Clubmember> getRecommendations() {
+        return em.find(Clubmember.class, clubMemberService.getCurrentUser().getId()).getRecommenders();
+    }
+
+    @GET
     @Override
     @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
