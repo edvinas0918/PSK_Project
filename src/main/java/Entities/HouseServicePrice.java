@@ -21,16 +21,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "HouseServicePrice.findAll", query = "SELECT h FROM HouseServicePrice h"),
     @NamedQuery(name = "HouseServicePrice.findByHouseID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.houseID = :houseID"),
     @NamedQuery(name = "HouseServicePrice.findByServiceID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.serviceID = :serviceID"),
-    @NamedQuery(name = "HouseServicePrice.findByPrice", query = "SELECT h FROM HouseServicePrice h WHERE h.price = :price")})
+    @NamedQuery(name = "HouseServicePrice.findByTax", query = "SELECT h FROM HouseServicePrice h WHERE h.tax.id = :taxID")})
 public class HouseServicePrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected HouseServicePricePK houseServicePricePK;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "price")
-    private int price;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="tax")
+    private Tax tax;
     @Basic(optional = false)
     @NotNull
     @Version
@@ -44,13 +43,21 @@ public class HouseServicePrice implements Serializable {
         this.houseServicePricePK = houseServicePricePK;
     }
 
-    public HouseServicePrice(HouseServicePricePK houseServicePricePK, int price) {
+    public HouseServicePrice(HouseServicePricePK houseServicePricePK, Tax taxID) {
         this.houseServicePricePK = houseServicePricePK;
-        this.price = price;
+        this.tax = taxID;
     }
 
     public HouseServicePrice(int houseID, int serviceID) {
         this.houseServicePricePK = new HouseServicePricePK(houseID, serviceID);
+    }
+
+    public Tax getTax() {
+        return tax;
+    }
+
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     public HouseServicePricePK getHouseServicePricePK() {
@@ -59,14 +66,6 @@ public class HouseServicePrice implements Serializable {
 
     public void setHouseServicePricePK(HouseServicePricePK houseServicePricePK) {
         this.houseServicePricePK = houseServicePricePK;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public int getOptLockVersion() {

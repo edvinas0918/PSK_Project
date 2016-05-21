@@ -553,4 +553,19 @@
             ALTER TABLE Invitation DROP INDEX UN_Invitation_Email
         </sql>
     </changeSet>
+    <changeSet id="min016" author="Mindaugas">
+        <dropColumn tableName="HouseServicePrice" columnName="price"></dropColumn>
+        <addColumn tableName="HouseServicePrice">
+            <column name="tax" type="INTEGER"></column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="HouseServicePrice" baseColumnNames="tax" constraintName="SERVICE_PRICE_TAX_FK" referencedTableName="tax"
+                                 referencedColumnNames="id"></addForeignKeyConstraint>
+    </changeSet>
+    <changeSet id="min017" author="Mindaugas">
+        <dropForeignKeyConstraint baseTableName="Tax" constraintName="tax_ibfk_1"></dropForeignKeyConstraint>
+        <dropColumn tableName="Tax" columnName="TaxTypeID"></dropColumn>
+    </changeSet>
+    <changeSet id="min018" author="Mindaugas">
+        <dropTable tableName="TaxType"></dropTable>
+    </changeSet>
 </databaseChangeLog>

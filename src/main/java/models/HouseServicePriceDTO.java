@@ -1,22 +1,24 @@
 package models;
 
+import Entities.Tax;
+
 /**
  * Created by Mindaugas on 15/05/16.
  */
 public class HouseServicePriceDTO {
     private int houseID;
     private int serviceID;
-    private int price;
+    private Tax tax;
 
     public HouseServicePriceDTO() {
     }
 
-    public int getPrice() {
-        return price;
+    public Tax getTax() {
+        return tax;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setTax(Tax tax) {
+        this.tax = tax;
     }
 
     public int getHouseID() {

@@ -11,14 +11,14 @@ module SummerHouses.houses {
 
     export class Tax {
 
-        constructor(public id:number, public price:number) {
+        constructor(public id:number, public price:number, public name:string) {
 
         }
     }
 
     export class HouseServicePrice {
 
-        constructor(public houseID: number, public serviceID: number, public price: number) {
+        constructor(public houseID: number, public serviceID: number, public tax: Tax) {
 
         }
 
@@ -26,7 +26,7 @@ module SummerHouses.houses {
 
     export class AdditionalService {
         public id:number;
-        public pricePoints:number;
+        public tax:Tax;
         public description:string;
         public name:string;
         public selected:Boolean;

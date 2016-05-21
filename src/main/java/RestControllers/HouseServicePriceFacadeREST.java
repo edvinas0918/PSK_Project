@@ -45,6 +45,9 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Inject
     SummerhouseFacadeREST summerhouseFacadeREST;
 
+    @Inject
+    TaxFacadeREST taxFacadeREST;
+
     private HouseServicePricePK getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
@@ -89,7 +92,12 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
             HouseServicePricePK houseServicePricePK = new HouseServicePricePK(price.getHouseID(), price.getServiceID());
             HouseServicePrice houseServicePrice = new HouseServicePrice();
             houseServicePrice.setHouseServicePricePK(houseServicePricePK);
-            houseServicePrice.setPrice(price.getPrice());
+            if (price.getTax().getId() != null) {
+                taxFacadeREST.edit(price.getTax());
+            } else {
+                taxFacadeREST.create(price.getTax());
+            }
+            houseServicePrice.setTax(price.getTax());
             if (find(houseServicePricePK) != null) {
                 edit(houseServicePrice);
             } else {
@@ -115,6 +123,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public HouseServicePrice find(HouseServicePricePK key) {
+
         return super.find(key);
     }
 
@@ -123,10 +132,8 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
-        //summerhouseFacadeREST.find(houseID)
-        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID);
+        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID && x.getTax() != null);
         List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
-
         return list;
     }
 

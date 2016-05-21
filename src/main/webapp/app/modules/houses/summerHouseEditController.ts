@@ -92,7 +92,7 @@ module SummerHouses.houses {
                 if (SummerHouseEditController.that.$scope.additionalServices) {
                     var houseServicePrices = Array<HouseServicePrice>();
                     for (let service of SummerHouseEditController.that.$scope.additionalServices) {
-                        houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.pricePoints));
+                        houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.tax));
                     }
                     SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
                         SummerHouseEditController.that.$location.path("/houses");
@@ -116,7 +116,7 @@ module SummerHouses.houses {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
-                                service.pricePoints = houseServicePrice.price;
+                                service.tax = houseServicePrice.tax;
                             }
                         }
                         for (let houseService of house.additionalServices) {

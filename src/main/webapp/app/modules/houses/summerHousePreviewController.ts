@@ -37,7 +37,7 @@ module SummerHouses.houses {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
-                                service.pricePoints = houseServicePrice.price;
+                                service.tax = houseServicePrice.tax;
                             }
                         }
                         for (let houseService of house.additionalServices) {

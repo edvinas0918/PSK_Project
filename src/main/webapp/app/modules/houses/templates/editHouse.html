@@ -20,9 +20,9 @@
             <label class="control-label col-sm-2">Mokesčio tipas:</label>
             <div class="col-sm-10">
                 <select style="width: 30%;" class="form-control" ng-model="house.taxID"
-                        ng-options="tax.taxTypeID.name for tax in taxes"
+                        ng-options="tax.name for tax in taxes"
                         ng-required="true">
-                    <option value="">{{house.taxID.taxTypeID.name}}</option>
+                    <option value="">{{house.taxID.name}}</option>
                 </select>
             </div>
         </div>
@@ -64,8 +64,9 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Pavadinimas</th>
-                        <th>Kaina klubo taškais</th>
+                        <th>Paslaugos pavadinimas</th>
+                        <th>Mokesčio pavadinimas</th>
+                        <th>Mokestis taškais</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -74,7 +75,10 @@
                             <input type="checkbox" ng-click="manageService(service)" ng-checked="{{service.selected}}"> {{service.name}}</input>
                         </td>
                         <td>
-                            <input type="number" min="1" ng-model="service.pricePoints" />
+                            <input type="text" minlength="1" maxlength="500" ng-model="service.tax.name" />
+                        </td>
+                        <td>
+                            <input type="number" min="1" ng-model="service.tax.price" />
                         </td>
                     </tr>
                     </tbody>

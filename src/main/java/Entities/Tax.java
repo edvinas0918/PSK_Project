@@ -37,9 +37,6 @@ public class Tax implements Serializable {
     private String name;
     @Column(name = "Price")
     private Integer price;
-    @JoinColumn(name = "TaxTypeID", referencedColumnName = "ID")
-    @ManyToOne(optional = false)
-    private Taxtype taxTypeID;
     @Basic(optional = false)
     @NotNull
     @Version
@@ -80,14 +77,6 @@ public class Tax implements Serializable {
 
     public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public Taxtype getTaxTypeID() {
-        return taxTypeID;
-    }
-
-    public void setTaxTypeID(Taxtype taxTypeID) {
-        this.taxTypeID = taxTypeID;
     }
 
     public int getOptLockVersion() {

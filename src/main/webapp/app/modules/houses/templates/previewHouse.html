@@ -11,7 +11,7 @@
             <h1>Vasarnamis nr. {{house.number}}</h1>
             <h4><small>rezervacija galima: </small>{{house.beginPeriod}} - {{house.endPeriod}}</h4>
             <h4><small>talpina: </small>{{house.capacity}} gyventojus(-ą)</h4>
-            <h4><small>mokėti: </small>{{house.taxID.taxTypeID.name}}</h4>
+            <h4><small>mokėti: </small>{{house.taxID.name}}</h4>
         </div>
 
         <div class="col-md-12">
@@ -37,7 +37,7 @@
                         <p>{{service.name}}</p>
                     </td>
                     <td class="col-xs-1">
-                        <p>{{service.pricePoints}}</p>
+                        <p>{{service.tax.price}}</p>
                     </td>
                     <td class="col-xs-9">
                         <textarea rows="5" class="textarea-none" disabled>
