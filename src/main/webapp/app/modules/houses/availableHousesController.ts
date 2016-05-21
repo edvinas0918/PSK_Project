@@ -10,18 +10,29 @@ module SummerHouses.houses {
         static $inject = [
             '$rootScope',
             '$scope',
-            '$http'
+            '$http',
+            '$uibModalInstance'
         ];
 
         constructor(private $rootScope:any,
                     private $scope:any,
-                    private $http:any) {
+                    private $http:any,
+                    private $uibModalInstance: any) {
             this.$scope.weekPicker = new Utilities.WeekPicker([]);
 
             this.$scope.submit  = () => {
                 var period = this.$scope.weekPicker.getReservationPeriod();
                 this.$scope.availableSummerhouses = this.getAvailableSummerhouses(period.fromDate, period.untilDate);
+                this.dismiss();
             }
+
+            this.$scope.cancel = () => {
+                this.dismiss();
+            };
+        }
+
+        dismiss(){
+            this.$uibModalInstance.dismiss('cancel');
         }
 
         getAvailableSummerhouses(fromDate, untilDate : String): SummerHouse[]{
