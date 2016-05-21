@@ -1,5 +1,6 @@
 package RestControllers;
 
+import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
@@ -12,6 +13,10 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +36,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     ClubmemberFacadeREST clubmemberFacadeREST;
+
+    @Inject
+    AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
     @Inject
     AuthenticationControllerREST authenticationControllerREST;
@@ -103,6 +111,15 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         }
 
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("additionalServices/{summerhouseReservationID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
+        TypedQuery<Additionalservicereservation> query =
+                em.createNamedQuery("Additionalservicereservation.findBySummerhouseReservationID", Additionalservicereservation.class).setParameter("summerhouseReservationID", id);
+        return query.getResultList();
     }
 
     @Override

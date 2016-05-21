@@ -69,8 +69,8 @@ module SummerHouses.houses {
         getSummerHouses(): void{
             this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
                 for (let summerhouse of summerhouses) {
-                    summerhouse.endPeriod = moment(summerhouse.endPeriod).format('MMMM Do');
-                    summerhouse.beginPeriod = moment(summerhouse.beginPeriod).format('MMMM Do');
+                    summerhouse.endPeriod = moment(summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                    summerhouse.beginPeriod = moment(summerhouse.beginPeriod).locale('LT').format('MMMM Do');
                 }
                 this.$scope.summerhouses = summerhouses;
             });
