@@ -73,6 +73,8 @@ module SummerHouses {
                     if (attrs.picker && scope[attrs.picker]) {
                         scope[attrs.picker].handleDateSelect(dateText);
                     }
+
+                    scope.$emit("dateChanged", element);
                 },
                 beforeShowDay: function (date) {
 

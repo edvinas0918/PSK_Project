@@ -64,16 +64,23 @@ module SummerHouses {
                 }
             };
 
-            this.$scope.isDateSelected = () => {
-                try {
-                    ReservationController.that.$scope.weekPicker.getReservationPeriod();
-                    return true;
-                } catch (Exception) {
-                    return false;
-                }
-            };
+            this.$scope.isDateSelected = false;
+
+            this.$scope.$on("dateChanged", () => {
+                ReservationController.that.checkIsDateSelected();
+                ReservationController.that.$scope.$apply();
+            });
         }
 
+        private checkIsDateSelected(): void {
+            try {
+                ReservationController.that.$scope.weekPicker.getReservationPeriod();
+                ReservationController.that.$scope.isDateSelected = true;
+            } catch (Exception) {
+                ReservationController.that.$scope.isDateSelected = false;
+            }
+        }
+        
         private formatDate(date): string {
             var dateString = moment(date).format();
             return dateString.substring(0, dateString.length - 6);
