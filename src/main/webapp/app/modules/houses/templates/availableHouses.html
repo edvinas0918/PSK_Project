@@ -1,12 +1,22 @@
-<div class="container">
-    <h2>Laisvų savarnamių paieška</h2>
-    <form>
-        <div>
-            <label class="control-label">Pasirinkite laikotarpį</label>
-            <div week-picker picker="weekPicker"></div>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-success" ng-click="submit()">Ieškoti</button>
+<div class="showModal">
+    <form name="availableSummerhouses" ng-submit="submit()">
+        <div class="control-group">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Laisvų vasarnamių paieška</h4>
+            </div>
+            <div class="modal-body">
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Pasirinkite laikotarpį</label>
+                        <div week-picker picker="weekPicker"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Ieškoti</button>
+                <button class="btn btn-default" ng-click="cancel()">Atšaukti</button>
+            </div>
         </div>
     </form>
 </div>

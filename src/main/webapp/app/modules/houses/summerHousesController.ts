@@ -16,7 +16,8 @@ module SummerHouses.houses {
             '$scope',
             '$http',
             '$route',
-            '$location'
+            '$location',
+            '$uibModal'
         ];
 
         constructor(
@@ -24,7 +25,8 @@ module SummerHouses.houses {
             private $scope: any,
             private $http: any,
             private $route: any,
-            private $location: any
+            private $location: any,
+            private $uibModal: any
         ) {
             SummerHousesController.that = this;
             this.getSummerHouses();
@@ -56,7 +58,14 @@ module SummerHouses.houses {
             this.$scope.previewHouse = (house: SummerHouse) => {
                 this.$location.path("/previewHouse/" + house.id);
             }
-            this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
+            //this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
+
+            this.$scope.openSeachForm = () => {
+                this.$uibModal.open({
+                    templateUrl: 'app/modules/houses/templates/availableHouses.html',
+                    controller: 'availableHousesController'
+                });
+            }
 
         }
 
@@ -75,7 +84,6 @@ module SummerHouses.houses {
                 this.$scope.summerhouses = summerhouses;
             });
         }
-
     }
 
     angular
