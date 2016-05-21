@@ -12,16 +12,19 @@ module SummerHouses {
             '$http',
             '$scope',
             '$routeParams',
+            '$uibModal',
             'summerhouseService'
         ];
 
         constructor(private $http:ng.IHttpService,
                     private $scope:any,
                     private $routeParams:any,
+                    private $uibModal: any,
                     private summerhouseService:SummerHouses.SummerhouseService) {
             ReservationController.that = this;
 
             this.$scope.reserveSummerhouse = this.reserveSummerhouse;
+            this.$scope.openReservationForm = this.openReservationForm;
 
             summerhouseService.getSummerhouse(this.$routeParams.summerhouseID)
                 .then(function (summerhouse) {
@@ -43,8 +46,39 @@ module SummerHouses {
                 console.log(ReservationController.that.$scope.additionalServiceReservations);
             };
 
+            this.$scope.getFromDate = () => {
+                try {
+                    var date = ReservationController.that.$scope.weekPicker.getReservationPeriod();
+                    return ReservationController.that.formatDate(date.fromDate);
+                } catch (Exception) {
+                    return null;
+                }
+            };
+
+            this.$scope.getUntilDate = () => {
+                try {
+                    var date = ReservationController.that.$scope.weekPicker.getReservationPeriod();
+                    return ReservationController.that.formatDate(date.untilDate);
+                } catch (Exception) {
+                    return null;
+                }
+            };
+
+            this.$scope.isDateSelected = () => {
+                try {
+                    ReservationController.that.$scope.weekPicker.getReservationPeriod();
+                    return true;
+                } catch (Exception) {
+                    return false;
+                }
+            };
         }
 
+        private formatDate(date): string {
+            var dateString = moment(date).format();
+            return dateString.substring(0, dateString.length - 6);
+        }
+        
         private getReservedAdditionalServices(summerhouseID):AdditionalServiceReservation[] {
             this.$http.get('/rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation: AdditionalServiceReservation[], status) => {
                 console.log(additionalServiceReservation);
@@ -77,6 +111,16 @@ module SummerHouses {
             });
 
         }
+
+        public openReservationForm()  {
+            ReservationController.that.$uibModal.open({
+                templateUrl: 'app/modules/reservation/templates/reservationModal.html',
+                controller: 'reservationController',
+                resolve: {
+                    summerhouse: () => {return ReservationController.that.$scope.summerhouse}
+                }
+            });
+        };
     }
 
     angular

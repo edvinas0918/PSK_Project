@@ -45,10 +45,12 @@
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{service.name}}</h4>
-            <input ng-show="service.checked"
+            <input ng-show="isDateSelected() && service.checked"
                    type="datetime-local"
                    name="serviceReservationBegin"
                    ng-model="service.serviceBegin"
+                   min="{{getFromDate()}}"
+                   max="{{getUntilDate()}}"
             >
             <!--<input type="datetime-local" name="serviceReservationEnd" ng-model="service.serviceEnd">-->
             <p>{{service.description}}</p>
