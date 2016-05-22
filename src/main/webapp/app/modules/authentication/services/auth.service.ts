@@ -98,7 +98,7 @@ module SummerHouses.authentication {
         }
 
         public isLoggedIn():boolean {
-            return AuthenticationService.that.getCachedUser() !== undefined;
+            return AuthenticationService.that.getCachedUser() != undefined;
         }
 
         public logout():ng.IPromise<any> {
