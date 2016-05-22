@@ -30,10 +30,8 @@ module SummerHouses.houses {
         public description:string;
         public name:string;
         public selected:Boolean;
-        public additionalservicereservationList:Array<SummerHouse>;
 
         constructor() {
-            this.pricePoints = 0;
             this.description = "";
             this.name = "";
         }
