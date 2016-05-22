@@ -8,6 +8,7 @@ package RestControllers;
 import Entities.Summerhouse;
 import Entities.Summerhousereservation;
 import Helpers.Helpers;
+import Services.SummerhouseReservation;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -36,6 +37,9 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @Inject
     TaxFacadeREST taxFacadeREST;
+
+    @Inject
+    SummerhouseReservation summerhouseReservationService;
 
     public SummerhouseFacadeREST() {
         super(Summerhouse.class);
@@ -72,26 +76,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
         Date fromDate = format.parse(fromDateString);
         Date untilDate = format.parse(untilDateString);
 
-        List<Summerhouse> houses = super.findAll();
-        List<Summerhouse> availableHouses = new ArrayList<>();
-
-        for (Summerhouse house: houses) {
-            List<Summerhousereservation> reservations = house.getSummerhousereservationList();
-
-            boolean result = true;
-            for(Summerhousereservation reservation: reservations){
-                if((reservation.getFromDate().after(fromDate) || reservation.getFromDate().equals(fromDate)) &&
-                        reservation.getFromDate().before(untilDate) ||
-                    reservation.getUntilDate().after(fromDate)
-                            && (reservation.getUntilDate().before(untilDate) || reservation.getUntilDate().equals(untilDate))){
-                    result = false;
-                    break;
-                }
-            }
-            if(result) availableHouses.add(house);
-        }
-
-        return availableHouses;
+        return summerhouseReservationService.getAvailableSummerhousesInPeriod(fromDate, untilDate);
     }
 
     @PUT

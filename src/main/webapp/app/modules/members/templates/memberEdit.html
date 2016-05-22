@@ -1,14 +1,17 @@
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <h2 ng-if="!editable">Nario informacija</h2>
             <h2 ng-if="editable">Jūsų informacija</h2>
         </div>
         <div class="col-md-2" style="margin-top: 20px;"s>
             <button class="btn btn-success" ng-if="candidateReview" ng-click="recommendCandidate()">Rekomenduoti šį kandidatą</button>
+            <a class="glyphicon glyphicon-log-out glyphicon-lg" ng-if="candidate" href="#/logout"></a>
         </div>
     </div>
-
+    <div class="alert alert-info" ng-if="candidate && recommendationsReceived.length == recommendationsReceivedMin">
+        <strong>Sveikiname!</strong> Jūs tapote klubo nariu. Atsijunkite ir prisijunkite prie sistemos iš naujo.
+    </div>
     <div class="alert alert-success" ng-if="showAlert">
         <strong>Patvirtinta!</strong> {{successMessage}}
     </div>

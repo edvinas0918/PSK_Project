@@ -2,12 +2,18 @@ package Services;
 
 import Entities.Summerhouse;
 import Entities.Summerhousereservation;
+import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 /**
  * Created by Edvinas.Barickis on 5/15/2016.
@@ -15,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 @Stateless
 public class SummerhouseReservation {
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
+    private EntityManager em;
+
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
         if (endPeriod.compareTo(beginPeriod) != 1) {
             throw new Exception("Neteisingai įvestas laikotarpis");
@@ -78,4 +87,32 @@ public class SummerhouseReservation {
             throw new Exception("Jūs galėsite atlikti rezervaciją tik po " + difference + "sav.");
         }
     }
+
+    public List<Summerhouse> getAvailableSummerhousesInPeriod(Date fromDate, Date untilDate){
+        List<Summerhouse> houses = em.createNamedQuery("Summerhouse.findAll").getResultList();
+        List<Summerhouse> availableHouses = new ArrayList<>();
+
+        for (Summerhouse house: houses) {
+            int year = new DateTime(fromDate).getYear();
+            Date reservationBeginPeriod = new DateTime(house.getBeginPeriod()).withYear(year).toDate();
+            Date reservationEndPeriod = new DateTime(house.getEndPeriod()).withYear(year).toDate();
+
+            if( dateIsInPeriod(fromDate, reservationBeginPeriod, reservationEndPeriod)
+                    && dateIsInPeriod(untilDate, reservationBeginPeriod, reservationEndPeriod)
+                    && !summerHouseHasReservationInPeriod(house, fromDate, untilDate)){
+                availableHouses.add(house);
+            }
+        }
+        return availableHouses;
+    }
+
+    private boolean summerHouseHasReservationInPeriod(Summerhouse summerHouse, Date fromDate, Date untilDate){
+        for(Summerhousereservation reservation: summerHouse.getSummerhousereservationList()){
+            if (dateIsInPeriod(reservation.getFromDate(), fromDate, untilDate)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
