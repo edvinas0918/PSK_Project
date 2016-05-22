@@ -7,6 +7,7 @@ package RestControllers;
 
 import Entities.Clubmember;
 import Entities.Settings;
+import Entities.Summerhousereservation;
 import Helpers.InsufficientFundsException;
 import Interceptors.Authentication;
 import Services.ClubMemberService;
@@ -14,20 +15,18 @@ import Services.EmailService;
 import Services.SettingsService;
 import models.PointsGrant;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -88,6 +87,39 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Email sending has failed").build();
         }
         return Response.status(Response.Status.OK).build();
+    }
+
+    @GET
+    @Path("reservation")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Clubmember> getMembers(
+            @QueryParam("from") String fromDateString,
+            @QueryParam("until") String untilDateString) throws ParseException {
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDate = format.parse(fromDateString);
+        Date untilDate = format.parse(untilDateString);
+
+        List<Clubmember> members = super.findAll();
+        List<Clubmember> membersWithReservation = new ArrayList<>();
+
+        for (Clubmember member: members) {
+            List<Summerhousereservation> reservations = member.getSummerhousereservationList();
+
+            boolean result = false;
+            for(Summerhousereservation reservation: reservations){
+                if((reservation.getFromDate().after(fromDate) || reservation.getFromDate().equals(fromDate)) &&
+                        reservation.getFromDate().before(untilDate) ||
+                        reservation.getUntilDate().after(fromDate)
+                                && (reservation.getUntilDate().before(untilDate) || reservation.getUntilDate().equals(untilDate))){
+                    result = true;
+                    break;
+                }
+            }
+            if(result) membersWithReservation.add(member);
+        }
+
+        return membersWithReservation;
     }
 
     @PUT

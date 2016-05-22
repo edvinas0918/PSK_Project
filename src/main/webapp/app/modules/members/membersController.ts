@@ -73,6 +73,13 @@ module SummerHouses.members {
                 });
             }
 
+            this.$scope.openSeachForm = () => {
+                this.$uibModal.open({
+                    templateUrl: 'app/modules/members/templates/memberSearch.html',
+                    controller: 'memberSearchController'
+                });
+            }
+
             this.$scope.redirectToMemberEdit = (member: Member) => {
                 $location.path(this.$scope.isAdminPage ? "/admin/members/" + member.id : "/members/" + member.id);
             }
