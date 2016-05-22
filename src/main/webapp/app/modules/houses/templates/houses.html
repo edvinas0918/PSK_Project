@@ -3,11 +3,16 @@
         <h2>Vasarnamiai</h2>
     </div>
 </div>
-<div class="form-inline">
-    <!--<div week-picker picker="weekPicker"></div>-->
-    <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
-    <a class="btn btn-info pull-left" ng-click="openSeachForm()">Ieškoti laisvų vasarnamių</a>
+<div class="form-group">
+    <div class="row">
+        <div class="form-inline">
+            <!--<div week-picker picker="weekPicker"></div>-->
+            <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
+            <a class="btn btn-info pull-right" ng-click="openSeachForm()">Ieškoti laisvų vasarnamių</a>
+        </div>
+    </div>
 </div>
+
 
 
     <div class="form-group" ng-repeat="x in summerhouses">
