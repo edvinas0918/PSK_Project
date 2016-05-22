@@ -89,6 +89,7 @@ public class AuthenticationControllerREST {
             user.setEmail(userInfo.getString("email"));
             user.setReservationGroup(1);
             user.setPoints(0);
+            user.setIsActive(true);
             try {
                 userServiceREST.create(user);
             } catch (Exception e) {
