@@ -53,11 +53,11 @@ module SummerHouses.houses {
             this.$scope.editHouse = (house: SummerHouse) => {
                 house.editMode = true;
 
-            }
+            };
 
             this.$scope.previewHouse = (house: SummerHouse) => {
                 this.$location.path("/previewHouse/" + house.id);
-            }
+            };
             //this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
 
             this.$scope.openSeachForm = () => {

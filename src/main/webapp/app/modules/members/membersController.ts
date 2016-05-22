@@ -47,7 +47,7 @@ module SummerHouses.members {
                 this.$http.delete('rest/clubmember/' + member.id).success(() => {
                     _.pull(this.$scope.members, member);
                 });
-            }
+            };
 
             this.$scope.openInvitationForm = () => {
                 this.$uibModal.open({
@@ -71,14 +71,14 @@ module SummerHouses.members {
                         }
                     }
                 });
-            }
+            };
 
             this.$scope.openSeachForm = () => {
                 this.$uibModal.open({
                     templateUrl: 'app/modules/members/templates/memberSearch.html',
                     controller: 'memberSearchController'
                 });
-            }
+            };
 
             this.$scope.redirectToMemberEdit = (member: Member) => {
                 $location.path(this.$scope.isAdminPage ? "/admin/members/" + member.id : "/members/" + member.id);

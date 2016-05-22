@@ -88,12 +88,12 @@ module SummerHouses.mailing {
             this.$scope.addEmailAddresses = () => {
                 this.$scope.emailAddresses.push(new EmailAddress(""));
                 this.$scope.canAdd = (this.$scope.emailAddresses.length < this.$scope.maxRecipients);
-            }
+            };
 
             this.$scope.removeEmailAddresses = (email: EmailAddress) => {
                 _.pull(this.$scope.emailAddresses, email);
                 this.$scope.canAdd = (this.$scope.emailAddresses.length < this.$scope.maxRecipients);
-            }
+            };
 
             this.$scope.sendMessage = () => {
                 var url = '/rest/mailing/' + this.$scope.method;

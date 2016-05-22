@@ -31,8 +31,18 @@ module SummerHouses {
                     //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
                     ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();
                     ReservationController.that.$scope.weekPicker = new Utilities.WeekPicker(
-                        [],
+                        [
+                            {
+                                fromDate: moment().year() + "/01/01",
+                                untilDate: moment(summerhouse.beginPeriod).year(moment().year()).format()
+                            },
+                            {
+                                fromDate: moment(summerhouse.endPeriod).year(moment().year()).format(),
+                                untilDate: moment().year() + "/12/31"
+                            }
+                        ],
                         "MMMM DD, YYYY");
+                    $( "#reservationDatePicker" ).datepicker( "refresh" );
                     });
 
             this.$scope.manageService = (service:AdditionalService) => {
@@ -101,32 +111,6 @@ module SummerHouses {
             return true;
         }
 
-        public reserveSummerhouse(summerhouse):void {
-            var period = ReservationController.that.$scope.weekPicker.getReservationPeriod();
-            var reservation = {};
-            reservation.summerhouse = summerhouse;
-
-            reservation.fromDate = period.fromDate;
-            reservation.untilDate = period.untilDate;
-            reservation.member = {};
-            var params = {
-                method: "POST",
-                url: "rest/reservation",
-                data: reservation,
-                headers: {
-                    'Content-Type': "application/json"
-                }
-            };
-
-            ReservationController.that.$http(params).then(function (response) {
-                console.log(response);
-            }, function (error) {
-                console.log(error);
-                console.log(error.data.errorMessage);
-            });
-
-        }
-
         public openReservationForm()  {
             var reservations = ReservationController.that.$scope.summerhouse.additionalServiceReservations;
             if(reservations && !ReservationController.that.checkIfAllServicesHaveDate(reservations)) {
@@ -137,9 +121,10 @@ module SummerHouses {
             }
             ReservationController.that.$uibModal.open({
                 templateUrl: 'app/modules/reservation/templates/reservationModal.html',
-                controller: 'reservationController',
+                controller: 'reservationModalController',
                 resolve: {
-                    summerhouse: () => {return ReservationController.that.$scope.summerhouse}
+                    summerhouse: () => {return ReservationController.that.$scope.summerhouse},
+                    reservationPeriod: () => {return ReservationController.that.$scope.weekPicker.getReservationPeriod()}
                 }
             });
         };

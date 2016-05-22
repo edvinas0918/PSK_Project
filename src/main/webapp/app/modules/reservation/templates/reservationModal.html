@@ -1,0 +1,47 @@
+<div class="showModal">
+    <form name="confirmReservation" id="reservationForm" ng-submit="reserveSummerhouse(summerhouse)">
+        <div class="control-group">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Vasarnamis nr. {{summerhouse.number}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="control-group form-group">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col-xs-12"><h5><b>Rezervacijos pradžia:</b>{{reservationPeriod.fromDate}}</h5></div>
+                        <div class="col-xs-12"><h5><b>Rezervacijos pabaiga: </b>{{reservationPeriod.untilDate}}</h5></div>
+                        <div class="col-xs-12"><h5><b>Rezervacijos kaina: </b>{{summerhouse.taxID.price}}</h5></div>
+                        <div class="controls col-xs-12" ng-show="summerhouse.additionalServiceReservations.length > 0">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Papildoma paslauga</th>
+                                    <th>Data</th>
+                                    <th>Kaina(taškai)</th>
+                                </tr>
+                                <tr ng-repeat="service in summerhouse.additionalServiceReservations">
+                                    <td>{{service.service.name}}</td>
+                                    <td>{{formatDate(service.serviceReservationStartDate)}}</td>
+                                    <td>{{service.date}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-xs-12"><h4 class="pull-left">Viso: {{calculateTotalPoints()}} taškų</h4></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary pull-left" id="load"
+                            data-loading-text="<i class='fa fa-spinner fa-spin'></i> Rezervuojama...">Rezervuoti
+                    </button>
+                    <button class="btn btn-default" ng-click="cancel()">Atšaukti</button>
+                </div>
+                <div class="alert alert-success fade in" ng-show="isSuccesful">
+                    <a href="" class="close" data-dismiss="alert">&times;</a>
+                    <strong>Patvirtinta!</strong> Rezervacija sėkminga.
+                </div>
+                <div class="alert alert-danger fade in" ng-show="isError">
+                    <a href="" class="close" data-dismiss="modal">&times;</a>
+                    <strong>Klaida!</strong> {{errorMessage}}
+                </div>
+            </div>
+    </form>
+</div>
