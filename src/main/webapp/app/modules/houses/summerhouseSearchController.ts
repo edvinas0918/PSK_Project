@@ -49,7 +49,8 @@ module SummerHouses.houses {
                             summerhouse.endPeriod = moment(summerhouse.endPeriod).locale('LT').format('MMMM Do');
                             summerhouse.beginPeriod = moment(summerhouse.beginPeriod).locale('LT').format('MMMM Do');
                         }
-                        this.$uibModalInstance.close(summerhouseSearchResult);
+                        this.$uibModalInstance.close(
+                            {'summerhouses': summerhouseSearchResult, 'searchParams': this.$scope.searchDto});
                 });
             };
 

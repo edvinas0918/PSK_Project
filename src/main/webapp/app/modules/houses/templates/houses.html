@@ -15,12 +15,23 @@
             <div class="form-inline">
                 <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
                 <a class="btn btn-info pull-right" ng-click="openSeachForm()">Vasarnamių paieška</a>
+                <a ng-if="search" class="btn btn-primary pull-right" ng-click="renew()">Rodyti visus vasarnamius</a>
             </div>
         </div>
     </div>
 </div>
 
 <div ng-if="view === 'all'">
+    <div class="pull-right">
+        <h4 ng-if="search">Vasarnamiai, kurie:</h4>
+        <p ng-if="searchParams.fromDate != null && searchParams.untilDate != null">Laisvi nuo {{searchParams.fromDate}} iki {{searchParams.untilDate}}</p>
+        <p ng-if="searchParams.number != null">Numeris: {{searchParams.number}}</p>
+        <p ng-if="searchParams.capacity != null">Vietų skaičius: {{searchParams.capacity}}</p>
+        <div ng-if="searchParams.additionalServices != null && searchParams.additionalServices.length > 0">
+            <p>Turi papildomas paslaugas:</p>
+            <ul class="form-group" ng-repeat="x in searchParams.additionalServices"><li>{{x.name}}</li></ul>
+        </div>
+    </div>
     <div class="form-group" ng-repeat="x in summerhouses">
         <div class="row">
             <div class="col-md-6">

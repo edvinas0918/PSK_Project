@@ -33,6 +33,7 @@ module SummerHouses.houses {
             SummerHousesController.that = this;
             this.$scope.view = "all";
             this.$scope.userReservations = [];
+            this.$scope.search = false;
 
             this.getSummerHouses();
             this.getTaxes();
@@ -72,7 +73,9 @@ module SummerHouses.houses {
                 });
 
                 modalInstance.result.then((result) =>{
-                    this.$scope.summerhouses = result;
+                    this.$scope.search = true;
+                    this.$scope.summerhouses = result['summerhouses'];
+                    this.$scope.searchParams = result['searchParams'];
                 });
             }
 
@@ -80,6 +83,12 @@ module SummerHouses.houses {
             this.$scope.showView = (viewName: string) => {
                 this.$scope.view = viewName;
             }
+
+            this.$scope.renew = () => {
+                this.getSummerHouses();
+                this.$scope.search = false;
+                this.$scope.searchParams = null;
+            };
         }
 
         getTaxes(): void{
