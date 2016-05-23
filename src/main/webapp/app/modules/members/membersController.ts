@@ -74,9 +74,13 @@ module SummerHouses.members {
             };
 
             this.$scope.openSeachForm = () => {
-                this.$uibModal.open({
+                var modalInstance = this.$uibModal.open({
                     templateUrl: 'app/modules/members/templates/memberSearch.html',
                     controller: 'memberSearchController'
+                });
+
+                modalInstance.result.then((result) =>{
+                    this.$scope.members = result;
                 });
             };
 

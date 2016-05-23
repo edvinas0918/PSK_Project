@@ -22,25 +22,15 @@ module SummerHouses.houses {
 
             this.$scope.submit  = () => {
                 var period = this.$scope.weekPicker.getReservationPeriod();
-                this.$scope.availableSummerhouses = this.getAvailableSummerhouses(period.fromDate, period.untilDate);
-                this.dismiss();
-            }
+                this.$http.get('/rest/summerhouse/available?from=' + period.fromDate + '&until=' + period.untilDate)
+                    .success((summerhouseSearchResult: SummerHouse[]) => {
+                    this.$uibModalInstance.close(summerhouseSearchResult);
+                });
+            };
 
             this.$scope.cancel = () => {
-                this.dismiss();
+                this.$uibModalInstance.dismiss('cancel')
             };
-        }
-
-        dismiss(){
-            this.$uibModalInstance.dismiss('cancel');
-        }
-
-        getAvailableSummerhouses(fromDate, untilDate : String): SummerHouse[]{
-            this.$http.get('/rest/summerhouse/available?from=' + fromDate + '&until=' + untilDate).success((availableSummerhouses: SummerHouse[]) => {
-                console.log(availableSummerhouses)
-                return availableSummerhouses;
-            });
-            return [];
         }
     }
 

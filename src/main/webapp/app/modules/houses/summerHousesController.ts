@@ -66,12 +66,15 @@ module SummerHouses.houses {
             };
 
             this.$scope.openSeachForm = () => {
-                this.$uibModal.open({
+                var modalInstance = this.$uibModal.open({
                     templateUrl: 'app/modules/houses/templates/availableHouses.html',
                     controller: 'availableHousesController'
                 });
-            }
 
+                modalInstance.result.then((result) =>{
+                    this.$scope.summerhouses = result;
+                });
+            }
 
 
             this.$scope.showView = (viewName: string) => {
