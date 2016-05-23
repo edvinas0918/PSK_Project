@@ -42,9 +42,7 @@ module SummerHouses.houses {
                 if (_.filter(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id}).length > 0) {
                     _.remove(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id});
                 } else {
-                    if (!SummerHouseEditController.that.scope.house.additionalServices) {
-                        SummerHouseEditController.that.scope.house.additionalServices = [];
-                    }
+                    service.selected = true;
                     SummerHouseEditController.that.scope.house.additionalServices.push(service);
                 }
             };
@@ -92,7 +90,9 @@ module SummerHouses.houses {
                 if (SummerHouseEditController.that.$scope.additionalServices) {
                     var houseServicePrices = Array<HouseServicePrice>();
                     for (let service of SummerHouseEditController.that.$scope.additionalServices) {
-                        houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.tax));
+                        if (service.selected) {
+                            houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.tax));
+                        }
                     }
                     SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
                         SummerHouseEditController.that.$location.path("/houses");
