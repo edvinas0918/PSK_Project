@@ -68,8 +68,7 @@ module SummerHouses.houses {
 
                 modalInstance.result.then((result) =>{
                     this.$scope.searchResult = result;
-                    this.$scope.summerhouse = result;
-                    console.log(this.$scope.summerhouse);
+                    this.$scope.summerhouses = result;
                 });
             }
         }
