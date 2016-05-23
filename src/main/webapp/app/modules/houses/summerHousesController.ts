@@ -62,8 +62,8 @@ module SummerHouses.houses {
 
             this.$scope.openSeachForm = () => {
                 var modalInstance = this.$uibModal.open({
-                    templateUrl: 'app/modules/houses/templates/availableHouses.html',
-                    controller: 'availableHousesController'
+                    templateUrl: 'app/modules/houses/templates/housesSearch.html',
+                    controller: 'summerhouseSearchController'
                 });
 
                 modalInstance.result.then((result) =>{

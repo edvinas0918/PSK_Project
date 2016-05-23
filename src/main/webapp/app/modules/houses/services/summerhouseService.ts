@@ -1,4 +1,4 @@
-/// <reference path="../../../../typings/angular.d.ts" />
+///<reference path="../../../../typings/angular.d.ts" />
 
 module SummerHouses {
 
@@ -33,6 +33,18 @@ module SummerHouses {
         public getSummerhouses(): ng.IPromise<any>{
             var params = {
                 url: 'rest/summerhouse',
+                method: 'GET'
+            };
+
+            return SummerhouseService.that.$http(params)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        public getAdditionalServices(): ng.IPromise<any> {
+            var params = {
+                url: 'rest/additionalservice',
                 method: 'GET'
             };
 

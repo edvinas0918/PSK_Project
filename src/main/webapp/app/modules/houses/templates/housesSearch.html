@@ -1,0 +1,45 @@
+<div class="showModal">
+    <form ng-submit="submit()">
+        <div class="control-group">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="cancel()">&times;</button>
+                <h4 class="modal-title">Vasarnamių paieška</h4>
+            </div>
+            <div class="modal-body">
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Laisvi vasarnamiai pasirinktame laikotarpyje</label>
+                        <div week-picker picker="weekPicker"></div>
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Vietų skaičius</label>
+                        <input type="text" class="form-control" ng-model="searchDto.capacity">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Vasarnamio numeris</label>
+                        <input type="text" class="form-control" ng-model="searchDto.number">
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label>Papildomos paslaugos</label>
+                        <table class="table">
+                            <tr ng-repeat="service in additionalServices">
+                                <td>{{service.name}}</td>
+                                <td><input type="checkbox" ng-click="toggleCheck(service)"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary pull-left">Ieškoti</button>
+                <button class="btn btn-default" ng-click="cancel()">Atšaukti</button>
+            </div>
+        </div>
+    </form>
+</div>

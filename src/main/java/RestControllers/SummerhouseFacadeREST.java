@@ -9,6 +9,7 @@ import Entities.Summerhouse;
 import Entities.Summerhousereservation;
 import Helpers.Helpers;
 import Services.SummerhouseReservation;
+import models.SummerhouseSearchDto;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -65,16 +66,14 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
         return summerhouse.getId();
     }
 
-    @GET
-    @Path("available")
+    @POST
+    @Path("search")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Summerhouse> getAvailableSummerhouses(
-            @QueryParam("from") String fromDateString,
-            @QueryParam("until") String untilDateString) throws ParseException {
+    public List<Summerhouse> searchSummerhouses(SummerhouseSearchDto searchDto) throws ParseException {
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = format.parse(fromDateString);
-        Date untilDate = format.parse(untilDateString);
+        Date fromDate = format.parse(searchDto.fromDate);
+        Date untilDate = format.parse(searchDto.untilDate);
 
         return summerhouseReservationService.getAvailableSummerhousesInPeriod(fromDate, untilDate);
     }
