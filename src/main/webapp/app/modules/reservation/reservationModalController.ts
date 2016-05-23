@@ -42,8 +42,8 @@ namespace SummerHouses {
             var reservation = {};
             reservation.summerhouse = summerhouse;
 
-            reservation.fromDate = period.fromDate;
-            reservation.untilDate = period.untilDate;
+            reservation.fromDate = moment(period.fromDate).format("YYYY-MM-DD");
+            reservation.untilDate = moment(period.untilDate).format("YYYY-MM-DD");
             reservation.member = {};
             var params = {
                 method: "POST",

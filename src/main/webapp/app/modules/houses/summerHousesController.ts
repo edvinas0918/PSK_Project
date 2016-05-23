@@ -17,7 +17,8 @@ module SummerHouses.houses {
             '$http',
             '$route',
             '$location',
-            '$uibModal'
+            '$uibModal',
+            'sh-authentication-service',
         ];
 
         constructor(
@@ -26,11 +27,16 @@ module SummerHouses.houses {
             private $http: any,
             private $route: any,
             private $location: any,
-            private $uibModal: any
+            private $uibModal: any,
+            private authService: any
         ) {
             SummerHousesController.that = this;
+            this.$scope.view = "all";
+            this.$scope.userReservations = [];
+
             this.getSummerHouses();
             this.getTaxes();
+            this.getUserReservations();
             this.$scope.addEmptyHouse = () => {
                 var sm: SummerHouse = {
                     description: null,
@@ -58,7 +64,6 @@ module SummerHouses.houses {
             this.$scope.previewHouse = (house: SummerHouse) => {
                 this.$location.path("/previewHouse/" + house.id);
             };
-            //this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
 
             this.$scope.openSeachForm = () => {
                 this.$uibModal.open({
@@ -67,6 +72,11 @@ module SummerHouses.houses {
                 });
             }
 
+
+
+            this.$scope.showView = (viewName: string) => {
+                this.$scope.view = viewName;
+            }
         }
 
         getTaxes(): void{
@@ -83,6 +93,21 @@ module SummerHouses.houses {
                 }
                 this.$scope.summerhouses = summerhouses;
             });
+        }
+
+        getUserReservations(): void{
+            this.authService.getUser().then((user) => {
+                var userId = user.id;
+                this.$http.get('/rest/reservation/clubmember/' + userId).then((response) => {
+                    _.forEach(response.data, (reservation) => {
+                        reservation.summerhouse.beginPeriod = moment(reservation.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
+                        reservation.summerhouse.endPeriod = moment(reservation.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                    })
+                    this.$scope.userReservations = response.data;
+                });
+            }, (error) => {
+            });
+
         }
     }
 

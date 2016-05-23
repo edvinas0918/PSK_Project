@@ -80,16 +80,14 @@ module SummerHouses.payments {
                     break;
                 case 1:
                     this.$scope.viewId = viewId;
-                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment) => {
-                        if(payment.confirmed)
-                            return payment;
+                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment: Payment) => {
+                        return payment.confirmed;
                     });
                     break;
                 case 2:
                     this.$scope.viewId = viewId;
-                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment) => {
-                        if(!payment.confirmed)
-                            return payment;
+                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment: Payment) => {
+                        return !payment.confirmed;
                     });
                     break;
             }
