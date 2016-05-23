@@ -61,12 +61,17 @@ module SummerHouses.houses {
             //this.$scope.weekPicker = new Utilities.WeekPicker([{ fromDate: "2016-05-16", untilDate: "2016-05-22"}]);
 
             this.$scope.openSeachForm = () => {
-                this.$uibModal.open({
+                var modalInstance = this.$uibModal.open({
                     templateUrl: 'app/modules/houses/templates/availableHouses.html',
                     controller: 'availableHousesController'
                 });
-            }
 
+                modalInstance.result.then((result) =>{
+                    this.$scope.searchResult = result;
+                    this.$scope.summerhouse = result;
+                    console.log(this.$scope.summerhouse);
+                });
+            }
         }
 
         getTaxes(): void{
