@@ -5,23 +5,26 @@
 </div>
 <div class="form-group">
     <div class="row">
-        <div class="form-inline">
-            <!--<div week-picker picker="weekPicker"></div>-->
-            <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
-            <a class="btn btn-info pull-right" ng-click="openSeachForm()">Vasarnamių paieška</a>
+        <div class="col-md-4">
+            <ul class="nav nav-tabs">
+                <li class="active" ><a ng-click="showView('all')" data-toggle="tab">Visi</a></li>
+                <li><a ng-click="showView('userReservations')" data-toggle="tab">Mano rezervacijos</a></li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <div class="form-inline">
+                <a class="btn btn-success pull-right" ng-if="isAdminPage" ng-href="#/admin/houses/0">Pridėti naują namą</a>
+                <a class="btn btn-info pull-right" ng-click="openSeachForm()">Vasarnamių paieška</a>
+            </div>
         </div>
     </div>
 </div>
 
-
-
+<div ng-if="view === 'all'">
     <div class="form-group" ng-repeat="x in summerhouses">
-
         <div class="row">
             <div class="col-md-6">
-                <a href="portfolio-item.html">
-                    <img class="img-responsive img-hover" ng-src="{{x.image}}" alt="" style="width:600px; height:250px;">
-                </a>
+                <img class="img-responsive img-hover" ng-src="{{x.image}}" alt="" style="width:600px; height:250px;">
             </div>
             <div class="col-md-6">
                 <h3>Vasarnamis nr. {{x.number}}</h3>
@@ -36,4 +39,24 @@
             </div>
         </div>
     </div>
+</div>
+
+<div ng-if="view == 'userReservations'">
+    <div class="form-group" ng-repeat="r in userReservations">
+
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-responsive img-hover" ng-src="{{r.summerhouse.image}}" alt="" style="width:600px; height:250px;">
+            </div>
+            <div class="col-md-6">
+                <h3>Vasarnamis nr. {{r.summerhouse.number}}</h3>
+                <h4><small>Vietų skaičius:</small> {{r.summerhouse.capacity}}</h4>
+                <h4><small>Rezervacijos data:</small> {{r.summerhouse.beginPeriod}} - {{r.summerhouse.endPeriod}} </h4>
+                <p>{{r.summerhouse.description}}</p>
+                <a class="btn btn-info" ng-href="#">Keisti</a>
+                <a class="btn btn-danger" ng-click="">Atšaukti</a>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- /.row -->
