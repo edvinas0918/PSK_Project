@@ -45,6 +45,10 @@ module SummerHouses.houses {
 
                 this.$http.post('/rest/summerhouse/search', this.$scope.searchDto)
                     .success((summerhouseSearchResult: SummerHouse[]) => {
+                        for (let summerhouse of summerhouseSearchResult) {
+                            summerhouse.endPeriod = moment(summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                            summerhouse.beginPeriod = moment(summerhouse.beginPeriod).locale('LT').format('MMMM Do');
+                        }
                         this.$uibModalInstance.close(summerhouseSearchResult);
                 });
             };
