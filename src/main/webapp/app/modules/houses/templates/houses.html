@@ -22,7 +22,7 @@
 </div>
 
 <div ng-if="view === 'all'">
-    <div class="pull-right">
+    <div class="col-sm-12">
         <h4 ng-if="search">Vasarnamiai, kurie:</h4>
         <p ng-if="searchParams.fromDate != null && searchParams.untilDate != null">Laisvi nuo {{searchParams.fromDate}} iki {{searchParams.untilDate}}</p>
         <p ng-if="searchParams.number != null">Numeris: {{searchParams.number}}</p>
