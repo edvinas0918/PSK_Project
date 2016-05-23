@@ -14,6 +14,10 @@
 
     <decorators>
         <class>discounts.ChristmasDiscount</class>
+        <class>search.summerhouse.SummerhouseAvailabilitySearch</class>
+        <class>search.summerhouse.SummerhouseCapacitySearch</class>
+        <class>search.summerhouse.SummerhouseNumberSearch</class>
+        <class>search.summerhouse.SummerhouseServicesSearch</class>
     </decorators>
 
 </beans>

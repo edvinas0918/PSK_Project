@@ -6,10 +6,10 @@
 package RestControllers;
 
 import Entities.Summerhouse;
-import Entities.Summerhousereservation;
 import Helpers.Helpers;
 import Services.SummerhouseReservation;
 import models.SummerhouseSearchDto;
+import search.summerhouse.SummerhouseSeach;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -20,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     TaxFacadeREST taxFacadeREST;
 
     @Inject
-    SummerhouseReservation summerhouseReservationService;
+    SummerhouseSeach summerhouseSeach;
 
     public SummerhouseFacadeREST() {
         super(Summerhouse.class);
@@ -70,12 +69,8 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("search")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Summerhouse> searchSummerhouses(SummerhouseSearchDto searchDto) throws ParseException {
-
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = format.parse(searchDto.fromDate);
-        Date untilDate = format.parse(searchDto.untilDate);
-
-        return summerhouseReservationService.getAvailableSummerhousesInPeriod(fromDate, untilDate);
+        List<Summerhouse> summerhouses = em.createNamedQuery("Summerhouse.findAll").getResultList();
+        return summerhouseSeach.search(summerhouses, searchDto);
     }
 
     @PUT

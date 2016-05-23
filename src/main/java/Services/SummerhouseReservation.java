@@ -88,11 +88,9 @@ public class SummerhouseReservation {
         }
     }
 
-    public List<Summerhouse> getAvailableSummerhousesInPeriod(Date fromDate, Date untilDate){
-        List<Summerhouse> houses = em.createNamedQuery("Summerhouse.findAll").getResultList();
+    public List<Summerhouse> getAvailableSummerhousesInPeriod(List<Summerhouse> summerhouses, Date fromDate, Date untilDate){
         List<Summerhouse> availableHouses = new ArrayList<>();
-
-        for (Summerhouse house: houses) {
+        for (Summerhouse house: summerhouses) {
             int year = new DateTime(fromDate).getYear();
             Date reservationBeginPeriod = new DateTime(house.getBeginPeriod()).withYear(year).toDate();
             Date reservationEndPeriod = new DateTime(house.getEndPeriod()).withYear(year).toDate();

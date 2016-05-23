@@ -38,14 +38,14 @@ module SummerHouses.houses {
 
 
             this.$scope.submit  = () => {
-                var period = this.$scope.weekPicker.getReservationPeriod();
+                var period = this.$scope.weekPicker.getPeriod();
                 this.$scope.searchDto.fromDate = period.fromDate;
                 this.$scope.searchDto.untilDate = period.untilDate;
                 this.$scope.searchDto.additionalServices = this.$scope.checkedAdditionalServices;
-                console.log(this.$scope.searchDto);
+
                 this.$http.post('/rest/summerhouse/search', this.$scope.searchDto)
                     .success((summerhouseSearchResult: SummerHouse[]) => {
-                    this.$uibModalInstance.close(summerhouseSearchResult);
+                        this.$uibModalInstance.close(summerhouseSearchResult);
                 });
             };
 

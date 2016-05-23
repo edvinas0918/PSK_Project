@@ -1,7 +1,6 @@
 package discounts;
 
 import Entities.Clubmember;
-import Entities.Payment;
 import Entities.Tax;
 import Helpers.InsufficientFundsException;
 import Services.ClubMemberService;
@@ -10,11 +9,8 @@ import org.joda.time.LocalDateTime;
 
 import javax.decorator.Decorator;
 import javax.decorator.Delegate;
-import javax.ejb.Local;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  * Created by Dziugas on 5/17/2016.

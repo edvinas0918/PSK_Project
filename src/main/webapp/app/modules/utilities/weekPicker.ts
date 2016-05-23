@@ -111,5 +111,12 @@ module Utilities{
             var untilDate = _.max(this.dates).format(this.format);
             return new Period(fromDate, untilDate);
         }
+        
+        getPeriod(): Period{
+            if(this.dates.length == 0) return new Period(null, null);
+            var fromDate = _.min(this.dates).format(this.format);
+            var untilDate = _.max(this.dates).format(this.format);
+            return new Period(fromDate, untilDate);
+        }
     }
 }
