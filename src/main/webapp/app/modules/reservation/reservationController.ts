@@ -4,6 +4,7 @@
 ///<reference path="../../../typings/lodash.d.ts"/>
 module SummerHouses {
     import AdditionalService = SummerHouses.houses.AdditionalService;
+    import Tax = SummerHouses.houses.Tax;
     export class ReservationController {
         static that:ReservationController;
 
@@ -18,7 +19,7 @@ module SummerHouses {
         constructor(private $http:ng.IHttpService,
                     private $scope:any,
                     private $routeParams:any,
-                    private $uibModal: any,
+                    private $uibModal:any,
                     private summerhouseService:SummerHouses.SummerhouseService) {
             ReservationController.that = this;
 
@@ -42,15 +43,16 @@ module SummerHouses {
                             }
                         ],
                         "MMMM DD, YYYY");
-                    $( "#reservationDatePicker" ).datepicker( "refresh" );
-                    });
+                    ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
+                    $("#reservationDatePicker").datepicker("refresh");
+                });
 
             this.$scope.manageService = (service:AdditionalService) => {
                 var serviceReservation = new AdditionalServiceReservation(service, service.serviceBegin);
                 if (service.checked) {
                     ReservationController.that.$scope.additionalServiceReservations.push(serviceReservation);
                 } else {
-                    _.remove(ReservationController.that.$scope.additionalServiceReservations, function(n) {
+                    _.remove(ReservationController.that.$scope.additionalServiceReservations, function (n) {
                         return n.service.id == service.id;
                     });
                 }
@@ -84,7 +86,7 @@ module SummerHouses {
             });
         }
 
-        private checkIsDateSelected(): void {
+        private checkIsDateSelected():void {
             try {
                 ReservationController.that.$scope.weekPicker.getReservationPeriod();
                 ReservationController.that.$scope.isDateSelected = true;
@@ -92,28 +94,41 @@ module SummerHouses {
                 ReservationController.that.$scope.isDateSelected = false;
             }
         }
-        
-        private formatDate(date): string {
+
+        private formatDate(date):string {
             var dateString = moment(date).format();
             return dateString.substring(0, dateString.length - 6);
         }
-        
+
         private getReservedAdditionalServices(summerhouseID):AdditionalServiceReservation[] {
-            this.$http.get('/rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation: AdditionalServiceReservation[], status) => {
+            this.$http.get('/rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation:AdditionalServiceReservation[], status) => {
                 console.log(additionalServiceReservation);
             });
         }
 
-        public checkIfAllServicesHaveDate(reservations: AdditionalServiceReservation[]):Boolean {
-            for(let serviceReservation of reservations) {
-                if (!serviceReservation.serviceReservationStartDate) { return false; }
+        private getServicePricesForSummerhouse(summerhouseID):void {
+            this.$http.get('/rest/houseserviceprice/summerhouseServicesWithTaxes/' + summerhouseID).success((servicesTax:AdditionalServiceTax[], status) => {
+                var services = Array<AdditionalService>();
+                for (let service of servicesTax) {
+                    service.key.tax = service.value;
+                    services.push(service.key);
+                }
+                ReservationController.that.$scope.summerhouse.additionalServices = services;
+            });
+        }
+
+        public checkIfAllServicesHaveDate(reservations:AdditionalServiceReservation[]):Boolean {
+            for (let serviceReservation of reservations) {
+                if (!serviceReservation.serviceReservationStartDate) {
+                    return false;
+                }
             }
             return true;
         }
 
-        public openReservationForm()  {
+        public openReservationForm() {
             var reservations = ReservationController.that.$scope.summerhouse.additionalServiceReservations;
-            if(reservations && !ReservationController.that.checkIfAllServicesHaveDate(reservations)) {
+            if (reservations && !ReservationController.that.checkIfAllServicesHaveDate(reservations)) {
                 ReservationController.that.$scope.selectDates = true;
                 return;
             } else {
@@ -123,15 +138,25 @@ module SummerHouses {
                 templateUrl: 'app/modules/reservation/templates/reservationModal.html',
                 controller: 'reservationModalController',
                 resolve: {
-                    summerhouse: () => {return ReservationController.that.$scope.summerhouse},
-                    reservationPeriod: () => {return ReservationController.that.$scope.weekPicker.getReservationPeriod()}
+                    summerhouse: () => {
+                        return ReservationController.that.$scope.summerhouse
+                    },
+                    reservationPeriod: () => {
+                        return ReservationController.that.$scope.weekPicker.getReservationPeriod()
+                    }
                 }
             });
         };
     }
 
     export class AdditionalServiceReservation {
-        constructor(public service: AdditionalService, public serviceReservationStartDate: Date) {
+        constructor(public service:AdditionalService, public serviceReservationStartDate:Date) {
+
+        }
+    }
+
+    export class AdditionalServiceTax {
+        constructor(public key:AdditionalService, public value:Tax) {
 
         }
     }
