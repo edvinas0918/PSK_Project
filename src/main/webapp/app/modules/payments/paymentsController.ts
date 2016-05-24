@@ -28,6 +28,10 @@ module SummerHouses.payments {
                 return payment.confirmed ?  "Patvirtinas" : "Nepatvirtintas";
             }
 
+            this.$scope.isCanceled  = (payment: Payment) => {
+                return payment.canceled ?  "Atšauktas" : "Neatšauktas";
+            }
+
             this.$scope.confirmPayments = () => {
                 this.$http.put('rest/payments/confirm', this.$scope.checked).success(() => {
                     this.getPayments();
@@ -88,6 +92,12 @@ module SummerHouses.payments {
                     this.$scope.viewId = viewId;
                     this.$scope.shownPayments = _.filter(this.$scope.payments, (payment: Payment) => {
                         return !payment.confirmed;
+                    });
+                    break;
+                case 3:
+                    this.$scope.viewId = viewId;
+                    this.$scope.shownPayments = _.filter(this.$scope.payments, (payment: Payment) => {
+                        return payment.canceled;
                     });
                     break;
             }

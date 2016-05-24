@@ -20,7 +20,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
     @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id"),
     @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
-    @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed")})
+    @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed"),
+    @NamedQuery(name = "Payment.findByCanceled", query = "SELECT p FROM Payment p WHERE p.canceled = :canceled")})
 public class Payment implements Serializable {
 
     @Basic(optional = false)

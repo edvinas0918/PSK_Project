@@ -4,6 +4,7 @@ module SummerHouses.payments {
         public id:number;
         public paymentDate:Date;
         public confirmed:boolean;
+        public canceled:boolean;
         public taxID:Tax;
         public memberID:Member;
     }

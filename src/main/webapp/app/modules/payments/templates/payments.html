@@ -8,6 +8,7 @@
             <li class="active" ><a ng-click="viewChange(0)" data-toggle="tab">Visi</a></li>
             <li><a ng-click="viewChange(1)" data-toggle="tab">Patvirtinti</a></li>
             <li><a ng-click="viewChange(2)" data-toggle="tab">Nepatvirtinti</a></li>
+            <li><a ng-click="viewChange(3)" data-toggle="tab">Atšaukti</a></li>
         </ul>
 
         <div id="paymentMain">
@@ -19,6 +20,7 @@
                     <th>Kaina</th>
                     <th>Narys</th>
                     <th>Patvirtinimas</th>
+                    <th>Atšaukimas</th>
                     <th>Patvirtinti</th>
                 </tr>
                 </thead>
@@ -29,12 +31,13 @@
                     <td>{{x.taxID.price}}</td>
                     <td>{{x.memberID.firstName + " " + x.memberID.lastName}}</td>
                     <td>{{isConfirmed(x)}}</td>
-                    <td ng-if="!x.confirmed"><input type="checkbox" ng-click="toggleCheck(x)"></td>
+                    <td>{{isCanceled(x)}}</td>
+                    <td ng-if="!x.confirmed && !x.canceled"><input type="checkbox" ng-click="toggleCheck(x)"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-        <button type="submit" class="btn btn-success" ng-if="viewId != 1" ng-click="confirmPayments()">Patvirtinti</button>
+        <button type="submit" class="btn btn-success" ng-if="viewId != 1 && viewId != 3" ng-click="confirmPayments()">Patvirtinti</button>
     </form>
 </div>
 
