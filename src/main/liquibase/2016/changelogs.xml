@@ -568,4 +568,9 @@
     <changeSet id="min018" author="Mindaugas">
         <dropTable tableName="TaxType"></dropTable>
     </changeSet>
+    <changeSet id="ar005" author="Aurimas">
+        <sql>
+            ALTER TABLE labanorasfriends.payment ADD Canceled BIT DEFAULT 0;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

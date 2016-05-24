@@ -44,6 +44,8 @@ public class Payment implements Serializable {
     @NotNull
     @Column(name = "Confirmed")
     private boolean confirmed;
+    @Column(name = "Canceled")
+    private boolean canceled;
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tax taxID;
@@ -86,6 +88,14 @@ public class Payment implements Serializable {
 
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public boolean getCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 
     public Tax getTaxID() {
