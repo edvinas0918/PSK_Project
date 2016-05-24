@@ -20,7 +20,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Payment.findAll", query = "SELECT p FROM Payment p"),
     @NamedQuery(name = "Payment.findById", query = "SELECT p FROM Payment p WHERE p.id = :id"),
     @NamedQuery(name = "Payment.findByPaymentDate", query = "SELECT p FROM Payment p WHERE p.paymentDate = :paymentDate"),
-    @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed")})
+    @NamedQuery(name = "Payment.findByConfirmed", query = "SELECT p FROM Payment p WHERE p.confirmed = :confirmed"),
+    @NamedQuery(name = "Payment.findByCanceled", query = "SELECT p FROM Payment p WHERE p.canceled = :canceled")})
 public class Payment implements Serializable {
 
     @Basic(optional = false)
@@ -44,6 +45,8 @@ public class Payment implements Serializable {
     @NotNull
     @Column(name = "Confirmed")
     private boolean confirmed;
+    @Column(name = "Canceled")
+    private boolean canceled;
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tax taxID;
@@ -86,6 +89,14 @@ public class Payment implements Serializable {
 
     public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
+    }
+
+    public boolean getCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
     }
 
     public Tax getTaxID() {

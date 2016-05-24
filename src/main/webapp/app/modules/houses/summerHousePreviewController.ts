@@ -32,7 +32,7 @@ module SummerHouses.houses {
         getAdditionalServices():void {
             SummerHousePreviewController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHousePreviewController.that.$scope.house;
-                SummerHousePreviewController.that.$http.get('/rest/houseserviceprice/findSummerhouseServices/' + house.id).success((prices:HouseServicePrice[], status) => {
+                SummerHousePreviewController.that.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
                     let summerhouseServices = Array<AdditionalService>();
                     for (let service of services) {
                         for (let houseServicePrice of prices) {

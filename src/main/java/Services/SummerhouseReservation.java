@@ -113,4 +113,8 @@ public class SummerhouseReservation {
         return false;
     }
 
+    public void cancelReservation(Summerhousereservation reservation){
+
+    }
+
 }

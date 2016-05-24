@@ -3,10 +3,8 @@
         <h2 class="page-header">Vasarnamis nr. {{summerhouse.number}}</h2>
     </div>
     <div class="col-md-6">
-        <a href="portfolio-item.html">
-            <img class="img-responsive img-hover" ng-src="{{summerhouse.image}}" alt=""
-                 style="width:600px; height:250px;">
-        </a>
+        <img class="img-responsive img-hover" ng-src="{{summerhouse.image}}" alt=""
+             style="width:600px; height:250px;">
     </div>
     <div class="col-md-6">
         <h4>
@@ -24,7 +22,8 @@
     <div week-picker picker="weekPicker" id="reservationDatePicker"></div>
     <button class="btn btn-primary"
             style="height:34px; min-width:140px;"
-            ng-click="openReservationForm()">Rezervuoti</button>
+            ng-click="openReservationForm()">Rezervuoti
+    </button>
     <p ng-show="selectDates" class="help-block">Pasirinkite datas paslaugoms, kurias norite rezervuoti</p>
 </div>
 <div class="row" style="margin-top:30px;">
@@ -35,9 +34,9 @@
         <div class="pull-left">
                     <span class="fa-stack fa-2x" ng-click="manageService(service)">
                           <span ng-show="!service.checked" class="glyphicon glyphicon-unchecked text-primary"
-                             style="top: 3px;left: 15px;" ng-click="service.checked = true"></span>
+                                style="top: 3px;left: 15px;" ng-click="service.checked = true"></span>
                           <span ng-show="service.checked" class="glyphicon glyphicon-check text-primary"
-                             style="top: 3px;left: 15px;" ng-click="service.checked = false"></span>
+                                style="top: 3px;left: 15px;" ng-click="service.checked = false"></span>
                     </span>
         </div>
         <div class="media-body">
@@ -51,7 +50,7 @@
             >
             <!--<input type="datetime-local" name="serviceReservationEnd" ng-model="service.serviceEnd">-->
             <p>{{service.description}}</p>
-            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.pricePoints}} taškai</p>
+            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.tax.price}} taškai(-as)</p>
         </div>
     </div>
 </div>
