@@ -47,6 +47,10 @@ public class Payment implements Serializable {
     private boolean confirmed;
     @Column(name = "Canceled")
     private boolean canceled;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "Price")
+    private float price;
     @JoinColumn(name = "TaxID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tax taxID;
@@ -113,6 +117,14 @@ public class Payment implements Serializable {
 
     public void setMemberID(Clubmember memberID) {
         this.memberID = memberID;
+    }
+
+    public float getPrices() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     @Override
