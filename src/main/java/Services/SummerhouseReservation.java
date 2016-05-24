@@ -1,12 +1,11 @@
 package Services;
 
-import Entities.Settings;
-import Entities.Summerhouse;
-import Entities.Summerhousereservation;
+import Entities.*;
 import Helpers.DateTermException;
 import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -25,6 +24,9 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 public class SummerhouseReservation {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
     private EntityManager em;
+
+    @Inject
+    private IPaymentService paymentService;
 
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
         if (endPeriod.compareTo(beginPeriod) != 1) {
@@ -115,7 +117,7 @@ public class SummerhouseReservation {
         return false;
     }
 
-    public void cancelReservation(Summerhousereservation reservation) throws DateTermException {
+    public void cancelReservation(Summerhousereservation reservation, Clubmember clubmember) throws DateTermException {
         //1. Check if available for cancelation
         Integer daysBeforeCancellation = Integer.parseInt(em.createNamedQuery("Settings.findByReferenceCode", Settings.class).
                 setParameter("referenceCode", "reservationCancellationDeadline").getSingleResult().getValue());
@@ -130,9 +132,11 @@ public class SummerhouseReservation {
         }
 
         //2. Cancel related payment
+        Tax tax = em.find(Tax.class, 1);
+        //TODO: find related tax, find related payment, delete payment
 
         //3. Give points back to user
-
+        paymentService.makeMinusPayment(clubmember, tax);
     }
 
 }

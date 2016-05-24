@@ -3,6 +3,7 @@ package RestControllers;
 import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
 import Helpers.DateTermException;
+import Services.ClubMemberService;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
 
@@ -31,6 +32,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     SummerhouseReservation summerhouseReservation;
+
+    @Inject
+    ClubMemberService clubMemberService;
 
     @Inject
     SummerhouseFacadeREST summerhouseFacadeREST;
@@ -86,7 +90,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     public Response remove(@PathParam("id") Integer id) {
         try{
             Summerhousereservation reservation = super.find(id);
-            summerhouseReservation.cancelReservation(reservation);
+            summerhouseReservation.cancelReservation(reservation, clubMemberService.getCurrentUser());
             super.remove(reservation);
         } catch(DateTermException exc){
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();

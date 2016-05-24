@@ -35,6 +35,7 @@ module SummerHouses.houses {
             this.$scope.userReservations = [];
             this.$scope.search = false;
             this.$scope.errorMessage = '';
+            this.$scope.successMessage = '';
 
             this.getSummerHouses();
             this.getTaxes();
@@ -93,7 +94,8 @@ module SummerHouses.houses {
 
             this.$scope.cancelReservation = (reservation: any) => {
                 this.$http.delete('/rest/reservation/' + reservation.id).then(() => {
-                    this.getUserReservations()
+                    this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
+                    _.pull(this.$scope.userReservations, reservation);
                 }).catch((error) => {
                     switch (error.status){
                         case 406:
@@ -135,6 +137,16 @@ module SummerHouses.houses {
                 });
             }, (error) => {
             });
+        }
+
+        showSuccessMessage(message: string): void{
+            this.$scope.showAlert = true;
+            this.$scope.successMessage = message;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlert = false;
+                })
+            }, 4000)
         }
 
         showErrorMessage(message: string): void{
