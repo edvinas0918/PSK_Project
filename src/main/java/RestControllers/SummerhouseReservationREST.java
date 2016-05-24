@@ -2,6 +2,7 @@ package RestControllers;
 
 import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
+import Helpers.DateTermException;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
 
@@ -81,10 +82,16 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        Summerhousereservation reservation = super.find(id);
-        summerhouseReservation.cancelReservation(reservation);
-        super.remove(reservation);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response remove(@PathParam("id") Integer id) {
+        try{
+            Summerhousereservation reservation = super.find(id);
+            summerhouseReservation.cancelReservation(reservation);
+            super.remove(reservation);
+        } catch(DateTermException exc){
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        return Response.status(Response.Status.OK).build();
     }
 
 

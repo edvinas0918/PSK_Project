@@ -1,7 +1,9 @@
 package Services;
 
+import Entities.Settings;
 import Entities.Summerhouse;
 import Entities.Summerhousereservation;
+import Helpers.DateTermException;
 import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
@@ -113,7 +115,23 @@ public class SummerhouseReservation {
         return false;
     }
 
-    public void cancelReservation(Summerhousereservation reservation){
+    public void cancelReservation(Summerhousereservation reservation) throws DateTermException {
+        //1. Check if available for cancelation
+        Integer daysBeforeCancellation = Integer.parseInt(em.createNamedQuery("Settings.findByReferenceCode", Settings.class).
+                setParameter("referenceCode", "reservationCancellationDeadline").getSingleResult().getValue());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, daysBeforeCancellation);
+        Calendar reservationCalendar = Calendar.getInstance();
+        reservationCalendar.setTime(reservation.getFromDate());
+        if(calendar.after(reservationCalendar)){
+            String errorMessage = String.format("Atšaukimas negalimas. Rezervaciją galima atšaukti tik likus ne mažiau nei %d dienai/dienoms.",
+                    daysBeforeCancellation);
+            throw new DateTermException(errorMessage);
+        }
+
+        //2. Cancel related payment
+
+        //3. Give points back to user
 
     }
 

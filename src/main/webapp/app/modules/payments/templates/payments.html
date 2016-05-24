@@ -28,7 +28,7 @@
                 <tr ng-repeat="x in shownPayments">
                     <td>{{x.paymentDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{x.taxID.name}}</td>
-                    <td>{{x.taxID.price}}</td>
+                    <td>{{x.price}}</td>
                     <td>{{x.memberID.firstName + " " + x.memberID.lastName}}</td>
                     <td>{{isConfirmed(x)}}</td>
                     <td>{{isCanceled(x)}}</td>
