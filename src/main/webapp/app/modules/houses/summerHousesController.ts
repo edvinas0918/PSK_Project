@@ -118,8 +118,8 @@ module SummerHouses.houses {
                 var userId = user.id;
                 this.$http.get('/rest/reservation/clubmember/' + userId).then((response) => {
                     _.forEach(response.data, (reservation) => {
-                        reservation.summerhouse.beginPeriod = moment(reservation.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
-                        reservation.summerhouse.endPeriod = moment(reservation.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                        reservation.fromDate = moment(reservation.fromDate).locale('LT').format('MMMM Do');
+                        reservation.untilDate  = moment(reservation.untilDate).locale('LT').format('MMMM Do');
                     })
                     this.$scope.userReservations = response.data;
                 });

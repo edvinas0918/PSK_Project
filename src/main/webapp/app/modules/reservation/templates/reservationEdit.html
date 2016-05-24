@@ -1,0 +1,55 @@
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">Vasarnamis nr. {{reservation.summerhouse.number}}</h2>
+        </div>
+        <div class="col-md-6">
+            <a href="portfolio-item.html">
+                <img class="img-responsive img-hover" ng-src="{{reservation.summerhouse.image}}" alt=""
+                     style="width:600px; height:250px;">
+            </a>
+        </div>
+        <div class="col-md-6">
+            <h4>
+                <small>Vietų skaičius:</small>
+                {{reservation.summerhouse.capacity}}
+            </h4>
+            <h4>
+                <small>Rezervacijos data:</small>
+                {{reservation.fromDateString}} - {{reservation.untilDateString}}
+            </h4>
+            <p>{{reservation.summerhouse.description}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">Papildomos paslaugos</h2>
+        </div>
+        <div class="media col-md-4 pull-left" ng-repeat="service in additionalServiceReservations" style="height:120px;">
+            <div class="pull-left">
+                    <span class="fa-stack fa-2x" ng-model="service.selected">
+                          <span ng-show="!service.selected" class="glyphicon glyphicon-unchecked text-primary"
+                                style="top: 3px;left: 15px;" ng-click="service.selected = true"></span>
+                          <span ng-show="service.selected" class="glyphicon glyphicon-check text-primary"
+                                style="top: 3px;left: 15px;" ng-click="service.selected = false"></span>
+                    </span>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">{{reservation.service.name}}</h4>
+                <input ng-show="service.selected"
+                       type="datetime-local"
+                       name="serviceReservationBegin"
+                       ng-model="service.startDate"
+                       min="{{getDateString(reservation.fromDate)}}"
+                       max="{{getDateString(reservation.untilDate)}}"
+                >
+                <p>{{service.service.description}}</p>
+                <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.service.pricePoints}} taškai</p>
+            </div>
+        </div>
+    </div>
+
+</div>
