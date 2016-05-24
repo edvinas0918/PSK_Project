@@ -8,12 +8,10 @@ package RestControllers;
 import Entities.AdditionalService;
 import Entities.HouseServicePrice;
 import Entities.HouseServicePricePK;
+import Entities.Tax;
 import models.HouseServicePriceDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.ejb.Stateless;
@@ -44,6 +42,9 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
 
     @Inject
     SummerhouseFacadeREST summerhouseFacadeREST;
+
+    @Inject
+    AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
     @Inject
     TaxFacadeREST taxFacadeREST;
@@ -128,13 +129,28 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     }
 
     @GET
-    @Path("findSummerhouseServices/{houseID}")
+    @Path("findSummerhouseServicePrices/{houseID}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
         Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID && x.getTax() != null);
         List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
         return list;
+    }
+
+    @GET
+    @Path("summerhouseServicesWithTaxes/{houseID}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Map<AdditionalService, Tax> getSummerhouseServicesWithTaxes(@PathParam("houseID") final Integer houseID)
+    {
+        Map<AdditionalService, Tax> additionalServiceTaxMap = new HashMap<>();
+        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID && x.getTax() != null);
+        List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
+        for (HouseServicePrice houseServicePrice : list) {
+            AdditionalService additionalService = additionalServiceFacadeREST.find(houseServicePrice.getHouseServicePricePK().getServiceID());
+            additionalServiceTaxMap.put(additionalService, houseServicePrice.getTax());
+        }
+        return additionalServiceTaxMap;
     }
 
     @GET

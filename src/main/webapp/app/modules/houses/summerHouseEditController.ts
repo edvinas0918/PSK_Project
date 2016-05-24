@@ -112,7 +112,7 @@ module SummerHouses.houses {
         getAdditionalServices():void {
             SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHouseEditController.that.scope.house;
-                SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServices/' + house.id).success((prices:HouseServicePrice[], status) => {
+                SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
