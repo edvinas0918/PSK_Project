@@ -34,6 +34,7 @@ module SummerHouses.houses {
             this.$scope.view = "all";
             this.$scope.userReservations = [];
             this.$scope.search = false;
+            this.$scope.errorMessage = '';
 
             this.getSummerHouses();
             this.getTaxes();
@@ -91,8 +92,17 @@ module SummerHouses.houses {
             };
 
             this.$scope.cancelReservation = (reservation: any) => {
-                this.$http.delete('/rest/reservation/' + reservation.id).success(() => {
+                this.$http.delete('/rest/reservation/' + reservation.id).then(() => {
                     this.getUserReservations()
+                }).catch((error) => {
+                    switch (error.status){
+                        case 406:
+                            this.showErrorMessage("Rezervacijos atšaukimas negalimas.");
+                            break;
+                        case 500:
+                            this.showErrorMessage("Sistemos klaida");
+                            break;
+                    }
                 });
             }
         }
@@ -125,7 +135,16 @@ module SummerHouses.houses {
                 });
             }, (error) => {
             });
+        }
 
+        showErrorMessage(message: string): void{
+            this.$scope.errorMessage = message;
+            this.$scope.showAlertError = true;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlertError = false;
+                })
+            }, 4000)
         }
     }
 
