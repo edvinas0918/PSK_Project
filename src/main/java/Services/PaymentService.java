@@ -50,6 +50,7 @@ public class PaymentService implements IPaymentService {
         payment.setPaymentDate(cal.getTime());
         payment.setTaxID(tax);
         payment.setConfirmed(false);
+        payment.setPrice( isMinus ? -tax.getPrice() : tax.getPrice());
         em.persist(payment);
     }
 }

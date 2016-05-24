@@ -7,6 +7,7 @@ module SummerHouses.payments {
         public canceled:boolean;
         public taxID:Tax;
         public memberID:Member;
+        public price:number;
     }
 
     export class Tax {

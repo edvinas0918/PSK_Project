@@ -119,7 +119,7 @@ public class Payment implements Serializable {
         this.memberID = memberID;
     }
 
-    public float getPrices() {
+    public float getPrice() {
         return price;
     }
 
