@@ -34,7 +34,7 @@ public class PaymentService implements IPaymentService {
 
         try {
             em.merge(member);
-            savePayment(member, tax);
+            savePayment(member, tax, false);
         } catch (Exception ex) {
             member.setPoints(member.getPoints() + tax.getPrice());
         }
