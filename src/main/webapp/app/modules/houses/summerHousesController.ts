@@ -89,6 +89,12 @@ module SummerHouses.houses {
                 this.$scope.search = false;
                 this.$scope.searchParams = null;
             };
+
+            this.$scope.cancelReservation = (reservation: any) => {
+                this.$http.delete('/rest/reservation/' + reservation.id).success(() => {
+                    this.getUserReservations()
+                });
+            }
         }
 
         getTaxes(): void{

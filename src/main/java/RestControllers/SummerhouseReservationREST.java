@@ -82,7 +82,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        Summerhousereservation reservation = super.find(id);
+        summerhouseReservation.cancelReservation(reservation);
+        super.remove(reservation);
     }
 
 
