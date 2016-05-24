@@ -31,9 +31,13 @@ public class PaymentService implements IPaymentService {
             throw new InsufficientFundsException("Nepakankamas taškų skaičius.");
         }
         member.setPoints(member.getPoints() - tax.getPrice());
-        em.merge(member);
 
-        savePayment(member, tax);
+        try {
+            em.merge(member);
+            savePayment(member, tax);
+        } catch (Exception ex) {
+            member.setPoints(member.getPoints() + tax.getPrice());
+        }
     }
 
     private void savePayment(Clubmember member, Tax tax){

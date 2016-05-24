@@ -2,6 +2,8 @@ package RestControllers;
 
 import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
+import Entities.Tax;
+import Services.IPaymentService;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
 
@@ -13,10 +15,6 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +40,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     AuthenticationControllerREST authenticationControllerREST;
+
+    @Inject
+    IPaymentService paymentService;
 
     public SummerhouseReservationREST() {
         super(Summerhousereservation.class);
@@ -94,15 +95,18 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         JSONObject responseBody = new JSONObject();
 
         try {
+            //TODO: check membership payment
             summerhouseReservation.validatePeriod(reservation.getFromDate(), reservation.getUntilDate());
             summerhouseReservation.checkAvailabilityPeriod(
-                    reservation.getSummerhouse(),
-                    reservation.getFromDate(),
-                    reservation.getUntilDate(),
+                    reservation,
                     this.findBySummerhouse(reservation.getSummerhouse().getId()));
 
+            summerhouseReservation.checkMoney(reservation);
             reservation.setMember(authenticationControllerREST.getSessionUser());
             summerhouseReservation.checkReservationGroup(reservation);
+
+            Tax reservationTax = summerhouseReservation.getReservationTax(reservation);
+            paymentService.makePayment(authenticationControllerREST.getSessionUser(), reservationTax);
             super.create(reservation);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());

@@ -18,10 +18,10 @@
                                     <th>Data</th>
                                     <th>Kaina(taškai)</th>
                                 </tr>
-                                <tr ng-repeat="service in summerhouse.additionalServiceReservations">
-                                    <td>{{service.service.name}}</td>
+                                <tr ng-repeat="service in summerhouse.additionalServices | filter: {checked: true}">
+                                    <td>{{service.name}}</td>
                                     <td>{{formatDate(service.serviceReservationStartDate)}}</td>
-                                    <td>{{service.date}}</td>
+                                    <td>{{service.tax.price}}</td>
                                 </tr>
                             </table>
                         </div>

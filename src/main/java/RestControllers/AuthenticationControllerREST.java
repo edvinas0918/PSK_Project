@@ -77,8 +77,6 @@ public class AuthenticationControllerREST {
             return new AuthResponse(400, "Vartotojas yra deaktyvuotas. Prisijungimas negalimas.");
         }
 
-        HttpSession session = webRequest.getSession();
-
         if (user == null){
             user = new Clubmember();
             String[] name = userInfo.getString("name").split(" ");
@@ -96,7 +94,8 @@ public class AuthenticationControllerREST {
                 return new AuthResponse(400, e.getMessage());
             }
         }
-        session.setAttribute("User", user);
+
+        setSessionUser(user);
 
         return new AuthResponse(200, accessToken);
     }
@@ -106,6 +105,10 @@ public class AuthenticationControllerREST {
     @Produces(MediaType.APPLICATION_JSON)
     public Clubmember getSessionUser() {
         return (Clubmember)webRequest.getSession().getAttribute("User");
+    }
+
+    public void setSessionUser(Clubmember user) {
+        webRequest.getSession().setAttribute("User", user);
     }
 
     @GET

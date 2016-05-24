@@ -32,6 +32,19 @@ namespace SummerHouses {
             
             this.$scope.formatDate = (date) => {
                 return moment(date).locale("LT").format("MMMM DD, YYYY");
+            };
+
+            this.$scope.calculateTotalPoints = (): number => {
+                var summerhouse = ReservationModalController.that.$scope.summerhouse;
+                var totalPoints = summerhouse.taxID.price;
+
+                for (var i in summerhouse.additionalServices) {
+                    if (summerhouse.additionalServices[i].checked) {
+                        totalPoints += summerhouse.additionalServices[i].tax.price;
+                    }
+                }
+                
+                return totalPoints;
             }
 
         }
@@ -42,8 +55,8 @@ namespace SummerHouses {
             var reservation = {};
             reservation.summerhouse = summerhouse;
 
-            reservation.fromDate = moment(period.fromDate).format("YYYY-MM-DD");
-            reservation.untilDate = moment(period.untilDate).format("YYYY-MM-DD");
+            reservation.fromDate = period.fromDate;
+            reservation.untilDate = period.untilDate;
             reservation.member = {};
             var params = {
                 method: "POST",

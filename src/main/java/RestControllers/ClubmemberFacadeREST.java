@@ -50,6 +50,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Inject
     private EmailService emailService;
 
+    @Inject
+    AuthenticationControllerREST authenticationControllerREST;
+
     public ClubmemberFacadeREST() {
         super(Clubmember.class);
     }
@@ -80,7 +83,12 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         if (member == null){
             return Response.status(Response.Status.NOT_FOUND).entity("Member not found").build();
         }
+
         clubMemberService.grantPoints(member, grant.getPoints());
+        if (member.getId().equals(authenticationControllerREST.getSessionUser().getId())) {
+            authenticationControllerREST.setSessionUser(member);
+        }
+
         try{
             emailService.sendPointsReceivedEmail(new String[] {member.getEmail()}, grant.getPoints(), grant.getDescription());
         } catch (Exception e){

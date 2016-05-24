@@ -39,12 +39,12 @@ module SummerHouses.members {
 
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             
-            this.authService.getUser().then((user) => {
+            this.authService.getSessionUser().then((user) => {
                 this.$scope.editable = user.id == this.$routeParams.memberID;
             }, (error) => {
             });
             
-            this.$scope.formFields = { }
+            this.$scope.formFields = { };
 
             this.getMember($routeParams.memberID);
 
@@ -59,7 +59,7 @@ module SummerHouses.members {
                         });
                     });
                 }
-            }
+            };
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 if (this.$scope.newMember){
@@ -73,11 +73,11 @@ module SummerHouses.members {
                     });
                 }
                 this.$scope.editing = false;
-            }
+            };
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
-            }
+            };
 
             this.$scope.renewMembership = () => {
                 this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).then(() => {
@@ -94,7 +94,7 @@ module SummerHouses.members {
                             break;
                     }
                 });
-            }
+            };
 
             this.$scope.collectMembershipData = () => {
                 this.$http.get('/rest/entities.tax/MemberTax').success((memberTax:number) => {
@@ -108,7 +108,7 @@ module SummerHouses.members {
                 }
 
                 this.$scope.nextMembershipExpiration.setFullYear(this.$scope.nextMembershipExpiration.getFullYear() + 1);
-            }
+            };
 
             this.$scope.recommendCandidate = () => {
                 this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).success(() => {

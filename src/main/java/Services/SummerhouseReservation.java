@@ -1,10 +1,11 @@
 package Services;
 
-import Entities.Summerhouse;
-import Entities.Summerhousereservation;
+import Entities.*;
+import RestControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -21,8 +22,11 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 @Stateless
 public class SummerhouseReservation {
-    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type = TRANSACTION)
     private EntityManager em;
+
+    @Inject
+    private AuthenticationControllerREST authenticationControllerREST;
 
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
         if (endPeriod.compareTo(beginPeriod) != 1) {
@@ -52,7 +56,11 @@ public class SummerhouseReservation {
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 
-    public void checkAvailabilityPeriod(Summerhouse summerhouse, Date beginPeriod, Date endPeriod, List<Summerhousereservation> reservations) throws Exception {
+    public void checkAvailabilityPeriod(Summerhousereservation reservation, List<Summerhousereservation> otherReservations) throws Exception {
+
+        Date beginPeriod = reservation.getFromDate();
+        Date endPeriod = reservation.getUntilDate();
+        Summerhouse summerhouse = reservation.getSummerhouse();
 
         //check availability period
         if (endPeriod.compareTo(beginPeriod) != 1) {
@@ -64,10 +72,10 @@ public class SummerhouseReservation {
         }
 
         //check if not reserved already
-        for (Summerhousereservation reservation :
-                reservations) {
-            if (dateIsInPeriod(beginPeriod, reservation.getFromDate(), reservation.getUntilDate()) ||
-                    dateIsInPeriod(endPeriod, reservation.getFromDate(), reservation.getUntilDate())) {
+        for (Summerhousereservation otherReservation :
+                otherReservations) {
+            if (dateIsInPeriod(beginPeriod, otherReservation.getFromDate(), otherReservation.getUntilDate()) ||
+                    dateIsInPeriod(endPeriod, otherReservation.getFromDate(), otherReservation.getUntilDate())) {
                 throw new Exception("Šiuo laikotarpiu vasarnamis yra užimtas.");
             }
         }
@@ -88,33 +96,49 @@ public class SummerhouseReservation {
         }
     }
 
-    public List<Summerhouse> getAvailableSummerhousesInPeriod(List<Summerhouse> summerhouses, Date fromDate, Date untilDate){
+    public List<Summerhouse> getAvailableSummerhousesInPeriod(List<Summerhouse> summerhouses, Date fromDate, Date untilDate) {
         List<Summerhouse> availableHouses = new ArrayList<>();
-        for (Summerhouse house: summerhouses) {
+        for (Summerhouse house : summerhouses) {
             int year = new DateTime(fromDate).getYear();
             Date reservationBeginPeriod = new DateTime(house.getBeginPeriod()).withYear(year).toDate();
             Date reservationEndPeriod = new DateTime(house.getEndPeriod()).withYear(year).toDate();
 
-            if( dateIsInPeriod(fromDate, reservationBeginPeriod, reservationEndPeriod)
+            if (dateIsInPeriod(fromDate, reservationBeginPeriod, reservationEndPeriod)
                     && dateIsInPeriod(untilDate, reservationBeginPeriod, reservationEndPeriod)
-                    && !summerHouseHasReservationInPeriod(house, fromDate, untilDate)){
+                    && !summerHouseHasReservationInPeriod(house, fromDate, untilDate)) {
                 availableHouses.add(house);
             }
         }
         return availableHouses;
     }
 
-    private boolean summerHouseHasReservationInPeriod(Summerhouse summerHouse, Date fromDate, Date untilDate){
-        for(Summerhousereservation reservation: summerHouse.getSummerhousereservationList()){
-            if (dateIsInPeriod(reservation.getFromDate(), fromDate, untilDate)){
+    private boolean summerHouseHasReservationInPeriod(Summerhouse summerHouse, Date fromDate, Date untilDate) {
+        for (Summerhousereservation reservation : summerHouse.getSummerhousereservationList()) {
+            if (dateIsInPeriod(reservation.getFromDate(), fromDate, untilDate)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void cancelReservation(Summerhousereservation reservation){
+    public void cancelReservation(Summerhousereservation reservation) {
 
     }
 
+    public void checkMoney(Summerhousereservation reservation) throws Exception {
+        int requiredAmount = reservation.getSummerhouse().getTaxID().getPrice();
+        //TODO: uncomment when additional services are implemented.
+       /* for (Additionalservicereservation additionalService:
+             reservation.getAdditionalServiceReservations()) {
+            requiredAmount += additionalService.getTaxID().getPrice();
+        }*/
+
+        if (authenticationControllerREST.getSessionUser().getPoints() < requiredAmount) {
+            throw new Exception("Nepakankamas taškų kiekis");
+        }
+    }
+
+    public Tax getReservationTax(Summerhousereservation reservation) throws Exception {
+        return reservation.getSummerhouse().getTaxID();
+    }
 }
