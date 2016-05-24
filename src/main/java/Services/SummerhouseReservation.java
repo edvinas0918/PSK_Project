@@ -120,11 +120,11 @@ public class SummerhouseReservation {
         Integer daysBeforeCancellation = Integer.parseInt(em.createNamedQuery("Settings.findByReferenceCode", Settings.class).
                 setParameter("referenceCode", "reservationCancellationDeadline").getSingleResult().getValue());
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -daysBeforeCancellation);
+        calendar.add(Calendar.DAY_OF_YEAR, daysBeforeCancellation);
         Calendar reservationCalendar = Calendar.getInstance();
-        reservationCalendar.setTime(reservation.getUntilDate());
+        reservationCalendar.setTime(reservation.getFromDate());
         if(calendar.after(reservationCalendar)){
-            String errorMessage = String.format("Atšaukimas negalimas. Rezervaciją galima atšaukti tik %d dienas prieš.",
+            String errorMessage = String.format("Atšaukimas negalimas. Rezervaciją galima atšaukti tik likus ne mažiau nei %d dienai/dienoms.",
                     daysBeforeCancellation);
             throw new DateTermException(errorMessage);
         }
