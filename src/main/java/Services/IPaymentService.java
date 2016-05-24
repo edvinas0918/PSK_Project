@@ -11,4 +11,5 @@ import Helpers.InsufficientFundsException;
 public interface IPaymentService {
     void confirmPayment(Payment[] payments);
     void makePayment(Clubmember member, Tax tax) throws InsufficientFundsException;
+    void makeMinusPayment(Clubmember member, Tax tax);
 }

@@ -573,4 +573,9 @@
             ALTER TABLE labanorasfriends.payment ADD Canceled BIT DEFAULT 0;
         </sql>
     </changeSet>
+    <changeSet id="ar006" author="Aurimas">
+        <sql>
+            ALTER TABLE labanorasfriends.payment ADD Price DECIMAL(5,2) NOT NULL;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

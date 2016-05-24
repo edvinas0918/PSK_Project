@@ -4,6 +4,8 @@ import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
 import Entities.Tax;
 import Services.IPaymentService;
+import Helpers.DateTermException;
+import Services.ClubMemberService;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
 
@@ -15,6 +17,10 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +34,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     SummerhouseReservation summerhouseReservation;
+
+    @Inject
+    ClubMemberService clubMemberService;
 
     @Inject
     SummerhouseFacadeREST summerhouseFacadeREST;
@@ -82,10 +91,16 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        Summerhousereservation reservation = super.find(id);
-        summerhouseReservation.cancelReservation(reservation);
-        super.remove(reservation);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response remove(@PathParam("id") Integer id) {
+        try{
+            Summerhousereservation reservation = super.find(id);
+            summerhouseReservation.cancelReservation(reservation, clubMemberService.getCurrentUser());
+            super.remove(reservation);
+        } catch(DateTermException exc){
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        return Response.status(Response.Status.OK).build();
     }
 
 

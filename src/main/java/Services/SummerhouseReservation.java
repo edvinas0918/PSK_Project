@@ -1,6 +1,7 @@
 package Services;
 
 import Entities.*;
+import Helpers.DateTermException;
 import RestControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
 
@@ -22,11 +23,14 @@ import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 @Stateless
 public class SummerhouseReservation {
-    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type = TRANSACTION)
+    @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU", type=TRANSACTION)
     private EntityManager em;
 
     @Inject
     private AuthenticationControllerREST authenticationControllerREST;
+
+    @Inject
+    private IPaymentService paymentService;
 
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
         if (endPeriod.compareTo(beginPeriod) != 1) {
@@ -121,8 +125,26 @@ public class SummerhouseReservation {
         return false;
     }
 
-    public void cancelReservation(Summerhousereservation reservation) {
+    public void cancelReservation(Summerhousereservation reservation, Clubmember clubmember) throws DateTermException {
+        //1. Check if available for cancelation
+        Integer daysBeforeCancellation = Integer.parseInt(em.createNamedQuery("Settings.findByReferenceCode", Settings.class).
+                setParameter("referenceCode", "reservationCancellationDeadline").getSingleResult().getValue());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, daysBeforeCancellation);
+        Calendar reservationCalendar = Calendar.getInstance();
+        reservationCalendar.setTime(reservation.getFromDate());
+        if(calendar.after(reservationCalendar)){
+            String errorMessage = String.format("Atšaukimas negalimas. Rezervaciją galima atšaukti tik likus ne mažiau nei %d dienai/dienoms.",
+                    daysBeforeCancellation);
+            throw new DateTermException(errorMessage);
+        }
 
+        //2. Cancel related payment
+        Tax tax = em.find(Tax.class, 1);
+        //TODO: find related tax, find related payment, delete payment
+
+        //3. Give points back to user
+        paymentService.makeMinusPayment(clubmember, tax);
     }
 
     public void checkMoney(Summerhousereservation reservation) throws Exception {

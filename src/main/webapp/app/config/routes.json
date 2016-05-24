@@ -249,6 +249,17 @@
           "Candidate", "Admin"
         ]
       }
+    },
+    {
+      "url": "/reservation/:reservationID/edit",
+      "config": {
+        "templateUrl": "app/modules/reservation/templates/reservationEdit.html",
+        "controller": "reservationEditController",
+        "layout": "member",
+        "allowedRoles": [
+          "Member", "Admin"
+        ]
+      }
     }
   ]
 }

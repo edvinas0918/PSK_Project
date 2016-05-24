@@ -34,6 +34,8 @@ module SummerHouses.houses {
             this.$scope.view = "all";
             this.$scope.userReservations = [];
             this.$scope.search = false;
+            this.$scope.errorMessage = '';
+            this.$scope.successMessage = '';
 
             this.getSummerHouses();
             this.getTaxes();
@@ -91,8 +93,18 @@ module SummerHouses.houses {
             };
 
             this.$scope.cancelReservation = (reservation: any) => {
-                this.$http.delete('/rest/reservation/' + reservation.id).success(() => {
-                    this.getUserReservations()
+                this.$http.delete('/rest/reservation/' + reservation.id).then(() => {
+                    this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
+                    _.pull(this.$scope.userReservations, reservation);
+                }).catch((error) => {
+                    switch (error.status){
+                        case 406:
+                            this.showErrorMessage("Rezervacijos atšaukimas negalimas.");
+                            break;
+                        case 500:
+                            this.showErrorMessage("Sistemos klaida");
+                            break;
+                    }
                 });
             }
         }
@@ -118,14 +130,33 @@ module SummerHouses.houses {
                 var userId = user.id;
                 this.$http.get('/rest/reservation/clubmember/' + userId).then((response) => {
                     _.forEach(response.data, (reservation) => {
-                        reservation.summerhouse.beginPeriod = moment(reservation.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
-                        reservation.summerhouse.endPeriod = moment(reservation.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                        reservation.fromDate = moment(reservation.fromDate).locale('LT').format('MMMM Do');
+                        reservation.untilDate  = moment(reservation.untilDate).locale('LT').format('MMMM Do');
                     })
                     this.$scope.userReservations = response.data;
                 });
             }, (error) => {
             });
+        }
 
+        showSuccessMessage(message: string): void{
+            this.$scope.showAlert = true;
+            this.$scope.successMessage = message;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlert = false;
+                })
+            }, 4000)
+        }
+
+        showErrorMessage(message: string): void{
+            this.$scope.errorMessage = message;
+            this.$scope.showAlertError = true;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlertError = false;
+                })
+            }, 4000)
         }
     }
 

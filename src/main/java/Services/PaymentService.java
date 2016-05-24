@@ -40,13 +40,21 @@ public class PaymentService implements IPaymentService {
         }
     }
 
-    private void savePayment(Clubmember member, Tax tax){
+    public void makeMinusPayment(Clubmember member, Tax tax){
+       member.setPoints(member.getPoints() + tax.getPrice());
+        em.merge(member);
+
+        savePayment(member, tax, true);
+    }
+
+    private void savePayment(Clubmember member, Tax tax, boolean isMinus){
         Calendar cal = Calendar.getInstance();
         Payment payment = new Payment();
         payment.setMemberID(member);
         payment.setPaymentDate(cal.getTime());
         payment.setTaxID(tax);
         payment.setConfirmed(false);
+        payment.setPrice( isMinus ? -tax.getPrice() : tax.getPrice());
         em.persist(payment);
     }
 }

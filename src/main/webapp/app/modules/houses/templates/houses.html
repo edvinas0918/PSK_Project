@@ -1,3 +1,9 @@
+<div class="alert alert-error" ng-if="showAlertError">
+    <strong>Klaida!</strong> {{errorMessage}}
+</div>
+<div class="alert alert-success" ng-if="showAlert">
+    <strong>Patvirtinta!</strong> {{successMessage}}
+</div>
 <div class="row">
     <div class="col-md-12">
         <h2>Vasarnamiai</h2>
@@ -62,9 +68,9 @@
             <div class="col-md-6">
                 <h3>Vasarnamis nr. {{r.summerhouse.number}}</h3>
                 <h4><small>Vietų skaičius:</small> {{r.summerhouse.capacity}}</h4>
-                <h4><small>Rezervacijos data:</small> {{r.summerhouse.beginPeriod}} - {{r.summerhouse.endPeriod}} </h4>
+                <h4><small>Rezervacijos data:</small> {{r.fromDate}} - {{r.untilDate}} </h4>
                 <p>{{r.summerhouse.description}}</p>
-                <a class="btn btn-info" ng-href="#">Keisti</a>
+                <a class="btn btn-info" ng-href="#/reservation/{{r.id}}/edit">Peržiūrėti</a>
                 <a class="btn btn-danger" ng-click="cancelReservation(r)">Atšaukti</a>
             </div>
         </div>
