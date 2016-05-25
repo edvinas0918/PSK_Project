@@ -3,7 +3,7 @@ package Services;
 import Entities.Clubmember;
 import Entities.Memberstatus;
 import Entities.Payment;
-import Entities.Tax;
+import Entities.Settings;
 import Helpers.InsufficientFundsException;
 import Interceptors.Audit;
 
@@ -67,8 +67,10 @@ public class ClubMemberService {
             c.setTime(member.getMembershipExpirationDate());
         c.add(Calendar.YEAR, 1);
         member.setMembershipExpirationDate(c.getTime());
+        int price = Integer.parseInt(em.createNamedQuery("Settings.findByReferenceCode", Settings.class).
+                setParameter("referenceCode", "memberTax").getSingleResult().getValue());
 
-        //paymentService.makePayment(member, price, name);
+        paymentService.makePayment(member, price, "Narystės mokestis");
     }
 
     public void recommendCandidate(int candidateId){

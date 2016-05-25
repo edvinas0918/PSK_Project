@@ -2,7 +2,6 @@ package RestControllers;
 
 import Entities.Settings;
 import Services.SettingsService;
-import Services.TaxService;
 import models.SettingsDto;
 
 import javax.ejb.Stateless;
@@ -14,8 +13,6 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-
-import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 /**
  * Created by Gintautas on 4/24/2016.

@@ -1,19 +1,15 @@
 package Services;
 
 import Entities.Settings;
-import Entities.Tax;
 import models.SettingsDto;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.ejb.Stateless;
-import static javax.persistence.PersistenceContextType.TRANSACTION;
 
 /**
  * Created by Gintautas on 4/24/2016.

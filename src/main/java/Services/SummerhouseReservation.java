@@ -140,15 +140,15 @@ public class SummerhouseReservation {
         }
 
         //2. Cancel related payment
-        Tax tax = em.find(Tax.class, 1);
-        //TODO: find related tax, find related payment, delete payment
+        Payment payment = em.find(Payment.class, reservation.getPaymentID());
+        payment.setCanceled(true);
 
         //3. Give points back to user
-        paymentService.makeMinusPayment(clubmember, tax);
+        paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
     }
 
     public void checkMoney(Summerhousereservation reservation) throws Exception {
-        int requiredAmount = reservation.getSummerhouse().getTaxID().getPrice();
+        int requiredAmount = reservation.getSummerhouse().getReservationPrice();
         //TODO: uncomment when additional services are implemented.
        /* for (Additionalservicereservation additionalService:
              reservation.getAdditionalServiceReservations()) {
@@ -158,9 +158,5 @@ public class SummerhouseReservation {
         if (authenticationControllerREST.getSessionUser().getPoints() < requiredAmount) {
             throw new Exception("Nepakankamas taškų kiekis");
         }
-    }
-
-    public Tax getReservationTax(Summerhousereservation reservation) throws Exception {
-        return reservation.getSummerhouse().getTaxID();
     }
 }

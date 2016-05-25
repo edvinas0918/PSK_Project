@@ -2,11 +2,6 @@ package Services;
 
 import Entities.Clubmember;
 import Entities.Invitation;
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;
@@ -20,9 +15,7 @@ import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.io.StringWriter;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -42,7 +35,6 @@ public class EmailService {
     private String port;
     private String userName;
     private String password;
-    private String reccomendationTemplate;
 
     public EmailService(){
         setEmailServerValues();
@@ -55,7 +47,6 @@ public class EmailService {
             port = (String) context.lookup("java:comp/env/emailPort");
             userName = (String) context.lookup("java:comp/env/emailUsername");
             password = (String) context.lookup("java:comp/env/emailPassword");
-            reccomendationTemplate = (String) context.lookup("java:comp/env/reccomendationTemplate");
         } catch (NamingException e) {
             e.printStackTrace();
         }

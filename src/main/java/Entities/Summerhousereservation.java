@@ -118,6 +118,14 @@ public class Summerhousereservation implements Serializable {
         this.optLockVersion = optLockVersion;
     }
 
+    public int getPaymentID() {
+        return paymentID;
+    }
+
+    public void setPaymentID(int paymentID) {
+        this.paymentID = paymentID;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
