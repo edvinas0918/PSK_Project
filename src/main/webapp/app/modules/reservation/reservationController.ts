@@ -43,7 +43,7 @@ module SummerHouses {
                             }
                         ],
                         "MMMM DD, YYYY");
-                    ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
+                    //ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
                     $("#reservationDatePicker").datepicker("refresh");
                 });
 
@@ -107,14 +107,14 @@ module SummerHouses {
         }
 
         private getServicePricesForSummerhouse(summerhouseID):void {
-            this.$http.get('/rest/houseserviceprice/summerhouseServicesWithTaxes/' + summerhouseID).success((servicesTax:AdditionalServiceTax[], status) => {
+            /*this.$http.get('/rest/houseserviceprice/summerhouseServicesWithTaxes/' + summerhouseID).success((servicesTax:AdditionalServiceTax[], status) => {
                 var services = Array<AdditionalService>();
                 for (let service of servicesTax) {
                     service.key.tax = service.value;
                     services.push(service.key);
                 }
                 ReservationController.that.$scope.summerhouse.additionalServices = services;
-            });
+            });*/
         }
 
         public checkIfAllServicesHaveDate(reservations:AdditionalServiceReservation[]):Boolean {
