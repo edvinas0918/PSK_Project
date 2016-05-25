@@ -5,10 +5,8 @@
  */
 package RestControllers;
 
-import Entities.AdditionalService;
 import Entities.HouseServicePrice;
 import Entities.HouseServicePricePK;
-import Entities.Tax;
 import models.HouseServicePriceDTO;
 
 import java.util.*;
@@ -45,9 +43,6 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
 
     @Inject
     AdditionalServiceFacadeREST additionalServiceFacadeREST;
-
-    @Inject
-    TaxFacadeREST taxFacadeREST;
 
     private HouseServicePricePK getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -93,12 +88,6 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
             HouseServicePricePK houseServicePricePK = new HouseServicePricePK(price.getHouseID(), price.getServiceID());
             HouseServicePrice houseServicePrice = new HouseServicePrice();
             houseServicePrice.setHouseServicePricePK(houseServicePricePK);
-            if (price.getTax().getId() != null) {
-                taxFacadeREST.edit(price.getTax());
-            } else {
-                taxFacadeREST.create(price.getTax());
-            }
-            houseServicePrice.setTax(price.getTax());
             if (find(houseServicePricePK) != null) {
                 edit(houseServicePrice);
             } else {
@@ -133,24 +122,9 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
-        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID && x.getTax() != null);
+        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID);
         List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
         return list;
-    }
-
-    @GET
-    @Path("summerhouseServicesWithTaxes/{houseID}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Map<AdditionalService, Tax> getSummerhouseServicesWithTaxes(@PathParam("houseID") final Integer houseID)
-    {
-        Map<AdditionalService, Tax> additionalServiceTaxMap = new HashMap<>();
-        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID && x.getTax() != null);
-        List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
-        for (HouseServicePrice houseServicePrice : list) {
-            AdditionalService additionalService = additionalServiceFacadeREST.find(houseServicePrice.getHouseServicePricePK().getServiceID());
-            additionalServiceTaxMap.put(additionalService, houseServicePrice.getTax());
-        }
-        return additionalServiceTaxMap;
     }
 
     @GET

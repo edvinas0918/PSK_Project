@@ -5,11 +5,6 @@
  */
 package Entities;
 
-import Helpers.Helpers;
-import com.owlike.genson.annotation.JsonDateFormat;
-import com.owlike.genson.annotation.JsonIgnore;
-import org.joda.time.MonthDay;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -142,6 +137,14 @@ public class Summerhouse implements Serializable {
         DateFormat df = new SimpleDateFormat("yyyy MM dd");
         //return df.format(endPeriod);
         return endPeriod;
+    }
+
+    public int getReservationPrice() {
+        return reservationPrice;
+    }
+
+    public void setReservationPrice(int reservationPrice) {
+        this.reservationPrice = reservationPrice;
     }
 
     public int getCapacity() {
