@@ -118,7 +118,7 @@ public class Payment implements Serializable {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
