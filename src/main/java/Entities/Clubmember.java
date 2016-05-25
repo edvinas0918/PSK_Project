@@ -92,9 +92,9 @@ public class Clubmember implements Serializable {
     @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Memberstatus memberStatus;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)
     private List<Invitation> invitationList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)

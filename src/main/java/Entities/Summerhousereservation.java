@@ -60,7 +60,7 @@ public class Summerhousereservation implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhouse summerhouse;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservationID", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservation", fetch = FetchType.EAGER)
     private List<Additionalservicereservation> additionalServiceReservationList;
 
     public Summerhousereservation() {
