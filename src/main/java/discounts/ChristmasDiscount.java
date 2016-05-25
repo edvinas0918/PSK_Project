@@ -1,7 +1,6 @@
 package discounts;
 
 import Entities.Clubmember;
-import Entities.Tax;
 import Helpers.InsufficientFundsException;
 import Services.ClubMemberService;
 import Services.IPaymentService;
@@ -34,8 +33,8 @@ public abstract class ChristmasDiscount implements IPaymentService {
     }
 
     @Override
-    public void makePayment(Clubmember member, String name, int price) throws InsufficientFundsException {
-        paymentService.makePayment(member, name, price);
+    public void makePayment(Clubmember member, int price, String name) throws InsufficientFundsException {
+        paymentService.makePayment(member, price, name);
 
         LocalDateTime timeNow = new LocalDateTime();
         discountStartDate.withYear(timeNow.getYear());
