@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -49,11 +50,13 @@ public class Payment implements Serializable {
     private boolean canceled;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 500)
+    @Column(name = "Name")
+    private String name;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "Price")
-    private float price;
-    @JoinColumn(name = "TaxID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Tax taxID;
+    private int price;
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Clubmember memberID;
@@ -101,14 +104,6 @@ public class Payment implements Serializable {
 
     public void setCanceled(boolean canceled) {
         this.canceled = canceled;
-    }
-
-    public Tax getTaxID() {
-        return taxID;
-    }
-
-    public void setTaxID(Tax taxID) {
-        this.taxID = taxID;
     }
 
     public Clubmember getMemberID() {

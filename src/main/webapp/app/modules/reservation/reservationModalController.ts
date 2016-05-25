@@ -54,7 +54,6 @@ namespace SummerHouses {
             var period = ReservationModalController.that.reservationPeriod;
             var reservation = {};
             reservation.summerhouse = summerhouse;
-
             reservation.fromDate = period.fromDate;
             reservation.untilDate = period.untilDate;
             reservation.member = {};

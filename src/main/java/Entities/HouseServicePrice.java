@@ -27,9 +27,10 @@ public class HouseServicePrice implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected HouseServicePricePK houseServicePricePK;
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name="tax")
-    private Tax tax;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "price")
+    private int price;
     @Basic(optional = false)
     @NotNull
     @Version
@@ -43,21 +44,8 @@ public class HouseServicePrice implements Serializable {
         this.houseServicePricePK = houseServicePricePK;
     }
 
-    public HouseServicePrice(HouseServicePricePK houseServicePricePK, Tax taxID) {
-        this.houseServicePricePK = houseServicePricePK;
-        this.tax = taxID;
-    }
-
     public HouseServicePrice(int houseID, int serviceID) {
         this.houseServicePricePK = new HouseServicePricePK(houseID, serviceID);
-    }
-
-    public Tax getTax() {
-        return tax;
-    }
-
-    public void setTax(Tax tax) {
-        this.tax = tax;
     }
 
     public HouseServicePricePK getHouseServicePricePK() {

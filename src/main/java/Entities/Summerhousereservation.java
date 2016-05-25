@@ -47,6 +47,10 @@ public class Summerhousereservation implements Serializable {
     @Column(name = "UntilDate")
     @Temporal(TemporalType.DATE)
     private Date untilDate;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "payment")
+    private int paymentID;
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Clubmember member;

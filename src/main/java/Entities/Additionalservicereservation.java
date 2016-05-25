@@ -47,8 +47,8 @@ public class Additionalservicereservation implements Serializable {
     private int additionalServiceID;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "TaxID")
-    private int taxID;
+    @Column(name = "payment")
+    private int paymentID;
 
     public Additionalservicereservation() {
     }
@@ -67,14 +67,6 @@ public class Additionalservicereservation implements Serializable {
 
     public void setAdditionalServiceID(int additionalServiceID) {
         this.additionalServiceID = additionalServiceID;
-    }
-
-    public int getTaxID() {
-        return taxID;
-    }
-
-    public void setTaxID(int taxID) {
-        this.taxID = taxID;
     }
 
     public Additionalservicereservation(Integer id) {

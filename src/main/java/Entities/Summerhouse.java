@@ -54,6 +54,10 @@ public class Summerhouse implements Serializable {
     @NotNull
     @Column(name = "Capacity")
     private int capacity;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "reservationPrice")
+    private int reservationPrice;
     @Temporal(TemporalType.DATE)
     @Column(name = "BeginPeriod")
     private Date beginPeriod;
@@ -68,15 +72,12 @@ public class Summerhouse implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerhousereservationList;
 
-    @JoinTable(name = "summerhouse_services", joinColumns = {
-            @JoinColumn(name = "summerhouse_id")}, inverseJoinColumns = {
-            @JoinColumn(name = "service_id")})
+    @JoinTable(name = "HouseServicePrice", joinColumns = {
+            @JoinColumn(name = "houseID")}, inverseJoinColumns = {
+            @JoinColumn(name = "serviceID")})
     @ManyToMany(fetch = FetchType.EAGER)
     private List<AdditionalService> additionalServices;
 
-    @JoinColumn(name = "TaxID", referencedColumnName = "ID")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Tax taxID;
 
     public Summerhouse() {
     }
@@ -166,14 +167,6 @@ public class Summerhouse implements Serializable {
 
     public void setSummerhousereservationList(List<Summerhousereservation> summerhousereservationList) {
         this.summerhousereservationList = summerhousereservationList;
-    }
-
-    public Tax getTaxID() {
-        return taxID;
-    }
-
-    public void setTaxID(Tax taxID) {
-        this.taxID = taxID;
     }
 
     public int getOptLockVersion() {
