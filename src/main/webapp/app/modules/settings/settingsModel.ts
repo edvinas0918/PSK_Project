@@ -3,6 +3,6 @@ module SummerHouses.settings {
         public id:number;
         public name:string;
         public value:string;
-        public type:string;
+        public referenceCode:string;
     }
 }
