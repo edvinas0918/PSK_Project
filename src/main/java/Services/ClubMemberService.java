@@ -6,6 +6,7 @@ import Entities.Payment;
 import Entities.Settings;
 import Helpers.InsufficientFundsException;
 import Interceptors.Audit;
+import RestControllers.ClubmemberFacadeREST;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -39,6 +40,9 @@ public class ClubMemberService {
 
     @Inject
     IPaymentService paymentService;
+
+    @Inject
+    ClubmemberFacadeREST memberFacade;
 
     public Clubmember getMember(Integer id){
         return em.find(Clubmember.class, id);
@@ -100,8 +104,13 @@ public class ClubMemberService {
     }
 
     public Clubmember getCurrentUser(){
-        HttpSession session = webRequest.getSession();
-        return (Clubmember)session.getAttribute("User");
+        Clubmember user = (Clubmember)webRequest.getSession().getAttribute("User");
+
+        if (user != null) {
+            return memberFacade.find(user.getId());
+        }
+
+        return null;
     }
 
     public Memberstatus getMemberStatusByName(String name){
