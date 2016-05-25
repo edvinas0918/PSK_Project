@@ -2,7 +2,6 @@ package Services;
 
 import Entities.Clubmember;
 import Entities.Payment;
-import Entities.Tax;
 import Helpers.InsufficientFundsException;
 
 /**
@@ -10,6 +9,6 @@ import Helpers.InsufficientFundsException;
  */
 public interface IPaymentService {
     void confirmPayment(Payment[] payments);
-    void makePayment(Clubmember member, Tax tax) throws InsufficientFundsException;
-    void makeMinusPayment(Clubmember member, Tax tax);
+    void makePayment(Clubmember member, int price, String name) throws InsufficientFundsException;
+    void makeMinusPayment(Clubmember member, int price, String name);
 }
