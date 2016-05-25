@@ -36,13 +36,13 @@ namespace SummerHouses {
 
             this.$scope.calculateTotalPoints = (): number => {
                 var summerhouse = ReservationModalController.that.$scope.summerhouse;
-                var totalPoints = summerhouse.taxID.price;
+                var totalPoints = summerhouse.reservationPrice;
 
-                for (var i in summerhouse.additionalServices) {
+               /* for (var i in summerhouse.additionalServices) {
                     if (summerhouse.additionalServices[i].checked) {
                         totalPoints += summerhouse.additionalServices[i].tax.price;
                     }
-                }
+                }*/
                 
                 return totalPoints;
             }

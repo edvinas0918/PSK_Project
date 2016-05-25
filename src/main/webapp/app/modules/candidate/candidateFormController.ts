@@ -66,7 +66,7 @@ module SummerHouses.members {
 
             this.$scope.editForm = () => {
                 this.$scope.editing = true;
-            }
+            };
 
             this.$scope.$on("refreshPage", () => {
                 this.getRecommendationInformation();
