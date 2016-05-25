@@ -25,18 +25,20 @@ public class PaymentService implements IPaymentService {
         }
     }
 
-    public void makePayment(Clubmember member, int price, String name) throws InsufficientFundsException{
+    public Payment makePayment(Clubmember member, int price, String name) throws InsufficientFundsException{
         if (member.getPoints() < price){
             throw new InsufficientFundsException("Nepakankamas taškų skaičius.");
         }
         member.setPoints(member.getPoints() - price);
 
+        Payment payment = null;
         try {
             em.merge(member);
-            savePayment(member, price, name, false);
+            payment = savePayment(member, price, name, false);
         } catch (Exception ex) {
             member.setPoints(member.getPoints() + price);
         }
+        return payment;
     }
 
     public void makeMinusPayment(Clubmember member, int price, String name){
@@ -46,7 +48,7 @@ public class PaymentService implements IPaymentService {
         savePayment(member, price, name, true);
     }
 
-    private void savePayment(Clubmember member, int price, String name, boolean isMinus){
+    private Payment savePayment(Clubmember member, int price, String name, boolean isMinus){
         Calendar cal = Calendar.getInstance();
         Payment payment = new Payment();
         payment.setMemberID(member);
@@ -55,5 +57,6 @@ public class PaymentService implements IPaymentService {
         payment.setConfirmed(false);
         payment.setPrice( isMinus ? -price : price);
         em.persist(payment);
+        return payment;
     }
 }

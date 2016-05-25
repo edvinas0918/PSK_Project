@@ -1,11 +1,13 @@
 package RestControllers;
 
 import Entities.Additionalservicereservation;
+import Entities.Payment;
 import Entities.Summerhousereservation;
 import Helpers.DateTermException;
 import Services.ClubMemberService;
 import Services.IPaymentService;
 import Services.SummerhouseReservation;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 import javax.ejb.Stateless;
@@ -16,6 +18,8 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -115,8 +119,12 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
             reservation.setMember(authenticationControllerREST.getSessionUser());
             summerhouseReservation.checkReservationGroup(reservation);
 
-            Tax reservationTax = summerhouseReservation.getReservationTax(reservation);
-            paymentService.makePayment(authenticationControllerREST.getSessionUser(), reservationTax);
+            String fromDate = new DateTime(reservation.getFromDate()).toString("yyyy-MM-dd");
+            String untilDate = new DateTime(reservation.getUntilDate()).toString("yyyy-MM-dd");
+            Payment payment = paymentService.makePayment(authenticationControllerREST.getSessionUser(),
+                    reservation.getSummerhouse().getReservationPrice(),
+                    "Vasarnamis " + reservation.getSummerhouse().getNumber()
+                            + " " + fromDate + " " + untilDate);
             super.create(reservation);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());

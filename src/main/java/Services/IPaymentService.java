@@ -9,6 +9,6 @@ import Helpers.InsufficientFundsException;
  */
 public interface IPaymentService {
     void confirmPayment(Payment[] payments);
-    void makePayment(Clubmember member, int price, String name) throws InsufficientFundsException;
+    Payment makePayment(Clubmember member, int price, String name) throws InsufficientFundsException;
     void makeMinusPayment(Clubmember member, int price, String name);
 }
