@@ -25,13 +25,11 @@ public class SettingsControllerREST{
     private EntityManager em;
 
     @Inject private SettingsService settingsService;
-    @Inject private TaxService taxService;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public List<SettingsDto> getSettingsDto() {
         List<SettingsDto> settings = settingsService.getSettingsDto();
-        settings.add(taxService.getSettingsDto());
         return settings;
     }
 
@@ -46,9 +44,6 @@ public class SettingsControllerREST{
     @Consumes({MediaType.APPLICATION_JSON})
     public void saveSettings(List<SettingsDto> settingsDto) {
         for(SettingsDto item : settingsDto){
-            if(item.getType().endsWith("Tax")){
-                taxService.editTax(item);
-            }
             if(item.getType().endsWith("Settings")){
                 settingsService.editSettings(item);
             }
