@@ -628,7 +628,7 @@
     </changeSet>
     <changeSet id="dv008" author="Dziugas">
         <sql>
-            INSERT INTO Settings (Name, Value, ReferenceCode)
+            INSERT INTO Settings (Name, Value, ReferenceCode) VALUES
             ('Klubo nario mokesčio dydis', '100', 'memberTax');
         </sql>
     </changeSet>
