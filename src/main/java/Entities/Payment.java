@@ -59,7 +59,7 @@ public class Payment implements Serializable {
     private int price;
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Clubmember memberID;
+    private Clubmember member;
 
     public Payment() {
     }
@@ -106,12 +106,12 @@ public class Payment implements Serializable {
         this.canceled = canceled;
     }
 
-    public Clubmember getMemberID() {
-        return memberID;
+    public Clubmember getMember() {
+        return member;
     }
 
-    public void setMemberID(Clubmember memberID) {
-        this.memberID = memberID;
+    public void setMemberID(Clubmember member) {
+        this.member = member;
     }
 
     public int getPrice() {

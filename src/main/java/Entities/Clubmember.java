@@ -88,7 +88,7 @@ public class Clubmember implements Serializable {
     @ManyToMany(mappedBy = "recommendedMembers", fetch = FetchType.EAGER)
     private List<Clubmember> recommenders;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)
-    private List<Summerhousereservation> summerhousereservationList;
+    private List<Summerhousereservation> summerHouseReservationList;
     @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Memberstatus memberStatus;
@@ -96,6 +96,9 @@ public class Clubmember implements Serializable {
     private List<Invitation> invitationList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberID", fetch = FetchType.EAGER)
     private List<Payment> paymentList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "member", fetch = FetchType.EAGER)
+    private List<Moneyoperationlogentry> moneyOperationLogEntryList;
     @Basic(optional = false)
     @NotNull
     @Column(name = "IsActive")
@@ -183,6 +186,14 @@ public class Clubmember implements Serializable {
         this.recommendedMembers = recommendedMembers;
     }
 
+    public List<Moneyoperationlogentry> getMoneyOperationLogEntryList() {
+        return moneyOperationLogEntryList;
+    }
+
+    public void setMoneyOperationLogEntryList(List<Moneyoperationlogentry> moneyOperationLogEntryList) {
+        this.moneyOperationLogEntryList = moneyOperationLogEntryList;
+    }
+
     @XmlTransient
     public List<Clubmember> getRecommenders() {
         return recommenders;
@@ -194,11 +205,11 @@ public class Clubmember implements Serializable {
 
     @XmlTransient
     public List<Summerhousereservation> getSummerhousereservationList() {
-        return summerhousereservationList;
+        return summerHouseReservationList;
     }
 
     public void setSummerhousereservationList(List<Summerhousereservation> summerhousereservationList) {
-        this.summerhousereservationList = summerhousereservationList;
+        this.summerHouseReservationList = summerhousereservationList;
     }
 
     public Memberstatus getMemberStatus() {

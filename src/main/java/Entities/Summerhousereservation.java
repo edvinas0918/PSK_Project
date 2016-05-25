@@ -47,18 +47,21 @@ public class Summerhousereservation implements Serializable {
     @Column(name = "UntilDate")
     @Temporal(TemporalType.DATE)
     private Date untilDate;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "payment")
-    private int paymentID;
+
+    @JoinColumn(name = "payment", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Payment payment;
+
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Clubmember member;
+
     @JoinColumn(name = "SummerhouseID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhouse summerhouse;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservationID", fetch = FetchType.EAGER)
-    private List<Additionalservicereservation> additionalServiceReservations;
+    private List<Additionalservicereservation> additionalServiceReservationList;
 
     public Summerhousereservation() {
     }
@@ -118,12 +121,20 @@ public class Summerhousereservation implements Serializable {
         this.optLockVersion = optLockVersion;
     }
 
-    public int getPaymentID() {
-        return paymentID;
+    public List<Additionalservicereservation> getAdditionalServiceReservationList() {
+        return additionalServiceReservationList;
     }
 
-    public void setPaymentID(int paymentID) {
-        this.paymentID = paymentID;
+    public void setAdditionalServiceReservationList(List<Additionalservicereservation> additionalServiceReservationList) {
+        this.additionalServiceReservationList = additionalServiceReservationList;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override

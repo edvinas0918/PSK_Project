@@ -40,33 +40,41 @@ public class Additionalservicereservation implements Serializable {
     private Date serviceEnd;
     @JoinColumn(name = "SummerhouseReservationID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Summerhousereservation summerhouseReservationID;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "AdditionalServiceID")
-    private int additionalServiceID;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "payment")
-    private int paymentID;
+    private Summerhousereservation summerhouseReservation;
+
+    @JoinColumn(name = "AdditionalServiceID", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private AdditionalService additionalService;
+
+    @JoinColumn(name = "payment", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Payment payment;
 
     public Additionalservicereservation() {
     }
 
-    public Summerhousereservation getSummerhouseReservationID() {
-        return summerhouseReservationID;
+    public Summerhousereservation getSummerhouseReservation() {
+        return summerhouseReservation;
     }
 
-    public void setSummerhouseReservationID(Summerhousereservation summerhouseReservationID) {
-        this.summerhouseReservationID = summerhouseReservationID;
+    public void setSummerhouseReservation(Summerhousereservation summerhouseReservationID) {
+        this.summerhouseReservation = summerhouseReservationID;
     }
 
-    public int getAdditionalServiceID() {
-        return additionalServiceID;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setAdditionalServiceID(int additionalServiceID) {
-        this.additionalServiceID = additionalServiceID;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public AdditionalService getAdditionalService() {
+        return additionalService;
+    }
+
+    public void setAdditionalService(AdditionalService additionalService) {
+        this.additionalService = additionalService;
     }
 
     public Additionalservicereservation(Integer id) {

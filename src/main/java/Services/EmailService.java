@@ -93,7 +93,7 @@ public class EmailService {
 
            if(isLogged){
                Invitation invitation = new Invitation();
-               invitation.setMemberID(clubMemberService.getCurrentUser());
+               invitation.setMember(clubMemberService.getCurrentUser());
                invitation.setInvitationDate(new Date());
                invitation.setEmail(toAddress);
                em.persist(invitation);

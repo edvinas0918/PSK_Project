@@ -140,7 +140,7 @@ public class SummerhouseReservation {
         }
 
         //2. Cancel related payment
-        Payment payment = em.find(Payment.class, reservation.getPaymentID());
+        Payment payment = em.find(Payment.class, reservation.getPayment());
         payment.setCanceled(true);
 
         //3. Give points back to user

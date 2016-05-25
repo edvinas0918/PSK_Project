@@ -47,6 +47,9 @@ public class AdditionalService implements Serializable {
     @Column(name = "Description")
     private String description;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "AdditionalServiceID", fetch = FetchType.EAGER)
+    private List<Additionalservicereservation> additionalServiceReservationList;
+
     public AdditionalService() {
     }
 

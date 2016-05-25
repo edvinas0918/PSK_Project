@@ -65,7 +65,7 @@ public class Summerhouse implements Serializable {
     @Column(columnDefinition = "LONGTEXT", name="image")
     private String image;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse", fetch = FetchType.EAGER)
-    private List<Summerhousereservation> summerhousereservationList;
+    private List<Summerhousereservation> summerHouseReservationList;
 
     @JoinTable(name = "HouseServicePrice", joinColumns = {
             @JoinColumn(name = "houseID")}, inverseJoinColumns = {
@@ -165,11 +165,11 @@ public class Summerhouse implements Serializable {
 
     @XmlTransient
     public List<Summerhousereservation> getSummerhousereservationList() {
-        return summerhousereservationList;
+        return summerHouseReservationList;
     }
 
     public void setSummerhousereservationList(List<Summerhousereservation> summerhousereservationList) {
-        this.summerhousereservationList = summerhousereservationList;
+        this.summerHouseReservationList = summerhousereservationList;
     }
 
     public int getOptLockVersion() {

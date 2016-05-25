@@ -49,7 +49,7 @@ public class Invitation implements Serializable {
     private String email;
     @JoinColumn(name = "MemberID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Clubmember memberID;
+    private Clubmember member;
 
     public Invitation() {
     }
@@ -88,12 +88,12 @@ public class Invitation implements Serializable {
         this.email = email;
     }
 
-    public Clubmember getMemberID() {
-        return memberID;
+    public Clubmember getMember() {
+        return member;
     }
 
-    public void setMemberID(Clubmember memberID) {
-        this.memberID = memberID;
+    public void setMember(Clubmember member) {
+        this.member = member;
     }
 
     @Override
