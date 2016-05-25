@@ -7,7 +7,6 @@ package RestControllers;
 
 import Entities.Summerhouse;
 import Helpers.Helpers;
-import Services.SummerhouseReservation;
 import models.SummerhouseSearchDto;
 import search.summerhouse.SummerhouseSeach;
 
@@ -17,10 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,9 +30,6 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
-
-    @Inject
-    TaxFacadeREST taxFacadeREST;
 
     @Inject
     SummerhouseSeach summerhouseSeach;

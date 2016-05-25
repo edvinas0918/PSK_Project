@@ -2,10 +2,9 @@ package RestControllers;
 
 import Entities.Additionalservicereservation;
 import Entities.Summerhousereservation;
-import Entities.Tax;
-import Services.IPaymentService;
 import Helpers.DateTermException;
 import Services.ClubMemberService;
+import Services.IPaymentService;
 import Services.SummerhouseReservation;
 import org.json.JSONObject;
 
@@ -17,10 +16,6 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
