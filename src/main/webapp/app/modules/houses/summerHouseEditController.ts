@@ -109,10 +109,10 @@ module SummerHouses.houses {
                         }
                     }
                     SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
-                        SummerHouseEditController.that.$location.path("/houses");
+                        SummerHouseEditController.that.$location.path("/admin/houses");
                     });
                 } else {
-                    SummerHouseEditController.that.$location.path("/houses");
+                    SummerHouseEditController.that.$location.path("/admin/houses");
                 }
             });
         }

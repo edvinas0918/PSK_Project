@@ -94,7 +94,7 @@ module SummerHouses.houses {
             this.$scope.cancelReservation = (reservation: any) => {
                 this.$http.delete('/rest/reservation/' + reservation.id).then(() => {
                     this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
-                    _.pull(this.$scope.userReservations, reservation);
+                    this.getUserReservations();
                 }).catch((error) => {
                     switch (error.status){
                         case 406:
