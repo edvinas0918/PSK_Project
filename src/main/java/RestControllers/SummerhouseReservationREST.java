@@ -125,6 +125,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
                     reservation.getSummerhouse().getReservationPrice(),
                     "Vasarnamis " + reservation.getSummerhouse().getNumber()
                             + " " + fromDate + " " + untilDate);
+            reservation.setPayment(payment);
             super.create(reservation);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());
