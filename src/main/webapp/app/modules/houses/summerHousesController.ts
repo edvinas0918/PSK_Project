@@ -38,7 +38,6 @@ module SummerHouses.houses {
             this.$scope.successMessage = '';
 
             this.getSummerHouses();
-            this.getTaxes();
             this.getUserReservations();
             this.$scope.addEmptyHouse = () => {
                 var sm: SummerHouse = {
@@ -107,12 +106,6 @@ module SummerHouses.houses {
                     }
                 });
             }
-        }
-
-        getTaxes(): void{
-            this.$http.get('/rest/entities.tax').success((taxes: Tax[], status) => {
-                this.$scope.taxes = taxes;
-            });
         }
 
         getSummerHouses(): void{
