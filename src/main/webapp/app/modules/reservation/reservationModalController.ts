@@ -24,6 +24,10 @@ namespace SummerHouses {
             ReservationModalController.that = this;
             this.$scope.summerhouse = summerhouse;
             this.$scope.reservationPeriod = reservationPeriod;
+            this.$scope.reservationPeriod.fromDateString =
+                moment(this.$scope.reservationPeriod.fromDate).locale('LT').format('MMMM Do');
+            this.$scope.reservationPeriod.untilDateString =
+                moment(this.$scope.reservationPeriod.untilDate).locale('LT').format('MMMM Do');
             this.$scope.reserveSummerhouse = this.reserveSummerhouse;
 
             this.$scope.cancel = () => {

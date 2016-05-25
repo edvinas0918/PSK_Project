@@ -21,7 +21,8 @@ module SummerHouses.members {
             '$route',
             '$window',
             'sh-authentication-service',
-            '$q'
+            '$q',
+            '$location'
         ];
 
         constructor(
@@ -33,7 +34,8 @@ module SummerHouses.members {
             private $route: any,
             private $window: any,
             private authService: any,
-            private $q: ng.IQService
+            private $q: ng.IQService,
+            private $location: ng.ILocationService
         ) {
             CandidateFormController.that = this;
             this.$scope.editing = false;
@@ -105,6 +107,16 @@ module SummerHouses.members {
                     }
                 });
             }
+            this.$scope.deactivateMember = () => {
+                var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
+                if (result){
+                    this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
+                        authService.logout().then (function () {
+                            $location.path("/login");
+                        });
+                    });
+                }
+            };
         }
 
         getFormFields(): void{

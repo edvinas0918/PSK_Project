@@ -45,6 +45,12 @@ module SummerHouses {
                         "MMMM DD, YYYY");
                     ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
                     $("#reservationDatePicker").datepicker("refresh");
+
+                    ReservationController.that.$scope.summerhouse.beginPeriodString =
+                        moment(ReservationController.that.$scope.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
+                    ReservationController.that.$scope.summerhouse.endPeriodString =
+                        moment(ReservationController.that.$scope.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+
                 });
 
             this.$scope.manageService = (service:AdditionalService) => {
