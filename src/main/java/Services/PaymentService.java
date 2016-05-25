@@ -26,35 +26,35 @@ public class PaymentService implements IPaymentService {
         }
     }
 
-    public void makePayment(Clubmember member, Tax tax) throws InsufficientFundsException{
-        if (member.getPoints() < tax.getPrice()){
+    public void makePayment(Clubmember member, int price, String name) throws InsufficientFundsException{
+        if (member.getPoints() < price){
             throw new InsufficientFundsException("Nepakankamas taškų skaičius.");
         }
-        member.setPoints(member.getPoints() - tax.getPrice());
+        member.setPoints(member.getPoints() - price);
 
         try {
             em.merge(member);
-            savePayment(member, tax, false);
+            savePayment(member, price, name, false);
         } catch (Exception ex) {
-            member.setPoints(member.getPoints() + tax.getPrice());
+            member.setPoints(member.getPoints() + price);
         }
     }
 
-    public void makeMinusPayment(Clubmember member, Tax tax){
-       member.setPoints(member.getPoints() + tax.getPrice());
+    public void makeMinusPayment(Clubmember member, int price, String name){
+        member.setPoints(member.getPoints() + price);
         em.merge(member);
 
-        savePayment(member, tax, true);
+        savePayment(member, price, name, true);
     }
 
-    private void savePayment(Clubmember member, Tax tax, boolean isMinus){
+    private void savePayment(Clubmember member, int price, String name, boolean isMinus){
         Calendar cal = Calendar.getInstance();
         Payment payment = new Payment();
         payment.setMemberID(member);
         payment.setPaymentDate(cal.getTime());
-        payment.setTaxID(tax);
+        payment.setName(name);
         payment.setConfirmed(false);
-        payment.setPrice( isMinus ? -tax.getPrice() : tax.getPrice());
+        payment.setPrice( isMinus ? -price : price);
         em.persist(payment);
     }
 }
