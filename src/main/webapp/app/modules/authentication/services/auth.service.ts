@@ -144,6 +144,10 @@ module SummerHouses.authentication {
 
             return AuthenticationService.that.$http(params)
                 .then (function (response: any) {
+                   /* if (response.data != "") {
+                        AuthenticationService.that.$sessionStorage.put("User", response.data);
+                        AuthenticationService.that.setUser(response.data);
+                    }*/
                     return response.data;
                 });
         }
