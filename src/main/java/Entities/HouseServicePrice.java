@@ -20,8 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "HouseServicePrice.findAll", query = "SELECT h FROM HouseServicePrice h"),
     @NamedQuery(name = "HouseServicePrice.findByHouseID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.houseID = :houseID"),
-    @NamedQuery(name = "HouseServicePrice.findByServiceID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.serviceID = :serviceID"),
-    @NamedQuery(name = "HouseServicePrice.findByTax", query = "SELECT h FROM HouseServicePrice h WHERE h.tax.id = :taxID")})
+    @NamedQuery(name = "HouseServicePrice.findByServiceID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.serviceID = :serviceID")})
 public class HouseServicePrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
