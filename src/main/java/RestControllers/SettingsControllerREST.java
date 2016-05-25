@@ -2,7 +2,6 @@ package RestControllers;
 
 import Entities.Settings;
 import Services.SettingsService;
-import models.SettingsDto;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -28,9 +27,8 @@ public class SettingsControllerREST{
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<SettingsDto> getSettingsDto() {
-        List<SettingsDto> settings = settingsService.getSettingsDto();
-        return settings;
+    public List<Settings> getSettings() {
+        return settingsService.getSettings();
     }
 
     @GET
@@ -42,11 +40,9 @@ public class SettingsControllerREST{
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    public void saveSettings(List<SettingsDto> settingsDto) {
-        for(SettingsDto item : settingsDto){
-            if(item.getType().endsWith("Settings")){
-                settingsService.editSettings(item);
-            }
+    public void saveSettings(List<Settings> settings) {
+        for(Settings setting : settings){
+            settingsService.editSettings(setting);
         }
     }
 }

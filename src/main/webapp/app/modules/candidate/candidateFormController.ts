@@ -10,6 +10,8 @@ module SummerHouses.members {
     import Settings = SummerHouses.settings.Settings;
     class CandidateFormController {
 
+        static that: CandidateFormController;
+
         static $inject = [
             '$rootScope',
             '$scope',
@@ -18,7 +20,8 @@ module SummerHouses.members {
             '$http',
             '$route',
             '$window',
-            'sh-authentication-service'
+            'sh-authentication-service',
+            '$q'
         ];
 
         constructor(
@@ -29,8 +32,10 @@ module SummerHouses.members {
             private $http: any,
             private $route: any,
             private $window: any,
-            private authService: any
+            private authService: any,
+            private $q: ng.IQService
         ) {
+            CandidateFormController.that = this;
             this.$scope.editing = false;
             this.$scope.editable = true;
             this.$scope.candidate = true;
@@ -59,6 +64,9 @@ module SummerHouses.members {
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
                 this.$http.put('rest/clubmember/' + this.$scope.member.id, this.$scope.member).success(() => {
+                    this.$q.when(authService.getSessionUser()).then(function (user) {
+                        CandidateFormController.that.$scope.member = user;
+                    });
                     this.showSuccessMessage("Pakeitimai išsaugoti");
                 });
                 this.$scope.editing = false;
