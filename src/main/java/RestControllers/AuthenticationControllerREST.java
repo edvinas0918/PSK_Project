@@ -104,7 +104,13 @@ public class AuthenticationControllerREST {
     @Path("getUser")
     @Produces(MediaType.APPLICATION_JSON)
     public Clubmember getSessionUser() {
-        return (Clubmember)webRequest.getSession().getAttribute("User");
+        Clubmember user = (Clubmember)webRequest.getSession().getAttribute("User");
+
+        if (user != null) {
+            return userServiceREST.find(user.getId());
+        }
+
+        return null;
     }
 
     public void setSessionUser(Clubmember user) {

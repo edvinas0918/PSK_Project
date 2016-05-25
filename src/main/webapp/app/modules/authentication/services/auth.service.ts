@@ -3,7 +3,7 @@
 module SummerHouses.authentication {
     export interface IAuthenticationService {
         requestUserAccessToken(redirectUrl?:string, code?:string):ng.IPromise<any>;
-        isLoggedIn():boolean;
+        isLoggedIn(): ng.IPromise<boolean>;
         logout(): ng.IPromise<any>;
         setUser(user: IUser): void;
         getUser():ng.IPromise<IUser>;
@@ -97,8 +97,11 @@ module SummerHouses.authentication {
                 );
         }
 
-        public isLoggedIn():boolean {
-            return AuthenticationService.that.getCachedUser() != undefined;
+        public isLoggedIn(): ng.IPromise<boolean> {
+            return AuthenticationService.that.$q.when(AuthenticationService.that.getSessionUser())
+                .then(function (user: any) {
+                    return user != "";
+                });
         }
 
         public logout():ng.IPromise<any> {

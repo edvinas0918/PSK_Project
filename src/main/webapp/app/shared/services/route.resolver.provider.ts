@@ -98,7 +98,9 @@ module SummerHouses.shared {
         private authHandler = ($q:ng.IQService,
                                authService:SummerHouses.authentication.IAuthenticationService):ng.IPromise<any> => {
 
-            return (authService.isLoggedIn()) ? authService.getUser() : $q.reject({authenticated: false});
+            return $q.when(authService.isLoggedIn()).then(function (isLoggedIn) {
+                return isLoggedIn ? authService.getUser() : $q.reject({authenticated: false});
+            });
         };
 
         private getCodeFromUrl(url:string):string {
