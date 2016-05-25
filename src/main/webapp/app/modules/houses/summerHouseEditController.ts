@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="summerHouseModel.ts"/>
 
 module SummerHouses.houses {
@@ -29,7 +30,7 @@ module SummerHouses.houses {
 
             this.scope = $scope;
             this.httpService = $http;
-            //SummerHouseEditController.that.$scope.additionalServices = new Array<AdditionalService>();
+
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
             } else {
@@ -37,20 +38,26 @@ module SummerHouses.houses {
                 this.getAllAdditionalServices();
             }
             this.getSummerHouses();
-            this.getTaxes();
             this.$scope.manageService = (service:AdditionalService) => {
-                if (_.filter(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id}).length > 0) {
-                    _.remove(SummerHouseEditController.that.scope.house.additionalServices, {'id': service.id});
+                var services = SummerHouseEditController.that.scope.house.additionalServices;
+                if (_.filter(services, {'id': service.id}).length > 0) {
+                    _.remove(services, {'id': service.id});
                 } else {
                     service.selected = true;
-                    SummerHouseEditController.that.scope.house.additionalServices.push(service);
+                    services.push(service);
                 }
             };
             this.$scope.saveHouse = (house:SummerHouse) => {
-                if (house.beginPeriod > house.endPeriod) {
+
+                //Tikrinam ar yra bent savaite tarp datu
+                var duration = moment.duration(house.beginPeriod.diff(house.endPeriod));
+                var days = duration.asDays();
+                if (house.beginPeriod > house.endPeriod && days > 7) {
                     $scope.datesDoNotMatch = true;
                     return;
                 }
+
+                //Tikrinam ar yra house su tokiu pat numeriu
                 if (!house.id && SummerHouseEditController.that.$scope.summerhouses) {
                     $scope.houseWithNumberExists = false;
                     for (let existingHouse of SummerHouseEditController.that.$scope.summerhouses) {
@@ -60,13 +67,16 @@ module SummerHouses.houses {
                         }
                     }
                 }
+
                 house.endPeriod = this.createDateAsUTC(house.endPeriod);
                 house.beginPeriod = this.createDateAsUTC(house.beginPeriod);
+
                 if($scope.houseImage){
                     this.saveHouseWithImage(house);
                 } else {
                     SummerHouseEditController.that.postHouse(house);
                 }
+
             }
         }
 
@@ -103,12 +113,6 @@ module SummerHouses.houses {
             });
         }
 
-        getTaxes():void {
-            SummerHouseEditController.that.$http.get('/rest/entities.tax').success((taxes:Tax[], status) => {
-                SummerHouseEditController.that.$scope.taxes = taxes;
-            });
-        }
-
         getAdditionalServices():void {
             SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHouseEditController.that.scope.house;
@@ -116,7 +120,7 @@ module SummerHouses.houses {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
-                                service.tax = houseServicePrice.tax;
+                                service.price = houseServicePrice.price;
                             }
                         }
                         for (let houseService of house.additionalServices) {

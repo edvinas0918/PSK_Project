@@ -47,7 +47,7 @@
                 <h3>Vasarnamis nr. {{x.number}}</h3>
                 <h4><small>Vietų skaičius:</small> {{x.capacity}}</h4>
                 <h4><small>Rezervacija galima:</small> {{x.beginPeriod}} - {{x.endPeriod}} </h4>
-                <h4><small>Apmokėjimo tipas:</small> {{x.taxID.name}}</h4>
+                <h4><small>Rezervacijos kaina(savaitei):</small> {{x.reservationPrice}}</h4>
                 <p>{{x.description}}</p>
                 <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/houses/{{x.id}}">Keisti</a>
                 <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteHouse(x)">Ištrinti</button>
