@@ -578,4 +578,52 @@
             ALTER TABLE labanorasfriends.payment ADD Price DECIMAL(5,2) NOT NULL;
         </sql>
     </changeSet>
+    <changeSet id="dz004" author="Džiugas">
+
+        <dropForeignKeyConstraint baseTableName="AdditionalServiceReservation" constraintName="SERVICE_RES_TAX_FK"></dropForeignKeyConstraint>
+        <dropColumn tableName="AdditionalServiceReservation" columnName="taxID"></dropColumn>
+
+        <dropForeignKeyConstraint baseTableName="HouseServicePrice" constraintName="SERVICE_PRICE_TAX_FK"></dropForeignKeyConstraint>
+        <dropColumn tableName="HouseServicePrice" columnName="tax"></dropColumn>
+        <addColumn tableName="HouseServicePrice">
+            <column name="price" type="integer"/>
+        </addColumn>
+
+        <dropForeignKeyConstraint baseTableName="Summerhouse" constraintName="summerhouse_ibfk_1"></dropForeignKeyConstraint>
+        <dropColumn tableName="Summerhouse" columnName="TaxID"></dropColumn>
+        <addColumn tableName="Summerhouse">
+            <column name="reservationPrice" type="integer"/>
+        </addColumn>
+
+        <dropForeignKeyConstraint baseTableName="Payment" constraintName="payment_ibfk_1"></dropForeignKeyConstraint>
+        <dropColumn tableName="Payment" columnName="TaxID"></dropColumn>
+        <dropColumn tableName="Payment" columnName="Price"></dropColumn>
+        <addColumn tableName="Payment">
+            <column name="price" type="integer"/>
+        </addColumn>
+
+        <addColumn tableName="SummerhouseReservation">
+            <column name="payment" type="Integer"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="SummerhouseReservation" baseColumnNames="payment" constraintName="RESERVATION_PAYMENT_FK"
+                                 referencedTableName="Payment" referencedColumnNames="id"></addForeignKeyConstraint>
+    </changeSet>
+    <changeSet id="dv005" author="Dziugas">
+        <dropTable tableName="Tax"></dropTable>
+    </changeSet>
+    <changeSet id="dv006" author="Dziugas">
+        <addColumn tableName="additionalServiceReservation">
+            <column name="payment" type="Integer"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="additionalServiceReservation" baseColumnNames="payment"
+                                 constraintName="additional_service_reservation_payment_fk"
+                                 referencedTableName="Payment" referencedColumnNames="id"></addForeignKeyConstraint>
+
+        <dropTable tableName="summerhouse_services"></dropTable>
+    </changeSet>
+    <changeSet id="dv007" author="Dziugas">
+        <addColumn tableName="Payment">
+            <column name="name" type="VARCHAR(80)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
