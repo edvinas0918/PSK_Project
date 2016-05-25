@@ -50,9 +50,13 @@ module SummerHouses.houses {
             this.$scope.saveHouse = (house:SummerHouse) => {
 
                 //Tikrinam ar yra bent savaite tarp datu
-                var duration = moment.duration(house.beginPeriod.diff(house.endPeriod));
+                var beginDateMoment = moment(house.beginPeriod);
+                var endDateMoment = moment(house.endPeriod);
+
+                var duration = moment.duration(beginDateMoment.diff(endDateMoment));
                 var days = duration.asDays();
-                if (house.beginPeriod > house.endPeriod && days > 7) {
+
+                if (house.beginPeriod > house.endPeriod && Math.abs(days) > 7) {
                     $scope.datesDoNotMatch = true;
                     return;
                 }
