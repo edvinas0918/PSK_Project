@@ -97,8 +97,8 @@ module SummerHouses.members {
             };
 
             this.$scope.collectMembershipData = () => {
-                this.$http.get('/rest/entities.tax/MemberTax').success((memberTax:number) => {
-                    this.$scope.memberTax = memberTax;
+                this.$http.get('/rest/settings/memberTax').success((memberTax: any) => {
+                    this.$scope.memberTax = Number(memberTax.value);
                 });
 
                 if (this.$scope.member.membershipExpirationDate == null) {
