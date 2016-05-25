@@ -68,7 +68,7 @@ public class ClubMemberService {
         c.add(Calendar.YEAR, 1);
         member.setMembershipExpirationDate(c.getTime());
 
-        paymentService.makePayment(member, (Tax)em.createNamedQuery("Tax.findMemberTax").getSingleResult());
+        //paymentService.makePayment(member, price, name);
     }
 
     public void recommendCandidate(int candidateId){

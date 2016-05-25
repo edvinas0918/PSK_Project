@@ -2,7 +2,6 @@ package Services;
 
 import Entities.Clubmember;
 import Entities.Payment;
-import Entities.Tax;
 import Helpers.InsufficientFundsException;
 
 import javax.ejb.Stateless;
