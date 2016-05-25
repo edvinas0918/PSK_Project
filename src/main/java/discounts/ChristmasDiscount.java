@@ -34,8 +34,8 @@ public abstract class ChristmasDiscount implements IPaymentService {
     }
 
     @Override
-    public void makePayment(Clubmember member, int price) throws InsufficientFundsException {
-        paymentService.makePayment(member, price);
+    public void makePayment(Clubmember member, String name, int price) throws InsufficientFundsException {
+        paymentService.makePayment(member, name, price);
 
         LocalDateTime timeNow = new LocalDateTime();
         discountStartDate.withYear(timeNow.getYear());

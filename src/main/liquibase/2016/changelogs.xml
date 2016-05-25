@@ -626,4 +626,10 @@
             <column name="name" type="VARCHAR(80)"/>
         </addColumn>
     </changeSet>
+    <changeSet id="dv008" author="Dziugas">
+        <sql>
+            INSERT INTO Settings (Name, Value, ReferenceCode)
+            ('Klubo nario mokesčio dydis', '100', 'memberTax');
+        </sql>
+    </changeSet>
 </databaseChangeLog>
