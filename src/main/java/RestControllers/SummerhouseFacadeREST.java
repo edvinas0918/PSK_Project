@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @Path("search")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Summerhouse> searchSummerhouses(SummerhouseSearchDto searchDto) throws ParseException {
-        List<Summerhouse> summerhouses = em.createNamedQuery("Summerhouse.findAll").getResultList();
+        List<Summerhouse> summerhouses = new ArrayList<>(em.createNamedQuery("Summerhouse.findAll").getResultList());
         return summerhouseSeach.search(summerhouses, searchDto);
     }
 
