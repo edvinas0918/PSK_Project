@@ -16,6 +16,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -84,13 +85,16 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Path("handleServicePrices")
     @Consumes({MediaType.APPLICATION_JSON})
     public void handleServicePrices(ArrayList<HouseServicePriceDTO> priceMap) throws Exception {
-        for (HouseServicePriceDTO price : priceMap) {
-            HouseServicePricePK houseServicePricePK = new HouseServicePricePK(price.getHouseID(), price.getServiceID());
-            HouseServicePrice houseServicePrice = new HouseServicePrice();
-            houseServicePrice.setHouseServicePricePK(houseServicePricePK);
-            if (find(houseServicePricePK) != null) {
+        for (HouseServicePriceDTO dto : priceMap) {
+            if (dto.getId() > 0) {
+                Query query = em.createNamedQuery("HouseServicePrice.findByIDs");
+                query.setParameter("serviceID", dto.getServiceID());
+                query.setParameter("houseID", dto.getHouseID());
+                HouseServicePrice firstResult = (HouseServicePrice) query.getResultList().get(0);
+                HouseServicePrice houseServicePrice = new HouseServicePrice(dto.getId(), firstResult.getOptLockVersion(), dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
                 edit(houseServicePrice);
             } else {
+                HouseServicePrice houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
                 create(houseServicePrice);
             }
         }
@@ -113,7 +117,6 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public HouseServicePrice find(HouseServicePricePK key) {
-
         return super.find(key);
     }
 
@@ -122,7 +125,8 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
-        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getHouseServicePricePK().getHouseID() == houseID);
+        List<HouseServicePrice> houseServicePrices = findAll();
+        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getSummerhouse().getId().equals(houseID));
         List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
         return list;
     }

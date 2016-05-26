@@ -6,6 +6,7 @@
 package Entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -46,7 +47,8 @@ public class AdditionalService implements Serializable {
     @Size(max = 65535)
     @Column(name = "Description")
     private String description;
-
+    @OneToMany(mappedBy = "additionalService")
+    private List<HouseServicePrice> houseServicePrices = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalService", fetch = FetchType.EAGER)
     private List<Additionalservicereservation> additionalServiceReservationList;
 

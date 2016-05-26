@@ -632,4 +632,37 @@
             ('Klubo nario mokesčio dydis', '100', 'memberTax');
         </sql>
     </changeSet>
+    <changeSet id="min019" author="Mindaugas">
+        <dropTable tableName="houseserviceprice"></dropTable>
+    </changeSet>
+    <changeSet id="min020" author="Mindaugas">
+        <createTable tableName="HouseServicePrice">
+            <column name="id" type="integer"></column>
+            <column name="houseID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="serviceID" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="HouseServicePrice" columnNames="id"></addPrimaryKey>
+        <addForeignKeyConstraint baseTableName="HouseServicePrice" baseColumnNames="houseID" constraintName="FK_HOUSE_SERVICE_PRICE_HOUSE_ID" referencedTableName="Summerhouse"
+                                 referencedColumnNames="ID" onDelete="CASCADE" onUpdate="CASCADE"></addForeignKeyConstraint>
+        <addForeignKeyConstraint baseTableName="HouseServicePrice" baseColumnNames="serviceID" constraintName="FK_HOUSE_SERVICE_PRICE_SERVICE_ID" referencedTableName="AdditionalService"
+                                 referencedColumnNames="ID" onDelete="CASCADE" onUpdate="CASCADE"></addForeignKeyConstraint>
+    </changeSet>
+    <changeSet id="min021" author="Mindaugas">
+        <addUniqueConstraint tableName="HouseServicePrice" columnNames="houseID, serviceID"></addUniqueConstraint>
+    </changeSet>
+    <changeSet id="min022" author="Mindaugas">
+        <sql>
+            alter table labanorasfriends.houseserviceprice add OPT_LOCK_VERSION INTEGER NOT NULL default 0;
+        </sql>
+    </changeSet>
+    <changeSet id="min023" author="Mindaugas">
+        <addAutoIncrement columnDataType="INTEGER" tableName="HouseServicePrice" columnName="id" incrementBy="1" startWith="1"></addAutoIncrement>
+    </changeSet>
 </databaseChangeLog>
