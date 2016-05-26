@@ -38,13 +38,18 @@ namespace SummerHouses {
                 return moment(date).locale("LT").format("MMMM DD, YYYY");
             };
 
-            this.$scope.calculateTotalPoints = (): number => {
+            this.$scope.calculateSummerhousePrice = () => {
                 var summerhouse = ReservationModalController.that.$scope.summerhouse;
                 var reservationPeriod = ReservationModalController.that.$scope.reservationPeriod;
                 var beginPeriod = reservationPeriod.fromDate;
                 var endPeriod = reservationPeriod.untilDate;
 
                 return summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod);
+            }
+
+            this.$scope.calculateTotalPoints = (): number => {
+
+                return this.$scope.calculateSummerhousePrice();
 
                /* for (var i in summerhouse.additionalServices) {
                     if (summerhouse.additionalServices[i].checked) {
