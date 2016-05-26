@@ -73,7 +73,6 @@ public class Summerhouse implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<AdditionalService> additionalServices;
 
-
     public Summerhouse() {
     }
 

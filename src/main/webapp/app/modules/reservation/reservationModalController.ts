@@ -40,7 +40,11 @@ namespace SummerHouses {
 
             this.$scope.calculateTotalPoints = (): number => {
                 var summerhouse = ReservationModalController.that.$scope.summerhouse;
-                var totalPoints = summerhouse.reservationPrice;
+                var reservationPeriod = ReservationModalController.that.$scope.reservationPeriod;
+                var beginPeriod = reservationPeriod.fromDate;
+                var endPeriod = reservationPeriod.untilDate;
+
+                return summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod);
 
                /* for (var i in summerhouse.additionalServices) {
                     if (summerhouse.additionalServices[i].checked) {
@@ -48,9 +52,16 @@ namespace SummerHouses {
                     }
                 }*/
                 
-                return totalPoints;
+                //return totalPoints;
             }
 
+
+        }
+
+        public getWeekDiff(beginPeriod, endPeriod): number {
+            var duration = moment.duration(moment(endPeriod).add(1, 'Days').diff(moment(beginPeriod)));
+            return duration.asWeeks();
+            //return 0;
         }
 
         public reserveSummerhouse(summerhouse):void {

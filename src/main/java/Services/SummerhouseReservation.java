@@ -2,8 +2,10 @@ package Services;
 
 import Entities.*;
 import Helpers.DateTermException;
+import Helpers.InsufficientFundsException;
 import RestControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
+import org.joda.time.Weeks;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -147,16 +149,25 @@ public class SummerhouseReservation {
         paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
     }
 
-    public void checkMoney(Summerhousereservation reservation) throws Exception {
-        int requiredAmount = reservation.getSummerhouse().getReservationPrice();
-        //TODO: uncomment when additional services are implemented.
-       /* for (Additionalservicereservation additionalService:
-             reservation.getAdditionalServiceReservations()) {
-            requiredAmount += additionalService.getTaxID().getPrice();
-        }*/
+    public Payment getPayment (Summerhousereservation reservation) throws InsufficientFundsException {
+        int price = reservation.getSummerhouse().getReservationPrice() * getWeekDiff(reservation.getFromDate(), reservation.getUntilDate());
+        return paymentService.makePayment(authenticationControllerREST.getSessionUser(), price, "Vasarnamis " + reservation.getSummerhouse().getNumber()
+                + " " + reservation.getFromDate() + " " + reservation.getUntilDate());
+    }
 
-        if (authenticationControllerREST.getSessionUser().getPoints() < requiredAmount) {
-            throw new Exception("Nepakankamas taškų kiekis");
+    public int getWeekDiff (Date fromDate, Date untilDate) {
+        DateTime from = new DateTime(fromDate);
+        DateTime until = new DateTime(untilDate).plusDays(1);
+
+        return Weeks.weeksBetween(from, until).getWeeks();
+    }
+
+    public void checkMembership() throws Exception{
+        Clubmember user = authenticationControllerREST.getSessionUser();
+        Date membershipDate = user.getMembershipExpirationDate();
+
+        if (membershipDate == null || user.getMembershipExpirationDate().compareTo(new Date()) == -1) {
+            throw new Exception ("Rezervuoti gali tik tie nariai, kurie yra sumokėję metinį klubo nario mokestį");
         }
     }
 }

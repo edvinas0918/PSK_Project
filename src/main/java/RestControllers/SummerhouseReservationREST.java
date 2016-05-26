@@ -109,23 +109,18 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         JSONObject responseBody = new JSONObject();
 
         try {
-            //TODO: check membership payment
+            summerhouseReservation.checkMembership();
             summerhouseReservation.validatePeriod(reservation.getFromDate(), reservation.getUntilDate());
             summerhouseReservation.checkAvailabilityPeriod(
                     reservation,
                     this.findBySummerhouse(reservation.getSummerhouse().getId()));
 
-            summerhouseReservation.checkMoney(reservation);
             reservation.setMember(authenticationControllerREST.getSessionUser());
             summerhouseReservation.checkReservationGroup(reservation);
 
-            String fromDate = new DateTime(reservation.getFromDate()).toString("yyyy-MM-dd");
-            String untilDate = new DateTime(reservation.getUntilDate()).toString("yyyy-MM-dd");
-            Payment payment = paymentService.makePayment(authenticationControllerREST.getSessionUser(),
-                    reservation.getSummerhouse().getReservationPrice(),
-                    "Vasarnamis " + reservation.getSummerhouse().getNumber()
-                            + " " + fromDate + " " + untilDate);
+            Payment payment = summerhouseReservation.getPayment(reservation);
             reservation.setPayment(payment);
+
             super.create(reservation);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());
