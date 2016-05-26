@@ -53,9 +53,8 @@ public class Moneyoperationlogentry implements Serializable {
     @JoinColumn(name = "member", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Clubmember member;
-    @JoinColumn(name = "memberStatus", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Memberstatus memberStatus;
+    @Column(name = "memberStatus")
+    private int memberStatus;
 
     public Moneyoperationlogentry() {
     }
@@ -112,11 +111,11 @@ public class Moneyoperationlogentry implements Serializable {
         this.member = member;
     }
 
-    public Memberstatus getMemberStatus() {
+    public int getMemberStatus() {
         return memberStatus;
     }
 
-    public void setMemberStatus(Memberstatus memberStatus) {
+    public void setMemberStatus(int memberStatus) {
         this.memberStatus = memberStatus;
     }
 

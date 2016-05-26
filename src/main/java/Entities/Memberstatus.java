@@ -45,9 +45,6 @@ public class Memberstatus implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberStatus", fetch = FetchType.EAGER)
     private List<Clubmember> clubmemberList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "memberStatus", fetch = FetchType.EAGER)
-    private List<Moneyoperationlogentry> moneyOperationLogEntryList;
-
     public Memberstatus() {
 
     }
@@ -119,11 +116,4 @@ public class Memberstatus implements Serializable {
         this.optLockVersion = optLockVersion;
     }
 
-    public List<Moneyoperationlogentry> getMoneyOperationLogEntryList() {
-        return moneyOperationLogEntryList;
-    }
-
-    public void setMoneyOperationLogEntryList(List<Moneyoperationlogentry> moneyOperationLogEntryList) {
-        this.moneyOperationLogEntryList = moneyOperationLogEntryList;
-    }
 }

@@ -186,6 +186,7 @@ public class Clubmember implements Serializable {
         this.recommendedMembers = recommendedMembers;
     }
 
+    @XmlTransient
     public List<Moneyoperationlogentry> getMoneyOperationLogEntryList() {
         return moneyOperationLogEntryList;
     }

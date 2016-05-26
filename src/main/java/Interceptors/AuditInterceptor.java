@@ -44,7 +44,7 @@ public class AuditInterceptor {
         logEntry.setMember(member);
         logEntry.setMemberFirstName(member.getFirstName());
         logEntry.setMemberLastName(member.getLastName());
-        logEntry.setMemberStatus(member.getMemberStatus());
+        logEntry.setMemberStatus(member.getMemberStatus().getId());
         Method method = ctx.getMethod();
         logEntry.setInvokedMethod(method.getDeclaringClass().getName() + "." + method.getName());
         logEntry.setOperationTime(new Date());
