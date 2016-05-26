@@ -38,10 +38,6 @@ module SummerHouses.houses {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.additionalService.id == service.id) {
                                 service.price = houseServicePrice.price;
-                            }
-                        }
-                        for (let houseService of house.additionalServices) {
-                            if (houseService.id == service.id) {
                                 summerhouseServices.push(service);
                             }
                         }

@@ -85,18 +85,27 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Path("handleServicePrices")
     @Consumes({MediaType.APPLICATION_JSON})
     public void handleServicePrices(ArrayList<HouseServicePriceDTO> priceMap) throws Exception {
+        List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(priceMap.get(0).getHouseID());
         for (HouseServicePriceDTO dto : priceMap) {
+            HouseServicePrice houseServicePrice = null;
             if (dto.getId() > 0) {
                 Query query = em.createNamedQuery("HouseServicePrice.findByIDs");
                 query.setParameter("serviceID", dto.getServiceID());
                 query.setParameter("houseID", dto.getHouseID());
-                HouseServicePrice firstResult = (HouseServicePrice) query.getResultList().get(0);
-                HouseServicePrice houseServicePrice = new HouseServicePrice(dto.getId(), firstResult.getOptLockVersion(), dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
+                houseServicePrice = (HouseServicePrice) query.getResultList().get(0);
+                houseServicePrice.setPrice(dto.getPrice());
                 edit(houseServicePrice);
             } else {
-                HouseServicePrice houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
+                houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
                 create(houseServicePrice);
             }
+            if (houseServicePrices.contains(houseServicePrice)) {
+                houseServicePrices.remove(houseServicePrice);
+            }
+        }
+
+        for (HouseServicePrice houseServicePriceToRemove : houseServicePrices) {
+            em.remove(houseServicePriceToRemove);
         }
     }
 
@@ -125,10 +134,9 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
-        List<HouseServicePrice> houseServicePrices = findAll();
-        Stream<HouseServicePrice> houseServicePriceStream = findAll().stream().filter(x -> x.getSummerhouse().getId().equals(houseID));
-        List<HouseServicePrice> list = houseServicePriceStream.collect(Collectors.toList());
-        return list;
+        Query query = em.createNamedQuery("HouseServicePrice.findBySummerhouse");
+        query.setParameter("houseID", houseID);
+        return query.getResultList();
     }
 
     @GET
