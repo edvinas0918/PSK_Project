@@ -30,6 +30,7 @@ module SummerHouses {
                 .then(function (summerhouse) {
                     ReservationController.that.$scope.summerhouse = summerhouse;
                     //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
+                    ReservationController.that.getSummerhouseServices(summerhouse.id);
                     ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();
                     ReservationController.that.$scope.weekPicker = new Utilities.WeekPicker(
                         [
@@ -109,6 +110,18 @@ module SummerHouses {
         private getReservedAdditionalServices(summerhouseID):AdditionalServiceReservation[] {
             this.$http.get('/rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation:AdditionalServiceReservation[], status) => {
                 console.log(additionalServiceReservation);
+            });
+        }
+
+        private getSummerhouseServices(summerhouseID):void {
+            this.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + summerhouseID).success((prices:HouseServicePrice[], status) => {
+                var services = new Array<AdditionalService>();
+                for (let houseServicePrice of prices) {
+                    let additionalService = houseServicePrice.additionalService;
+                    additionalService.price = houseServicePrice.price;
+                    services.push(additionalService);
+                }
+                ReservationController.that.$scope.summerhouse.additionalServices = services;
             });
         }
 
