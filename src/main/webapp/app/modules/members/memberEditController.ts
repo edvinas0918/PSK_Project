@@ -1,8 +1,10 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="memberModel.ts"/>
 ///<reference path="memberFormFieldModel.ts"/>
 ///<reference path="../utilities/utilities.ts"/>
+
 
 module SummerHouses.members {
 
@@ -120,6 +122,8 @@ module SummerHouses.members {
         getMember(memberID: string): void{
             this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
                 this.$scope.member = member;
+                this.$scope.member.membershipExpirationDateString =
+                    moment(member.membershipExpirationDate).locale('LT').format('L');
                 if (member.memberStatus.name.toLowerCase() === "candidate"){
                     this.$scope.candidateReview = true;
                 }
