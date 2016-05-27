@@ -7,6 +7,7 @@ import javax.decorator.Decorator;
 import javax.decorator.Delegate;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +22,11 @@ public class SummerhouseServicesSearch implements SummerhouseSeach{
 
     @Override
     public List<Summerhouse> search(List<Summerhouse> summerhouses, SummerhouseSearchDto searchDto) {
-        List<Summerhouse> result = summerhouseSeach.search(summerhouses, searchDto);
-        if(searchDto.additionalServices != null){
-            result.removeIf(p -> !p.getAdditionalServices().containsAll(searchDto.additionalServices));
-        }
-        return result;
+//        List<Summerhouse> result = summerhouseSeach.search(summerhouses, searchDto);
+//        if(searchDto.additionalServices != null){
+//            result.removeIf(p -> !p.getAdditionalServices().containsAll(searchDto.additionalServices));
+//        }
+//        return result;
+        return new ArrayList<>();
     }
 }

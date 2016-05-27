@@ -67,6 +67,16 @@ namespace SummerHouses {
 
         }
 
+        public additionalServiceDTOs():AdditionalServiceReservationDTO[] {
+            var serviceDTOs = new Array<AdditionalServiceReservationDTO>();
+            for (let serviceReservation of this.$scope.summerhouse.additionalServiceReservations) {
+                var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.service.price, serviceReservation.service.id, date);
+                serviceDTOs.push(serviceDTO);
+            }
+            return serviceDTOs;
+        }
+
         public getWeekDiff(beginPeriod, endPeriod): number {
             var duration = moment.duration(moment(endPeriod).add(1, 'Days').diff(moment(beginPeriod)));
             return duration.asWeeks();
@@ -80,12 +90,12 @@ namespace SummerHouses {
             reservation.summerhouse = summerhouse;
             reservation.fromDate = period.fromDate;
             reservation.untilDate = period.untilDate;
-            reservation.additionalServiceReservationList = summerhouse.additionalServiceReservations;
             reservation.member = {};
+            var servicesDTOS = ReservationModalController.that.additionalServiceDTOs();
             var params = {
                 method: "POST",
                 url: "rest/reservation",
-                data: reservation,
+                data: {"reservation": reservation, "additionalServiceReservationDTOs":  servicesDTOS},
                 headers: {
                     'Content-Type': "application/json"
                 }
@@ -97,6 +107,12 @@ namespace SummerHouses {
                 ReservationModalController.that.$scope.isError = true;
                 ReservationModalController.that.$scope.errorMessage = error.data.errorMessage;
             });
+
+        }
+    }
+
+    export class AdditionalServiceReservationDTO {
+        constructor(public price:number, public additionalServiceID:number, public date:Date) {
 
         }
     }

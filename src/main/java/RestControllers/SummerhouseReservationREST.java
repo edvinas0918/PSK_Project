@@ -7,6 +7,8 @@ import Helpers.DateTermException;
 import Services.ClubMemberService;
 import Services.IPaymentService;
 import Services.SummerhouseReservation;
+import models.AdditionalServiceReservationDTO;
+import models.SummerhouseReservationDTO;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
@@ -48,6 +50,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     AuthenticationControllerREST authenticationControllerREST;
+
+    @Inject
+    AdditionalservicereservationFacadeREST additionalServiceReservationFacadeREST;
 
     @Inject
     IPaymentService paymentService;
@@ -105,7 +110,10 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response reserveSummerhouse(Summerhousereservation reservation) {
+    public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) {
+        Summerhousereservation reservation = summerhouseReservationDTO.getReservation();
+        List<AdditionalServiceReservationDTO> reservationDTOs = summerhouseReservationDTO.getAdditionalServiceReservationDTOs();
+
         JSONObject responseBody = new JSONObject();
 
         try {
@@ -122,6 +130,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
             reservation.setPayment(payment);
 
             super.create(reservation);
+            additionalServiceReservationFacadeREST.createServiceReservationsForSummerhouse(reservation, reservationDTOs);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)

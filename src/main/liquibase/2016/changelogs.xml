@@ -665,4 +665,10 @@
     <changeSet id="min023" author="Mindaugas">
         <addAutoIncrement columnDataType="INTEGER" tableName="HouseServicePrice" columnName="id" incrementBy="1" startWith="1"></addAutoIncrement>
     </changeSet>
+    <changeSet id="min024" author="Mindaugas">
+        <dropColumn tableName="additionalservicereservation" columnName="serviceend"></dropColumn>
+    </changeSet>
+    <changeSet id="min025" author="Mindaugas">
+        <addAutoIncrement columnDataType="INTEGER" tableName="additionalservicereservation" columnName="id" incrementBy="1" startWith="1"></addAutoIncrement>
+    </changeSet>
 </databaseChangeLog>
