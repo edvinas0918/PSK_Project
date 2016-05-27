@@ -671,4 +671,27 @@
     <changeSet id="min025" author="Mindaugas">
         <addAutoIncrement columnDataType="INTEGER" tableName="additionalservicereservation" columnName="id" incrementBy="1" startWith="1"></addAutoIncrement>
     </changeSet>
+    <changeSet id="min026" author="Mindaugas">
+        <dropNotNullConstraint
+                               columnDataType="integer"
+                               columnName="AdditionalServiceID"
+                               tableName="AdditionalServiceReservation"/>
+        <dropNotNullConstraint
+                                columnDataType="integer"
+                                columnName="SummerhouseReservationID"
+                                tableName="AdditionalServiceReservation"/>
+    </changeSet>
+    <changeSet id="min027" author="Mindaugas">
+        <dropForeignKeyConstraint baseTableName="additionalservicereservation"
+                                  constraintName="SERVICE_RES_SERVICE_FK"></dropForeignKeyConstraint>
+        <dropForeignKeyConstraint baseTableName="additionalservicereservation"
+                                  constraintName="SERVICE_RES_SUMMERHOUSE_FK"></dropForeignKeyConstraint>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="AdditionalServiceID"
+                                 constraintName="SERVICE_RES_SERVICE_FK" referencedTableName="additionalservice"
+                                 referencedColumnNames="ID" onUpdate="CASCADE" onDelete="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="AdditionalServiceReservation" baseColumnNames="SummerhouseReservationID"
+                                 constraintName="SERVICE_RES_SUMMERHOUSE_FK"
+                                 referencedTableName="summerhousereservation"
+                                 referencedColumnNames="ID" onUpdate="CASCADE" onDelete="RESTRICT"/>
+    </changeSet>
 </databaseChangeLog>

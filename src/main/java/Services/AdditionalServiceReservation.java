@@ -1,6 +1,7 @@
 package Services;
 
 import Entities.AdditionalService;
+import Entities.Additionalservicereservation;
 import Entities.Payment;
 import Entities.Summerhousereservation;
 import Helpers.InsufficientFundsException;
@@ -9,6 +10,7 @@ import models.AdditionalServiceReservationDTO;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by Mindaugas on 27/05/16.

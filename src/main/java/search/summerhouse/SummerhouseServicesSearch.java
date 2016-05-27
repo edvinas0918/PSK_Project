@@ -22,11 +22,10 @@ public class SummerhouseServicesSearch implements SummerhouseSeach{
 
     @Override
     public List<Summerhouse> search(List<Summerhouse> summerhouses, SummerhouseSearchDto searchDto) {
-//        List<Summerhouse> result = summerhouseSeach.search(summerhouses, searchDto);
-//        if(searchDto.additionalServices != null){
-//            result.removeIf(p -> !p.getAdditionalServices().containsAll(searchDto.additionalServices));
-//        }
-//        return result;
-        return new ArrayList<>();
+        List<Summerhouse> result = summerhouseSeach.search(summerhouses, searchDto);
+        if(searchDto.additionalServices != null){
+            result.removeIf(p -> !p.getAdditionalServices().containsAll(searchDto.additionalServices));
+        }
+        return result;
     }
 }

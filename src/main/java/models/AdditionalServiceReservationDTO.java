@@ -7,9 +7,18 @@ import java.util.Date;
  */
 public class AdditionalServiceReservationDTO {
 
-    int price;
-    int additionalServiceID;
-    Date date;
+    private int price;
+    private int additionalServiceID;
+    private Integer serviceReservationID;
+    private Date date;
+
+    public Integer getServiceReservationID() {
+        return serviceReservationID;
+    }
+
+    public void setServiceReservationID(Integer serviceReservationID) {
+        this.serviceReservationID = serviceReservationID;
+    }
 
     public Date getDate() {
         return date;

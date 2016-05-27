@@ -64,7 +64,6 @@ module SummerHouses {
                     });
                 }
                 ReservationController.that.$scope.summerhouse.additionalServiceReservations = ReservationController.that.$scope.additionalServiceReservations;
-                console.log(ReservationController.that.$scope.additionalServiceReservations);
             };
 
             this.$scope.getFromDate = () => {
@@ -125,17 +124,6 @@ module SummerHouses {
             });
         }
 
-        private getServicePricesForSummerhouse(summerhouseID):void {
-            /*this.$http.get('/rest/houseserviceprice/summerhouseServicesWithTaxes/' + summerhouseID).success((servicesTax:AdditionalServiceTax[], status) => {
-                var services = Array<AdditionalService>();
-                for (let service of servicesTax) {
-                    service.key.tax = service.value;
-                    services.push(service.key);
-                }
-                ReservationController.that.$scope.summerhouse.additionalServices = services;
-            });*/
-        }
-
         public checkIfAllServicesHaveDate(reservations:AdditionalServiceReservation[]):Boolean {
             for (let serviceReservation of reservations) {
                 if (!serviceReservation.serviceReservationStartDate) {
@@ -170,12 +158,6 @@ module SummerHouses {
 
     export class AdditionalServiceReservation {
         constructor(public service:AdditionalService, public serviceReservationStartDate:Date) {
-
-        }
-    }
-
-    export class AdditionalServiceTax {
-        constructor(public key:AdditionalService, public value:Tax) {
 
         }
     }

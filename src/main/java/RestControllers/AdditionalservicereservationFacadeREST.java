@@ -7,12 +7,16 @@ import Entities.Summerhousereservation;
 import Helpers.InsufficientFundsException;
 import Services.AdditionalServiceReservation;
 import models.AdditionalServiceReservationDTO;
+import models.HandlesServiceDTO;
+import models.SummerhouseReservationDTO;
+import org.json.JSONObject;
 
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,13 +26,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author Mindaugas
  */
 @Stateless
-@Path("entities.additionalservicereservation")
+@Path("servicesReservation")
 public class AdditionalservicereservationFacadeREST extends AbstractFacade<Additionalservicereservation> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
@@ -40,6 +45,9 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @Inject
     private AdditionalServiceReservation additionalServiceReservation;
 
+    @Inject
+    private SummerhouseReservationREST summerhouseReservationREST;
+
     public AdditionalservicereservationFacadeREST() {
         super(Additionalservicereservation.class);
     }
@@ -47,12 +55,15 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     public void createServiceReservationsForSummerhouse(Summerhousereservation summerhouseReservation, List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs) throws InsufficientFundsException{
         if (!additionalServiceReservationDTOs.isEmpty()){
             for (AdditionalServiceReservationDTO serviceReservationDTO : additionalServiceReservationDTOs) {
-                AdditionalService additionalService = additionalServiceFacadeREST.find(serviceReservationDTO.getAdditionalServiceID());
-                Payment payment = additionalServiceReservation.getPayment(additionalService, serviceReservationDTO);
-                Additionalservicereservation additionalServiceReservation = new Additionalservicereservation(serviceReservationDTO.getDate(), summerhouseReservation, additionalService, payment);
-                create(additionalServiceReservation);
+                create(getServiceReservationForDTO(serviceReservationDTO, summerhouseReservation));
             }
         }
+    }
+
+    private Additionalservicereservation getServiceReservationForDTO(AdditionalServiceReservationDTO serviceReservationDTO, Summerhousereservation summerhouseReservation) throws InsufficientFundsException {
+        AdditionalService additionalService = additionalServiceFacadeREST.find(serviceReservationDTO.getAdditionalServiceID());
+        Payment payment = additionalServiceReservation.getPayment(additionalService, serviceReservationDTO);
+        return new Additionalservicereservation(serviceReservationDTO.getDate(), summerhouseReservation, additionalService, payment);
     }
 
     @POST
@@ -64,6 +75,58 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @POST
+    @Path("handleServices")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateReservationServices(HandlesServiceDTO handlesServiceDTO) {
+        JSONObject responseBody = new JSONObject();
+        List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs = handlesServiceDTO.getAdditionalServiceReservationDTOs();
+        List<Additionalservicereservation> currentReservations = getAdditionalServiceReservations(handlesServiceDTO.getReservationID());
+        Summerhousereservation summerhouseReservation = summerhouseReservationREST.find(handlesServiceDTO.getReservationID());
+
+        try {
+            for (AdditionalServiceReservationDTO serviceReservationDTO : additionalServiceReservationDTOs) {
+                Additionalservicereservation additionalservicereservation = null;
+                if(serviceReservationDTO.getServiceReservationID() != null) {
+                    additionalservicereservation = find(serviceReservationDTO.getServiceReservationID());
+                    additionalservicereservation.setServiceStart(serviceReservationDTO.getDate());
+                    edit(additionalservicereservation);
+                } else {
+                    additionalservicereservation = getServiceReservationForDTO(serviceReservationDTO, summerhouseReservation);
+                    create(additionalservicereservation);
+                }
+                if (currentReservations.contains(additionalservicereservation)) {
+                    currentReservations.remove(additionalservicereservation);
+                }
+            }
+
+        } catch (Exception ex) {
+            responseBody.put("errorMessage", ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(responseBody.toString())
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+        for (Additionalservicereservation reservationToRemove : currentReservations) {
+            Additionalservicereservation additionalServiceReservation = find(reservationToRemove.getId());
+            additionalServiceReservation.setSummerhouseReservation(null);
+            additionalServiceReservation.setAdditionalService(null);
+
+            super.remove(additionalServiceReservation);
+        }
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("reservedServicesFor/{summerhouseReservationID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
+        TypedQuery<Additionalservicereservation> query =
+                em.createNamedQuery("Additionalservicereservation.findBySummerhouseReservationID", Additionalservicereservation.class).setParameter("summerhouseReservationID", id);
+        List<Additionalservicereservation> additionalservicereservations = query.getResultList();
+        return additionalservicereservations;
     }
 
     @PUT
