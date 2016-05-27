@@ -103,12 +103,18 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     public List<Clubmember> getMembers(
             @QueryParam("from") String fromDateString,
             @QueryParam("until") String untilDateString) throws ParseException {
-
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = format.parse(fromDateString);
-        Date untilDate = format.parse(untilDateString);
-
         List<Clubmember> members = super.findAll();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDate;
+        Date untilDate;
+        try
+        {
+            fromDate = format.parse(fromDateString);
+            untilDate = format.parse(untilDateString);
+        }
+        catch (Exception ex){
+            return members;
+        }
         List<Clubmember> membersWithReservation = new ArrayList<>();
 
         for (Clubmember member: members) {

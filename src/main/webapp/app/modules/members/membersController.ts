@@ -32,6 +32,7 @@ module SummerHouses.members {
             private authService: IAuthenticationService
         ) {
             this.$scope.formFields = { }
+            this.$scope.search = false;
 
             this.authService.getUser().then((user:AuthenticationService.IUser) => {
                 this.$scope.user = user.firstName + " " + user.lastName;
@@ -80,8 +81,16 @@ module SummerHouses.members {
                 });
 
                 modalInstance.result.then((result) =>{
-                    this.$scope.members = result;
+                    this.$scope.search = true;
+                    this.$scope.members = result.members.filter(function (member) {
+                        return member.id !== this.user.id;
+                    });;
                 });
+            };
+
+            this.$scope.renew = () => {
+                this.getMembers();
+                this.$scope.search = false;
             };
 
             this.$scope.redirectToMemberEdit = (member: Member) => {
@@ -92,9 +101,9 @@ module SummerHouses.members {
         getMembers(): void{
             this.$http.get('/rest/clubmember').success((members: Member[], status) => {
                 this.authService.getUser().then((user:AuthenticationService.IUser) => {
-                _.forEach(members, (member) => {
-                    member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
-                });
+                    _.forEach(members, (member) => {
+                        member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
+                    });
                     this.$scope.members = members.filter(function (member) {
                         return member.id !== user.id;
                     });
