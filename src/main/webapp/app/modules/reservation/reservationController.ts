@@ -28,31 +28,38 @@ module SummerHouses {
 
             summerhouseService.getSummerhouse(this.$routeParams.summerhouseID)
                 .then(function (summerhouse) {
-                    ReservationController.that.$scope.summerhouse = summerhouse;
-                    ReservationController.that.$scope.summerhouse.additionalServiceReservations = [];
-                    //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
-                    ReservationController.that.getSummerhouseServices(summerhouse.id);
-                    ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();
-                    ReservationController.that.$scope.weekPicker = new Utilities.WeekPicker(
-                        [
-                            {
-                                fromDate: moment().year() + "/01/01",
-                                untilDate: moment(summerhouse.beginPeriod).year(moment().year()).format()
-                            },
-                            {
-                                fromDate: moment(summerhouse.endPeriod).year(moment().year()).format(),
-                                untilDate: moment().year() + "/12/31"
-                            }
-                        ],
-                        "MMMM DD, YYYY");
-                    //ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
-                    $("#reservationDatePicker").datepicker("refresh");
+                    ReservationController.that.getSummerhouseReservation(summerhouse.id).then((reservations) => {
+                        ReservationController.that.$scope.summerhouse = summerhouse;
+                        ReservationController.that.$scope.summerhouse.additionalServiceReservations = [];
+                        //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
+                        ReservationController.that.getSummerhouseServices(summerhouse.id);
+                        ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();
+                        var disallowedPeriods = _.map(reservations, (reservation: any) => {
+                            return {
+                                fromDate: reservation.fromDate,
+                                untilDate: reservation.untilDate
+                            };
+                        })
+                        disallowedPeriods.push({
+                            fromDate: moment().year() + "/01/01",
+                            untilDate: moment(summerhouse.beginPeriod).year(moment().year()).format()
+                        });
+                        disallowedPeriods.push({
+                            fromDate: moment(summerhouse.endPeriod).year(moment().year()).format(),
+                            untilDate: moment().year() + "/12/31"
+                        });
+                        ReservationController.that.$scope.weekPicker = new Utilities.WeekPicker(
+                            disallowedPeriods, "MMMM DD, YYYY");
 
-                    ReservationController.that.$scope.summerhouse.beginPeriodString =
-                        moment(ReservationController.that.$scope.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
-                    ReservationController.that.$scope.summerhouse.endPeriodString =
-                        moment(ReservationController.that.$scope.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+                        //ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
+                        $("#reservationDatePicker").datepicker("refresh");
 
+                        ReservationController.that.$scope.summerhouse.beginPeriodString =
+                            moment(ReservationController.that.$scope.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
+                        ReservationController.that.$scope.summerhouse.endPeriodString =
+                            moment(ReservationController.that.$scope.summerhouse.endPeriod).locale('LT').format('MMMM Do');
+
+                    });
                 });
 
             this.$scope.manageService = (service:AdditionalService) => {
@@ -155,6 +162,14 @@ module SummerHouses {
                 }
             });
         };
+
+        private getSummerhouseReservation(summerhouseID: string) {
+            return this.$http.get('/rest/reservation/summerhouse/' + summerhouseID)
+                .then((response:any) => {
+                console.log(response.data);
+                    return response.data;
+            });
+        }
     }
 
     export class AdditionalServiceReservation {
