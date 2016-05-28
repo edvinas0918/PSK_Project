@@ -3,7 +3,10 @@
         <div class="col-md-8">
             <h3>Suteikti taškus nariui: {{member.firstName}} {{member.lastName}}</h3>
             <div class="alert alert-success" ng-if="showAlert">
-                <strong>Patvirtinta!</strong> Taškai nariui buvo suteikti
+                <strong>Patvirtinta!</strong> Taškai nariui buvo suteikti.
+            </div>
+            <div class="alert alert-danger" ng-if="showError">
+                <strong>Klaida!</strong> Kažkas įvyko ne taip, pabandykite dar kartą.
             </div>
             <ng-form name="pointsGrantForm">
                 <div class="control-group form-group">
@@ -24,8 +27,9 @@
                     </div>
                 </div>
                 <div id="success"></div>
-                <button ng-click="grantPoints()" ng-disabled="!pointsGrantForm.$valid"
-                        class="btn btn-success">Suteikti taškus</button>
+                <button ng-click="grantPoints()" ng-disabled="!pointsGrantForm.$valid" class="btn btn-success"
+                        id="load" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Siunčiama...">
+                    Suteikti taškus</button>
             </ng-form>
         </div>
 

@@ -35,16 +35,22 @@ module SummerHouses.members {
             this.$scope.points = 0;
             this.$scope.description = "";
             this.$scope.showAlert = false;
+            this.$scope.showError = false;
 
             this.$scope.grantPoints = () => {
+                var btn = $("#load").button('loading');
                 var model = new PointsGrant(this.memberID, this.$scope.points, this.$scope.description);
-                this.$http.put('rest/clubmember/grantPoints', model).success(() => {
+                this.$http.put('rest/clubmember/grantPoints', model).then(() => {
+                    btn.button('reset');
                     this.$scope.showAlert = true;
                     setTimeout(() => {
                         this.$scope.$apply(() => {
                             this.$scope.showAlert = false;
                         })
                     }, 4000)
+                }).catch((error) => {
+                    this.$scope.showError = true;
+                    btn.button('reset');
                 });
             }
 
