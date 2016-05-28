@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.List;
@@ -105,7 +105,7 @@ public class Memberstatus implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Memberstatus[ id=" + id + " ]";
+        return "entities.Memberstatus[ id=" + id + " ]";
     }
 
     public int getOptLockVersion() {

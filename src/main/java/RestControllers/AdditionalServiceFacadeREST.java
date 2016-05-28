@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RestControllers;
+package restControllers;
 
-import Entities.AdditionalService;
-import Entities.Summerhouse;
-import Helpers.Helpers;
+import entities.AdditionalService;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import static Helpers.Helpers.getGensonInstance;
+import static helpers.Helpers.getGensonInstance;
 
 /**
  *

@@ -1,4 +1,4 @@
-package ScheduledTasks;
+package scheduledTasks;
 
 /**
  * Created by Dziugas on 5/2/2016.

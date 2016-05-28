@@ -1,6 +1,6 @@
-package Services;
+package services;
 
-import Entities.Memberformfield;
+import entities.Memberformfield;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

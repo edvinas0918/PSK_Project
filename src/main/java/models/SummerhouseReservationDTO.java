@@ -1,6 +1,6 @@
 package models;
 
-import Entities.Summerhousereservation;
+import entities.Summerhousereservation;
 
 import java.util.List;
 

@@ -1,14 +1,13 @@
-package RestControllers;
+package restControllers;
 
-import Entities.AdditionalService;
-import Entities.Additionalservicereservation;
-import Entities.Payment;
-import Entities.Summerhousereservation;
-import Helpers.InsufficientFundsException;
-import Services.AdditionalServiceReservation;
+import entities.AdditionalService;
+import entities.Additionalservicereservation;
+import entities.Payment;
+import entities.Summerhousereservation;
+import helpers.InsufficientFundsException;
+import services.AdditionalServiceReservation;
 import models.AdditionalServiceReservationDTO;
 import models.HandlesServiceDTO;
-import models.SummerhouseReservationDTO;
 import org.json.JSONObject;
 
 import java.util.List;

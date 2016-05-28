@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -77,7 +77,7 @@ public class HouseServicePricePK implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.HouseServicePricePK[ houseID=" + houseID + ", serviceID=" + serviceID + " ]";
+        return "entities.HouseServicePricePK[ houseID=" + houseID + ", serviceID=" + serviceID + " ]";
     }
     
 }

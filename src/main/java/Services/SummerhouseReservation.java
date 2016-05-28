@@ -1,9 +1,9 @@
-package Services;
+package services;
 
-import Entities.*;
-import Helpers.DateTermException;
-import Helpers.InsufficientFundsException;
-import RestControllers.AuthenticationControllerREST;
+import entities.*;
+import helpers.DateTermException;
+import helpers.InsufficientFundsException;
+import restControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Weeks;

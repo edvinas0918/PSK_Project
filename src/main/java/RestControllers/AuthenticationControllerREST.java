@@ -1,8 +1,8 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Clubmember;
-import Services.AuthenticationService;
-import Services.ClubMemberService;
+import entities.Clubmember;
+import services.ClubMemberService;
+import services.AuthenticationService;
 import models.AuthResponse;
 import org.json.JSONObject;
 

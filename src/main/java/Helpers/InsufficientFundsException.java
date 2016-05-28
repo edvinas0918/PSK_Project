@@ -1,6 +1,4 @@
-package Helpers;
-
-import javax.ejb.ApplicationException;
+package helpers;
 
 /**
  * Created by Aurimas on 2016-05-04.

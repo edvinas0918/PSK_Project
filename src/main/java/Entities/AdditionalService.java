@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -110,7 +109,7 @@ public class AdditionalService implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Additionalservice[ id=" + id + " ]";
+        return "entities.Additionalservice[ id=" + id + " ]";
     }
     public int getOptLockVersion() {
         return optLockVersion;

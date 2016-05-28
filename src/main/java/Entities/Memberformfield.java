@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -106,7 +106,7 @@ public class Memberformfield implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Memberformfield[ id=" + id + " ]";
+        return "entities.Memberformfield[ id=" + id + " ]";
     }
 
     public int getOptLockVersion() {

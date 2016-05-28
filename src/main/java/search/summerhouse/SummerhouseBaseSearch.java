@@ -1,6 +1,6 @@
 package search.summerhouse;
 
-import Entities.Summerhouse;
+import entities.Summerhouse;
 import models.SummerhouseSearchDto;
 
 import javax.ejb.Stateless;

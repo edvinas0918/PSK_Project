@@ -1,7 +1,6 @@
-package RestControllers;
+package restControllers;
 
-import Helpers.InsufficientFundsException;
-import Services.EmailService;
+import services.EmailService;
 import models.Mailing;
 
 import javax.ejb.Stateless;

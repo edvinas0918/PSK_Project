@@ -1,6 +1,6 @@
 package models;
 
-import Entities.AdditionalService;
+import entities.AdditionalService;
 
 import java.util.Collection;
 

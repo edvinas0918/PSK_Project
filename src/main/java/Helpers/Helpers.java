@@ -1,10 +1,7 @@
-package Helpers;
+package helpers;
 
-import Entities.Summerhouse;
+import entities.Summerhouse;
 import com.owlike.genson.Genson;
-import org.joda.time.DateTime;
-import org.joda.time.MonthDay;
-import org.joda.time.format.DateTimeFormat;
 
 import java.text.DateFormat;
 import java.text.ParseException;

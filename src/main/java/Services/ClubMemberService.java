@@ -1,19 +1,16 @@
-package Services;
+package services;
 
-import Entities.Clubmember;
-import Entities.Memberstatus;
-import Entities.Payment;
-import Entities.Settings;
-import Helpers.InsufficientFundsException;
-import Interceptors.Audit;
-import RestControllers.ClubmemberFacadeREST;
+import entities.Clubmember;
+import entities.Memberstatus;
+import entities.Settings;
+import helpers.InsufficientFundsException;
+import restControllers.ClubmemberFacadeREST;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 
 import java.util.Calendar;

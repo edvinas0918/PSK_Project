@@ -1,4 +1,4 @@
-package Helpers;
+package helpers;
 
 /**
  * Created by Aurimas on 2016-05-24.

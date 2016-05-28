@@ -1,15 +1,13 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Additionalservicereservation;
-import Entities.Payment;
-import Entities.Summerhousereservation;
-import Helpers.DateTermException;
-import Services.ClubMemberService;
-import Services.IPaymentService;
-import Services.SummerhouseReservation;
+import entities.Payment;
+import entities.Summerhousereservation;
+import helpers.DateTermException;
+import services.ClubMemberService;
+import services.IPaymentService;
+import services.SummerhouseReservation;
 import models.AdditionalServiceReservationDTO;
 import models.SummerhouseReservationDTO;
-import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 import javax.ejb.Stateless;
@@ -20,8 +18,6 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
