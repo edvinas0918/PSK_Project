@@ -103,6 +103,7 @@ module SummerHouses.houses {
             SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success((houseID:number, status) => {
                 let houseServicePrices = house.houseServicePrices;
                 for (let houseServicePrice of houseServicePrices) {
+                    houseServicePrice.houseID = houseID;
                     for (let service of SummerHouseEditController.that.$scope.additionalServices) {
                         if (service.id == houseServicePrice.serviceID) {
                             houseServicePrice.price = service.price;
