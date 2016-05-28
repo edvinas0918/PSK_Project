@@ -2,6 +2,7 @@ package restControllers;
 
 import entities.Clubmember;
 import services.ClubMemberService;
+import services.AuthenticationService;
 import models.AuthResponse;
 import org.json.JSONObject;
 
