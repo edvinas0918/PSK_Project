@@ -9,6 +9,7 @@ module SummerHouses.authentication {
         getUser():ng.IPromise<IUser>;
         getCachedUser(): IUser;
         getSessionUser(): ng.IPromise<IUser>;
+        getBaseUrl(): string;
     }
 
     export interface IUser {
@@ -135,7 +136,12 @@ module SummerHouses.authentication {
         public getCachedUser(): IUser {
             return AuthenticationService.that.user;
         }
-        
+
+        public getBaseUrl(): string {
+            var url = AuthenticationService.that.$location.absUrl();
+            return url.substring (0, url.indexOf('#'));
+        }
+
         public getSessionUser(): ng.IPromise<IUser> {
             var params = {
                 url: "rest/authentication/getUser",

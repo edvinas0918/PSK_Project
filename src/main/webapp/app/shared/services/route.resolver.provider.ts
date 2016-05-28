@@ -46,7 +46,7 @@ module SummerHouses.shared {
                     if (code && url.indexOf("/error") == -1) {
                         return authService.requestUserAccessToken(null, code)
                             .then(function (token) {
-                                RouteResolverProvider.that.redirectDefault($window, authService.getCachedUser());
+                                RouteResolverProvider.that.redirectDefault($window, authService.getCachedUser(), authService.getBaseUrl());
                                 return $q.when(true);
                             }, function (error) {
                                 return $q.reject(error);
@@ -112,7 +112,8 @@ module SummerHouses.shared {
         }
 
         private redirectDefault($window:ng.IWindowService,
-                                user:IUser) {
+                                user:IUser,
+                                baseUrl: string) {
             if (user) {
                 var redirectPath:string;
                 switch (user.memberStatus.name.toLowerCase()) {
@@ -128,7 +129,7 @@ module SummerHouses.shared {
 
             }
 
-            $window.location.href = $window.location.origin + '/#' + redirectPath;
+            $window.location.href = baseUrl;
         }
 
         public defaultRouteResolver:any;

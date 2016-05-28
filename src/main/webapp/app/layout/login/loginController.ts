@@ -21,7 +21,7 @@ module SummerHouses {
         }
         
         public FBLogIn() {
-            LoginController.that.authService.requestUserAccessToken(LoginController.that.$window.location.origin);
+            LoginController.that.authService.requestUserAccessToken(LoginController.that.authService.getBaseUrl());
         }
     }
 
