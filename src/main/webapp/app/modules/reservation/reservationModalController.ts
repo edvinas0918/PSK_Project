@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/moment.d.ts"/>
+///<reference path="../../../typings/lodash.d.ts"/>
 
 namespace SummerHouses {
     export class ReservationModalController {
@@ -43,8 +44,11 @@ namespace SummerHouses {
                 var reservationPeriod = ReservationModalController.that.$scope.reservationPeriod;
                 var beginPeriod = reservationPeriod.fromDate;
                 var endPeriod = reservationPeriod.untilDate;
+                var serviceSum = _.reduce(summerhouse.additionalServiceReservations, function(sum, n) {
+                    return sum + n.service.price;
+                }, 0);
 
-                return summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod);
+                return serviceSum + (summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod));
             }
 
             this.$scope.calculateTotalPoints = (): number => {
@@ -63,6 +67,16 @@ namespace SummerHouses {
 
         }
 
+        public additionalServiceDTOs():AdditionalServiceReservationDTO[] {
+            var serviceDTOs = new Array<AdditionalServiceReservationDTO>();
+            for (let serviceReservation of this.$scope.summerhouse.additionalServiceReservations) {
+                var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.service.price, serviceReservation.service.id, date);
+                serviceDTOs.push(serviceDTO);
+            }
+            return serviceDTOs;
+        }
+
         public getWeekDiff(beginPeriod, endPeriod): number {
             var duration = moment.duration(moment(endPeriod).add(1, 'Days').diff(moment(beginPeriod)));
             return duration.asWeeks();
@@ -77,10 +91,11 @@ namespace SummerHouses {
             reservation.fromDate = period.fromDate;
             reservation.untilDate = period.untilDate;
             reservation.member = {};
+            var servicesDTOS = ReservationModalController.that.additionalServiceDTOs();
             var params = {
                 method: "POST",
                 url: "rest/reservation",
-                data: reservation,
+                data: {"reservation": reservation, "additionalServiceReservationDTOs":  servicesDTOS},
                 headers: {
                     'Content-Type': "application/json"
                 }
@@ -92,6 +107,12 @@ namespace SummerHouses {
                 ReservationModalController.that.$scope.isError = true;
                 ReservationModalController.that.$scope.errorMessage = error.data.errorMessage;
             });
+
+        }
+    }
+
+    export class AdditionalServiceReservationDTO {
+        constructor(public price:number, public additionalServiceID:number, public date:Date) {
 
         }
     }

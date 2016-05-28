@@ -36,12 +36,8 @@ module SummerHouses.houses {
                     let summerhouseServices = Array<AdditionalService>();
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
-                            if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
+                            if (houseServicePrice.additionalService.id == service.id) {
                                 service.price = houseServicePrice.price;
-                            }
-                        }
-                        for (let houseService of house.additionalServices) {
-                            if (houseService.id == service.id) {
                                 summerhouseServices.push(service);
                             }
                         }

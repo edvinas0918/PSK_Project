@@ -30,7 +30,7 @@ module SummerHouses.houses {
 
             this.scope = $scope;
             this.httpService = $http;
-
+            SummerHouseEditController.that.scope.additionalServices= new Array<AdditionalService>();
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
             } else {
@@ -39,12 +39,12 @@ module SummerHouses.houses {
             }
             this.getSummerHouses();
             this.$scope.manageService = (service:AdditionalService) => {
-                var services = SummerHouseEditController.that.scope.house.additionalServices;
-                if (_.filter(services, {'id': service.id}).length > 0) {
-                    _.remove(services, {'id': service.id});
+                var houseServicePrices = SummerHouseEditController.that.scope.house.houseServicePrices;
+                var matchingHouseServicePrice = _.filter(houseServicePrices, function(houseServicePrice) { return houseServicePrice.serviceID == service.id; })[0];
+                if (matchingHouseServicePrice) {
+                    _.remove(houseServicePrices, matchingHouseServicePrice);
                 } else {
-                    service.selected = true;
-                    services.push(service);
+                    houseServicePrices.push(new HouseServicePrice(null, SummerHouseEditController.that.scope.house.id, service.id, service.price));
                 }
             };
             this.$scope.saveHouse = (house:SummerHouse) => {
@@ -75,7 +75,7 @@ module SummerHouses.houses {
                 house.endPeriod = this.createDateAsUTC(house.endPeriod);
                 house.beginPeriod = this.createDateAsUTC(house.beginPeriod);
 
-                if($scope.houseImage){
+                if ($scope.houseImage) {
                     this.saveHouseWithImage(house);
                 } else {
                     SummerHouseEditController.that.postHouse(house);
@@ -84,12 +84,12 @@ module SummerHouses.houses {
             }
         }
 
-        createDateAsUTC(date: Date):Date {
+        createDateAsUTC(date:Date):Date {
             return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
         }
 
 
-        saveHouseWithImage(house: SummerHouse):void {
+        saveHouseWithImage(house:SummerHouse):void {
             var file = SummerHouseEditController.that.$scope.houseImage;
             var fr = new FileReader();
             fr.readAsDataURL(file);
@@ -99,15 +99,17 @@ module SummerHouses.houses {
             };
         }
 
-        postHouse(house: SummerHouse):void {
+        postHouse(house:SummerHouse):void {
             SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success((houseID:number, status) => {
-                if (SummerHouseEditController.that.$scope.additionalServices) {
-                    var houseServicePrices = Array<HouseServicePrice>();
+                let houseServicePrices = house.houseServicePrices;
+                for (let houseServicePrice of houseServicePrices) {
                     for (let service of SummerHouseEditController.that.$scope.additionalServices) {
-                        if (service.selected) {
-                            houseServicePrices.push(new HouseServicePrice(houseID,service.id,service.tax));
+                        if (service.id == houseServicePrice.serviceID) {
+                            houseServicePrice.price = service.price;
                         }
                     }
+                }
+                if (houseServicePrices) {
                     SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
                         SummerHouseEditController.that.$location.path("/admin/houses");
                     });
@@ -123,12 +125,10 @@ module SummerHouses.houses {
                 SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
-                            if (houseServicePrice.houseServicePricePK.serviceID == service.id) {
+                            if (houseServicePrice.additionalService.id == service.id) {
+                                //public id: number, public optLockVersion: number, public houseID: number, public serviceID: number, public price: number
+                                house.houseServicePrices.push(new HouseServicePrice(houseServicePrice.id, house.id, service.id, houseServicePrice.price));
                                 service.price = houseServicePrice.price;
-                            }
-                        }
-                        for (let houseService of house.additionalServices) {
-                            if (houseService.id == service.id) {
                                 service.selected = true;
                             }
                         }
@@ -149,6 +149,7 @@ module SummerHouses.houses {
                 house.endPeriod = new Date(house.endPeriod);
                 house.beginPeriod = new Date(house.beginPeriod);
                 SummerHouseEditController.that.scope.house = house;
+                SummerHouseEditController.that.scope.house.houseServicePrices = new Array<HouseServicePrice>();
                 SummerHouseEditController.that.getAdditionalServices();
             });
         }

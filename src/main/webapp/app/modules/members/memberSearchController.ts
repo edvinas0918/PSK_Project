@@ -21,7 +21,7 @@ module SummerHouses.members {
             this.$scope.weekPicker = new Utilities.WeekPicker([]);
 
             this.$scope.submit  = () => {
-                var period = this.$scope.weekPicker.getReservationPeriod();
+                var period = this.$scope.weekPicker.getPeriod();
                 this.$http.get('/rest/clubmember/reservation?from=' + period.fromDate + '&until=' + period.untilDate)
                     .success((members: Member[]) => {
                         this.$uibModalInstance.close(members);

@@ -22,22 +22,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Additionalservicereservation.findAll", query = "SELECT a FROM Additionalservicereservation a"),
     @NamedQuery(name = "Additionalservicereservation.findById", query = "SELECT a FROM Additionalservicereservation a WHERE a.id = :id"),
     @NamedQuery(name = "Additionalservicereservation.findByServiceStart", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceStart = :serviceStart"),
-    @NamedQuery(name = "Additionalservicereservation.findByServiceEnd", query = "SELECT a FROM Additionalservicereservation a WHERE a.serviceEnd = :serviceEnd"),
         @NamedQuery(name = "Additionalservicereservation.findBySummerhouseReservationID", query = "SELECT a FROM Additionalservicereservation a WHERE a.summerhouseReservation.id = :summerhouseReservationID")})
 public class Additionalservicereservation implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id")
     private Integer id;
     @Column(name = "ServiceStart")
     @Temporal(TemporalType.DATE)
     private Date serviceStart;
-    @Column(name = "ServiceEnd")
-    @Temporal(TemporalType.DATE)
-    private Date serviceEnd;
     @JoinColumn(name = "SummerhouseReservationID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhousereservation summerhouseReservation;
@@ -51,6 +47,13 @@ public class Additionalservicereservation implements Serializable {
     private Payment payment;
 
     public Additionalservicereservation() {
+    }
+
+    public Additionalservicereservation(Date serviceStart, Summerhousereservation summerhouseReservation, AdditionalService additionalService, Payment payment) {
+        this.serviceStart = serviceStart;
+        this.summerhouseReservation = summerhouseReservation;
+        this.additionalService = additionalService;
+        this.payment = payment;
     }
 
     public Summerhousereservation getSummerhouseReservation() {
@@ -95,14 +98,6 @@ public class Additionalservicereservation implements Serializable {
 
     public void setServiceStart(Date serviceStart) {
         this.serviceStart = serviceStart;
-    }
-
-    public Date getServiceEnd() {
-        return serviceEnd;
-    }
-
-    public void setServiceEnd(Date serviceEnd) {
-        this.serviceEnd = serviceEnd;
     }
 
     @Override

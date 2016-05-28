@@ -11,21 +11,24 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author Mindaugas
  */
 @Entity
 @Table(name = "HouseServicePrice")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "HouseServicePrice.findAll", query = "SELECT h FROM HouseServicePrice h"),
-    @NamedQuery(name = "HouseServicePrice.findByHouseID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.houseID = :houseID"),
-    @NamedQuery(name = "HouseServicePrice.findByServiceID", query = "SELECT h FROM HouseServicePrice h WHERE h.houseServicePricePK.serviceID = :serviceID")})
+        @NamedQuery(name = "HouseServicePrice.findAll", query = "SELECT h FROM HouseServicePrice h"),
+        @NamedQuery(name = "HouseServicePrice.findByIDs", query = "SELECT h FROM HouseServicePrice h WHERE h.additionalService.id = :serviceID AND h.summerhouse.id = :houseID"),
+        @NamedQuery(name = "HouseServicePrice.findBySummerhouse", query = "SELECT h FROM HouseServicePrice h WHERE h.summerhouse.id = :houseID")
+})
 public class HouseServicePrice implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected HouseServicePricePK houseServicePricePK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
@@ -35,24 +38,37 @@ public class HouseServicePrice implements Serializable {
     @Version
     @Column(name = "OPT_LOCK_VERSION")
     private int optLockVersion;
+    @ManyToOne
+    @JoinColumn(name = "serviceID")
+    private AdditionalService additionalService;
+
+    @ManyToOne
+    @JoinColumn(name = "houseID")
+    private Summerhouse summerhouse;
 
     public HouseServicePrice() {
     }
 
-    public HouseServicePrice(HouseServicePricePK houseServicePricePK) {
-        this.houseServicePricePK = houseServicePricePK;
+    public HouseServicePrice(int price, AdditionalService additionalService, Summerhouse summerhouse) {
+        this.price = price;
+        this.additionalService = additionalService;
+        this.summerhouse = summerhouse;
     }
 
-    public HouseServicePrice(int houseID, int serviceID) {
-        this.houseServicePricePK = new HouseServicePricePK(houseID, serviceID);
+    public HouseServicePrice(int id, int price, int optLockVersion, AdditionalService additionalService, Summerhouse summerhouse) {
+        this.price = price;
+        this.optLockVersion = optLockVersion;
+        this.id = id;
+        this.additionalService = additionalService;
+        this.summerhouse = summerhouse;
     }
 
-    public HouseServicePricePK getHouseServicePricePK() {
-        return houseServicePricePK;
+    public Integer getId() {
+        return id;
     }
 
-    public void setHouseServicePricePK(HouseServicePricePK houseServicePricePK) {
-        this.houseServicePricePK = houseServicePricePK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public int getOptLockVersion() {
@@ -63,11 +79,28 @@ public class HouseServicePrice implements Serializable {
         this.optLockVersion = optLockVersion;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (houseServicePricePK != null ? houseServicePricePK.hashCode() : 0);
-        return hash;
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public AdditionalService getAdditionalService() {
+        return additionalService;
+    }
+
+    public void setAdditionalService(AdditionalService additionalService) {
+        this.additionalService = additionalService;
+    }
+
+    public Summerhouse getSummerhouse() {
+        return summerhouse;
+    }
+
+    public void setSummerhouse(Summerhouse summerhouse) {
+        this.summerhouse = summerhouse;
     }
 
     @Override
@@ -77,15 +110,10 @@ public class HouseServicePrice implements Serializable {
             return false;
         }
         HouseServicePrice other = (HouseServicePrice) object;
-        if ((this.houseServicePricePK == null && other.houseServicePricePK != null) || (this.houseServicePricePK != null && !this.houseServicePricePK.equals(other.houseServicePricePK))) {
+        if (!this.summerhouse.getId().equals(other.summerhouse.getId()) || !this.additionalService.getId().equals(other.additionalService.getId())) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Entities.HouseServicePrice[ houseServicePricePK=" + houseServicePricePK + " ]";
-    }
-    
 }

@@ -7,6 +7,8 @@ import Helpers.DateTermException;
 import Services.ClubMemberService;
 import Services.IPaymentService;
 import Services.SummerhouseReservation;
+import models.AdditionalServiceReservationDTO;
+import models.SummerhouseReservationDTO;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 
@@ -50,6 +52,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     AuthenticationControllerREST authenticationControllerREST;
 
     @Inject
+    AdditionalservicereservationFacadeREST additionalServiceReservationFacadeREST;
+
+    @Inject
     IPaymentService paymentService;
 
     public SummerhouseReservationREST() {
@@ -60,7 +65,8 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Summerhousereservation find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Summerhousereservation summerhousereservation = super.find(id);
+        return summerhousereservation;
     }
 
     @GET
@@ -85,7 +91,8 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     public List<Summerhousereservation> findByClubmember(@PathParam("id") Integer id) {
         TypedQuery<Summerhousereservation> query =
                 em.createNamedQuery("Summerhousereservation.findByClubmemberId", Summerhousereservation.class).setParameter("id", id);
-        return query.getResultList();
+        List<Summerhousereservation> summerhousereservations = query.getResultList();
+        return summerhousereservations;
     }
 
     @DELETE
@@ -105,7 +112,10 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response reserveSummerhouse(Summerhousereservation reservation) {
+    public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) {
+        Summerhousereservation reservation = summerhouseReservationDTO.getReservation();
+        List<AdditionalServiceReservationDTO> reservationDTOs = summerhouseReservationDTO.getAdditionalServiceReservationDTOs();
+
         JSONObject responseBody = new JSONObject();
 
         try {
@@ -122,6 +132,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
             reservation.setPayment(payment);
 
             super.create(reservation);
+            additionalServiceReservationFacadeREST.createServiceReservationsForSummerhouse(reservation, reservationDTOs);
         } catch (Exception ex) {
             responseBody.put("errorMessage", ex.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
@@ -131,15 +142,6 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         }
 
         return Response.ok().build();
-    }
-
-    @GET
-    @Path("additionalServices/{summerhouseReservationID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
-        TypedQuery<Additionalservicereservation> query =
-                em.createNamedQuery("Additionalservicereservation.findBySummerhouseReservationID", Additionalservicereservation.class).setParameter("summerhouseReservationID", id);
-        return query.getResultList();
     }
 
     @Override

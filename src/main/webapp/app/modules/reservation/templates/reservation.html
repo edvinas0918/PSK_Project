@@ -32,7 +32,7 @@
     </div>
     <div class="media col-md-4 pull-left" ng-repeat="service in summerhouse.additionalServices" style="height:120px;">
         <div class="pull-left">
-                    <span class="fa-stack fa-2x" ng-click="manageService(service)">
+                    <span ng-disabled="!service.serviceBegin" class="fa-stack fa-2x" ng-click="manageService(service)">
                           <span ng-show="!service.checked" class="glyphicon glyphicon-unchecked text-primary"
                                 style="top: 3px;left: 15px;" ng-click="service.checked = true"></span>
                           <span ng-show="service.checked" class="glyphicon glyphicon-check text-primary"
@@ -41,7 +41,7 @@
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{service.name}}</h4>
-            <input ng-show="isDateSelected && service.checked"
+            <input ng-show="isDateSelected"
                    type="datetime-local"
                    name="serviceReservationBegin"
                    ng-model="service.serviceBegin"
@@ -50,7 +50,7 @@
             >
             <!--<input type="datetime-local" name="serviceReservationEnd" ng-model="service.serviceEnd">-->
             <p>{{service.description}}</p>
-            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.tax.price}} taškai(-as)</p>
+            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.price}} taškai(-as)</p>
         </div>
     </div>
 </div>

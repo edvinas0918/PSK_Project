@@ -4,11 +4,21 @@ package models;
  * Created by Mindaugas on 15/05/16.
  */
 public class HouseServicePriceDTO {
+
+    private int id;
     private int houseID;
     private int serviceID;
     private int price;
 
     public HouseServicePriceDTO() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getPrice() {

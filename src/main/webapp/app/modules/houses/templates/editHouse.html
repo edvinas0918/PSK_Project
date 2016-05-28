@@ -72,14 +72,13 @@
                     <thead>
                     <tr>
                         <th>Paslaugos pavadinimas</th>
-                        <th>Mokesčio pavadinimas</th>
                         <th>Mokestis taškais</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="service in additionalServices">
                         <td>
-                            <input type="checkbox" ng-click="manageService(service)" ng-checked="{{service.selected}}"> {{service.name}}</input>
+                            <input ng-disabled="!service.price" type="checkbox" ng-click="manageService(service)" ng-checked="{{service.selected}}"> {{service.name}}</input>
                         </td>
                         <td>
                             <input type="number" min="1" ng-required="service.selected"  ng-model="service.price" />

@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,12 +67,8 @@ public class Summerhouse implements Serializable {
     private String image;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse", fetch = FetchType.EAGER)
     private List<Summerhousereservation> summerHouseReservationList;
-
-    @JoinTable(name = "HouseServicePrice", joinColumns = {
-            @JoinColumn(name = "houseID")}, inverseJoinColumns = {
-            @JoinColumn(name = "serviceID")})
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<AdditionalService> additionalServices;
+    @OneToMany(mappedBy = "summerhouse")
+    private List<HouseServicePrice> houseServicePrices = new ArrayList<>();
 
     public Summerhouse() {
     }
@@ -92,14 +89,6 @@ public class Summerhouse implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public List<AdditionalService> getAdditionalServices() {
-        return additionalServices;
-    }
-
-    public void setAdditionalServices(List<AdditionalService> additionalServices) {
-        this.additionalServices = additionalServices;
     }
 
     public Integer getId() {
