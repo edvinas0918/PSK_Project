@@ -44,7 +44,7 @@ module SummerHouses.shared {
                     var code = RouteResolverProvider.that.getCodeFromUrl(url);
 
                     if (code && url.indexOf("/error") == -1) {
-                        return authService.requestUserAccessToken("http://localhost:8080", code)
+                        return authService.requestUserAccessToken(null, code)
                             .then(function (token) {
                                 RouteResolverProvider.that.redirectDefault($window, authService.getCachedUser());
                                 return $q.when(true);
@@ -127,7 +127,8 @@ module SummerHouses.shared {
                 }
 
             }
-            $window.location.href = 'http://localhost:8080/#' + redirectPath;
+
+            $window.location.href = $window.location.origin + '/#' + redirectPath;
         }
 
         public defaultRouteResolver:any;

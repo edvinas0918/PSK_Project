@@ -66,7 +66,7 @@ module SummerHouses.authentication {
             if (code) {
                 params.url += '?code=' + code;
             } else {
-                params.url += '?redirectUrl=http://localhost:8080/';// + redirectUrl;
+                params.url += '?redirectUrl=' + redirectUrl;
             }
 
             return AuthenticationService.that.$http(params)
