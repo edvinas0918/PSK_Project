@@ -68,6 +68,7 @@ public class PaypalService {
 
         try {
             Payment payment = pointsPayment.execute(getApiContext(), paymentExecute);
+            payment.setId(payPalPaymentDTO.getPaymentID());
             if(payment.getState().equals(APPROVED_PAYMENT_STATE) && !payment.getTransactions().isEmpty()) {
                 Double total = Double.parseDouble(payment.getTransactions().get(0).getAmount().getTotal());
                 clubMemberService.grantPoints(authenticationControllerREST.getSessionUser(), total.intValue());

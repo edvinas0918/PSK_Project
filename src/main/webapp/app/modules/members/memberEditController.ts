@@ -157,9 +157,9 @@ module SummerHouses.members {
 
         makePaymentIfNeeded(paymentID: string, token: string, payerID: string): void {
             if (payerID && paymentID && token) {
+                MemberEditController.that.$scope.isPaying = true;
                 MemberEditController.that.$location.search({});
                 var btn =$("#update").button('loading, disabled');
-                MemberEditController.that.$scope.isPaying = true;
                 var params = {
                     method: "POST",
                     url: "/rest/payments/payPalMakePayment",
