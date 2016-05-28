@@ -31,6 +31,9 @@ public class EmailService {
     @Inject
     ClubMemberService clubMemberService;
 
+    @Inject
+    AuthenticationService authService;
+
     private String host;
     private String port;
     private String userName;
@@ -107,7 +110,7 @@ public class EmailService {
 
         // message contains HTML markups
         String message = "Sveiki,<br>";
-        message += String.format("<i>%s</i> Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti <a href=\"http://localhost:8080\">mūsų puslapyje</a>.",
+        message += String.format("<i>%s</i> Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti <a href=\"" + authService.getOrigin() + "\">mūsų puslapyje</a>.",
                 clubMemberService.getCurrentUser().getFirstName() + " " + clubMemberService.getCurrentUser().getLastName());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
@@ -133,7 +136,7 @@ public class EmailService {
 
         // message contains HTML markups
         String message = "Sveiki,<br>";
-        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"http://localhost:8080/#/members/%d\">mūsų puslapyje</a>.",
+        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"" + authService.getOrigin() + "#/members/%d\">mūsų puslapyje</a>.",
                 clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 

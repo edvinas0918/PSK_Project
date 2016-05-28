@@ -8,20 +8,20 @@ module SummerHouses {
 
         static $inject=[
             'sh-authentication-service',
-            '$location',
+            '$window',
             '$route'
         ];
         
         constructor(
             private authService: SummerHouses.authentication.IAuthenticationService,
-            private $location: ng.ILocationService,
+            private $window: ng.IWindowService,
             private $route: any
         ) {
             LoginController.that=this;
         }
         
         public FBLogIn() {
-            LoginController.that.authService.requestUserAccessToken();
+            LoginController.that.authService.requestUserAccessToken(LoginController.that.$window.location.origin);
         }
     }
 

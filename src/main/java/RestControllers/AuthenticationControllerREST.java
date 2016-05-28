@@ -48,13 +48,16 @@ public class AuthenticationControllerREST {
     @Inject
     ClubMemberService userService;
 
+    @Inject
+    AuthenticationService authService;
+
     @GET
     @Path("getUserAccessToken")
     @Produces(MediaType.APPLICATION_JSON)
     public AuthResponse getUserAccessToken(@QueryParam("code") String code,
                                            @QueryParam("redirectUrl") String redirectUrl) {
 
-        FBConnection fbConnection = new FBConnection();
+        FBConnection fbConnection = new FBConnection(authService.getOrigin());
         if (code == null || code.equals("")) {
             return new AuthResponse(401, fbConnection.getFBAuthUrl(redirectUrl));
         }
@@ -127,9 +130,14 @@ public class AuthenticationControllerREST {
     private class FBConnection {
         public static final String FB_APP_ID = "1597719040467242";
         public static final String FB_APP_SECRET = "57e5ede13f7ac8be87628d2c2d29d9aa";
-        public static final String REDIRECT_URI = "http://localhost:8080/";
+
+        private String redirectUrl;
 
         String accessToken = "";
+
+        public FBConnection (String redirectUrl) {
+            this.redirectUrl = redirectUrl;
+        }
 
         public String getFBAuthUrl(String redirectUrl) {
             String fbLoginUrl = "";
@@ -149,7 +157,7 @@ public class AuthenticationControllerREST {
             try {
                 fbGraphUrl = "https://graph.facebook.com/oauth/access_token?"
                         + "client_id=" + FBConnection.FB_APP_ID + "&redirect_uri="
-                        + URLEncoder.encode(FBConnection.REDIRECT_URI, "UTF-8")
+                        + URLEncoder.encode(redirectUrl, "UTF-8")
                         + "&client_secret=" + FB_APP_SECRET + "&code=" + code;
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
