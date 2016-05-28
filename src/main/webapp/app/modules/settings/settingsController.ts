@@ -94,8 +94,6 @@ module SummerHouses.settings {
                 var date = moment().month(this.$scope.reservationStartMonth.key).date(this.$scope.reservationStartDay);
                 dateSetting.value = date.format('YYYY-MM-DD');
             }
-
-
         }
 
     }

@@ -29,6 +29,7 @@ module SummerHouses {
             summerhouseService.getSummerhouse(this.$routeParams.summerhouseID)
                 .then(function (summerhouse) {
                     ReservationController.that.$scope.summerhouse = summerhouse;
+                    ReservationController.that.$scope.summerhouse.additionalServiceReservations = [];
                     //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
                     ReservationController.that.getSummerhouseServices(summerhouse.id);
                     ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();

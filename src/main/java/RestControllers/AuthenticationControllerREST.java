@@ -85,7 +85,7 @@ public class AuthenticationControllerREST {
             user.setMemberStatus(userService.getMemberStatusByName("Candidate"));
             user.setFbUserId(userInfo.getString("id"));
             user.setEmail(userInfo.getString("email"));
-            user.setReservationGroup(1);
+            user.setReservationGroup(0);
             user.setPoints(0);
             user.setIsActive(true);
             try {

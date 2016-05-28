@@ -30,11 +30,12 @@ public class ReservationStrategyImplementation implements ReservationPriorityStr
         if (numberOfGroups == 0 ) {
             return;
         }
+
         double averageGroupSize = members.size() / numberOfGroups;
-        long groupSize = Math.round(averageGroupSize);
+        long groupSize = averageGroupSize == 0 ? 1 : Math.round(averageGroupSize);
 
 
-        int currentGroup = 1;
+        int currentGroup = 0;
         int peopleInCurrentGroup = 0;
         for (Clubmember member : members){
             if (peopleInCurrentGroup >= groupSize && currentGroup != numberOfGroups){
@@ -55,8 +56,6 @@ class memberComparator implements Comparator<Clubmember> {
         // < 0   <=>   member1 < member2
         // = 0   <=>   member1 = member2
         // > 0   <=>   member1 > member2
-        // TODO: pacekint, ar sumokeje mokescius, jei nesumokejes, kuris nors jis gauna mazesne pirmumo teise
-
         return countLastYearReservedNights(member1) < countLastYearReservedNights(member2)
                 ? -1
                 : 1;

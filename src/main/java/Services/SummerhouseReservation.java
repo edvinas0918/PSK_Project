@@ -5,6 +5,7 @@ import Helpers.DateTermException;
 import Helpers.InsufficientFundsException;
 import RestControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.Weeks;
 
 import javax.ejb.Stateless;
@@ -33,6 +34,9 @@ public class SummerhouseReservation {
 
     @Inject
     private IPaymentService paymentService;
+
+    @Inject
+    private SettingsService settingsService;
 
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
         if (endPeriod.compareTo(beginPeriod) != 1) {
@@ -93,12 +97,20 @@ public class SummerhouseReservation {
     }
 
     public void checkReservationGroup(Summerhousereservation reservation) throws Exception {
-        int reservationGroup = reservation.getMember().getReservationGroup();
-        int weekOfYear = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-        int difference = reservationGroup - weekOfYear;
 
-        if (difference > 0) {
-            throw new Exception("Jūs galėsite atlikti rezervaciją tik po " + difference + "sav.");
+        Settings setting = settingsService.getSetting("reservationStartDate");
+        DateTime reservationStartDate = DateTime.parse(setting.getValue());
+        if (DateTime.now().isBefore(reservationStartDate)){
+            throw new Exception("Registracija dar neprasidėjo.");
+        }
+        int difference = Days.daysBetween(reservationStartDate.toLocalDate(), DateTime.now().toLocalDate()).getDays();
+
+        int reservationGroup = reservation.getMember().getReservationGroup();
+
+        int maxReservationGroupAllowed = difference / 7;
+        if (maxReservationGroupAllowed  < reservationGroup){
+            throw new Exception("Jūs galėsite atlikti rezervaciją tik po " +
+                    (reservationGroup - maxReservationGroupAllowed) + "sav.");
         }
     }
 
