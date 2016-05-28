@@ -96,7 +96,7 @@ module SummerHouses.mailing {
             };
 
             this.$scope.sendMessage = () => {
-                var url = '/rest/mailing/' + this.$scope.method;
+                var url = 'rest/mailing/' + this.$scope.method;
                 var btn =$("#load").button('loading');
                 var mailing = new Mailing(_.map(this.$scope.emailAddresses, (email) => {return email.value;}));
                 this.$http.post(url, mailing ).then(() => {

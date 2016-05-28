@@ -58,7 +58,7 @@ module SummerHouses.members {
         }
 
         getMember(memberID: number): void{
-            this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
+            this.$http.get('rest/clubmember/' + memberID).success((member: Member, status) => {
                 this.$scope.member = member;
             });
         }

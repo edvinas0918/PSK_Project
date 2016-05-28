@@ -54,8 +54,8 @@ public class HouseServicePricePK implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) houseID;
-        hash += (int) serviceID;
+        hash += houseID;
+        hash += serviceID;
         return hash;
     }
 
@@ -69,10 +69,7 @@ public class HouseServicePricePK implements Serializable {
         if (this.houseID != other.houseID) {
             return false;
         }
-        if (this.serviceID != other.serviceID) {
-            return false;
-        }
-        return true;
+        return this.serviceID == other.serviceID;
     }
 
     @Override

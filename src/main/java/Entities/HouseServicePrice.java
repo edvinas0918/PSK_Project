@@ -110,10 +110,7 @@ public class HouseServicePrice implements Serializable {
             return false;
         }
         HouseServicePrice other = (HouseServicePrice) object;
-        if (!this.summerhouse.getId().equals(other.summerhouse.getId()) || !this.additionalService.getId().equals(other.additionalService.getId())) {
-            return false;
-        }
-        return true;
+        return !(!this.summerhouse.getId().equals(other.summerhouse.getId()) || !this.additionalService.getId().equals(other.additionalService.getId()));
     }
 
 }

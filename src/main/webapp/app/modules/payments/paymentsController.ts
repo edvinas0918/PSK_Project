@@ -26,23 +26,23 @@ module SummerHouses.payments {
 
             this.$scope.isConfirmed  = (payment: Payment) => {
                 return payment.confirmed ?  "Patvirtinas" : "Nepatvirtintas";
-            }
+            };
 
             this.$scope.isCanceled  = (payment: Payment) => {
                 return payment.canceled ?  "Atšauktas" : "Neatšauktas";
-            }
+            };
 
             this.$scope.confirmPayments = () => {
                 this.$http.put('rest/payments/confirm', this.$scope.checked).success(() => {
                     this.getPayments();
                     this.showSuccessMessage();
                 });
-            }
+            };
 
             this.$scope.viewChange = (viewId : number) => {
                 this.getPayments();
                 this.viewChanged(viewId);
-            }
+            };
 
             this.$scope.checked = [];
             this.$scope.toggleCheck = (payment: Payment) => {

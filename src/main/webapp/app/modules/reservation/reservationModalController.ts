@@ -44,9 +44,8 @@ namespace SummerHouses {
                 var reservationPeriod = ReservationModalController.that.$scope.reservationPeriod;
                 var beginPeriod = reservationPeriod.fromDate;
                 var endPeriod = reservationPeriod.untilDate;
-
                 return (summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod));
-            }
+            };
 
             this.$scope.calculateTotalPoints = (): number => {
                 var serviceSum = _.reduce(summerhouse.additionalServiceReservations, function(sum, n) {
@@ -54,13 +53,13 @@ namespace SummerHouses {
                 }, 0);
                 return serviceSum + this.$scope.calculateSummerhousePrice();
 
-            }
+            };
 
 
         }
 
         public additionalServiceDTOs():AdditionalServiceReservationDTO[] {
-            var serviceDTOs = new Array<AdditionalServiceReservationDTO>();
+            var serviceDTOs = [];
             for (let serviceReservation of this.$scope.summerhouse.additionalServiceReservations) {
                 var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.service.price, serviceReservation.service.id, date);
