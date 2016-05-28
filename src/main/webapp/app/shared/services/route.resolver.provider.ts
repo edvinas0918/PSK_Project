@@ -118,18 +118,18 @@ module SummerHouses.shared {
                 var redirectPath:string;
                 switch (user.memberStatus.name.toLowerCase()) {
                     case "admin":
-                        redirectPath = "/admin/houses";
+                        redirectPath = "#/admin/houses";
                         break;
                     case "member":
-                        redirectPath = "/houses";
+                        redirectPath = "#/houses";
                         break;
                     case "candidate":
-                        redirectPath = "/candidate/form";
+                        redirectPath = "#/candidate/form";
                 }
 
             }
 
-            $window.location.href = baseUrl;
+            $window.location.href = baseUrl + redirectPath;
         }
 
         public defaultRouteResolver:any;

@@ -49,7 +49,7 @@ namespace SummerHouses {
                 }, 0);
 
                 return serviceSum + (summerhouse.reservationPrice * ReservationModalController.that.getWeekDiff (beginPeriod, endPeriod));
-            }
+            };
 
             this.$scope.calculateTotalPoints = (): number => {
 
@@ -68,7 +68,7 @@ namespace SummerHouses {
         }
 
         public additionalServiceDTOs():AdditionalServiceReservationDTO[] {
-            var serviceDTOs = new Array<AdditionalServiceReservationDTO>();
+            var serviceDTOs = [];
             for (let serviceReservation of this.$scope.summerhouse.additionalServiceReservations) {
                 var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.service.price, serviceReservation.service.id, date);

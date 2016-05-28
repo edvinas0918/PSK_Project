@@ -41,11 +41,11 @@ module SummerHouses.settings {
                     });
                     
                 });
-            }
+            };
 
             this.$scope.startEditing = () => {
                 this.$scope.editing = true;
-            }
+            };
 
             this.$scope.months = Utilities.monthsSelectOptions();
             this.$scope.days = Utilities.getIteratingNumberArray(1, 31);
@@ -54,7 +54,7 @@ module SummerHouses.settings {
         }
 
         getSettings(): void{
-            this.$http.get('/rest/settings').success((settings: Settings[]) => {
+            this.$http.get('rest/settings').success((settings: Settings[]) => {
                 this.$scope.settings = settings;
                 var startDateSetting = _.find(settings, setting => {
                     return setting.referenceCode === "reservationStartDate";
@@ -88,7 +88,7 @@ module SummerHouses.settings {
         formatReservationDateSetting(settings: Settings[]): void{
             var dateSetting = _.find(settings, setting => {
                 return setting.referenceCode === "reservationStartDate";
-            })
+            });
 
             if (dateSetting){
                 var date = moment().month(this.$scope.reservationStartMonth.key).date(this.$scope.reservationStartDay);

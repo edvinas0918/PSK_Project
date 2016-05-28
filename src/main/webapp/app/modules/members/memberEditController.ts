@@ -82,7 +82,7 @@ module SummerHouses.members {
             };
 
             this.$scope.renewMembership = () => {
-                this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).then(() => {
+                this.$http.put('rest/clubmember/renewMembership', this.$scope.member).then(() => {
                     this.getMember(this.$scope.member.id);
                     this.showSuccessMessage("Pakeitimai išsaugoti");
                 })
@@ -99,7 +99,7 @@ module SummerHouses.members {
             };
 
             this.$scope.collectMembershipData = () => {
-                this.$http.get('/rest/settings/memberTax').success((memberTax: any) => {
+                this.$http.get('rest/settings/memberTax').success((memberTax: any) => {
                     this.$scope.memberTax = Number(memberTax.value);
                 });
 
@@ -113,14 +113,14 @@ module SummerHouses.members {
             };
 
             this.$scope.recommendCandidate = () => {
-                this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).success(() => {
+                this.$http.put('rest/clubmember/recommend/' + this.$scope.member.id ).success(() => {
                     this.showSuccessMessage("Rekomendacija patvirtinta");
                 })
             }
         }
 
         getMember(memberID: string): void{
-            this.$http.get('/rest/clubmember/' + memberID).success((member: Member, status) => {
+            this.$http.get('rest/clubmember/' + memberID).success((member: Member, status) => {
                 this.$scope.member = member;
                 this.$scope.member.membershipExpirationDateString =
                     moment(member.membershipExpirationDate).locale('LT').format('L');
@@ -132,7 +132,7 @@ module SummerHouses.members {
         }
 
         getFormFields(): void{
-            this.$http.get('/rest/memberFormField').success((fields: MemberFormField[]) => {
+            this.$http.get('rest/memberFormField').success((fields: MemberFormField[]) => {
                 this.$scope.originalFieldOptions = fields;
                 _.forEach(fields, (field) => {
                     this.$scope.formFields[field.fieldName] = field.visible;

@@ -31,7 +31,7 @@ module SummerHouses.members {
             private $location: any,
             private authService: IAuthenticationService
         ) {
-            this.$scope.formFields = { }
+            this.$scope.formFields = { };
             this.$scope.search = false;
 
             this.authService.getUser().then((user:AuthenticationService.IUser) => {
@@ -84,7 +84,7 @@ module SummerHouses.members {
                     this.$scope.search = true;
                     this.$scope.members = result.members.filter(function (member) {
                         return member.id !== this.user.id;
-                    });;
+                    });
                 });
             };
 
@@ -99,7 +99,7 @@ module SummerHouses.members {
         }
 
         getMembers(): void{
-            this.$http.get('/rest/clubmember').success((members: Member[], status) => {
+            this.$http.get('rest/clubmember').success((members: Member[], status) => {
                 this.authService.getUser().then((user:AuthenticationService.IUser) => {
                     _.forEach(members, (member) => {
                         member.statusString = Utilities.resolveMemberStatusString(member.memberStatus.name);
@@ -112,7 +112,7 @@ module SummerHouses.members {
         }
 
         getFormFields(): void{
-            this.$http.get('/rest/memberFormField').success((fields: MemberFormField[]) => {
+            this.$http.get('rest/memberFormField').success((fields: MemberFormField[]) => {
                 this.$scope.originalFieldOptions = fields;
                 _.forEach(fields, (field) => {
                     this.$scope.formFields[field.fieldName] = field.visible;

@@ -43,7 +43,7 @@ module SummerHouses.houses {
                 this.$scope.searchDto.untilDate = period.untilDate;
                 this.$scope.searchDto.additionalServices = this.$scope.checkedAdditionalServices;
 
-                this.$http.post('/rest/summerhouse/search', this.$scope.searchDto)
+                this.$http.post('rest/summerhouse/search', this.$scope.searchDto)
                     .success((summerhouseSearchResult: SummerHouse[]) => {
                         for (let summerhouse of summerhouseSearchResult) {
                             summerhouse.endPeriod = moment(summerhouse.endPeriod).locale('LT').format('MMMM Do');

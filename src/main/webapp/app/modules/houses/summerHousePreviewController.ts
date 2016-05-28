@@ -21,7 +21,7 @@ module SummerHouses.houses {
         }
 
         getHouse(houseID:string):void {
-            SummerHousePreviewController.that.$http.get('/rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
+            SummerHousePreviewController.that.$http.get('rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
                 house.endPeriod = moment(house.endPeriod).format('MMMM Do');
                 house.beginPeriod = moment(house.beginPeriod).format('MMMM Do');
                 SummerHousePreviewController.that.$scope.house = house;
@@ -30,9 +30,9 @@ module SummerHouses.houses {
         }
 
         getAdditionalServices():void {
-            SummerHousePreviewController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
+            SummerHousePreviewController.that.$http.get('rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHousePreviewController.that.$scope.house;
-                SummerHousePreviewController.that.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
+                SummerHousePreviewController.that.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
                     let summerhouseServices = Array<AdditionalService>();
                     for (let service of services) {
                         for (let houseServicePrice of prices) {

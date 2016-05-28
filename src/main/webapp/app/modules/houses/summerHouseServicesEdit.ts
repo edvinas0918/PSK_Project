@@ -26,13 +26,13 @@ module SummerHouses.houses {
                 if (!$routeParams.serviceID){
                     service.additionalservicereservationList = [];
                     service.id = null;
-                    this.$http.post('/rest/additionalservice/postServiceMap/', service).success(() => {
+                    this.$http.post('rest/additionalservice/postServiceMap/', service).success(() => {
                         //this.showSuccessMessage();
                         $location.path("/admin/services");
                         //alert("zjbs created");
                     })
                 } else {
-                    this.$http.put('/rest/additionalservice/' + service.id, service).success(() => {
+                    this.$http.put('rest/additionalservice/' + service.id, service).success(() => {
                         //this.showSuccessMessage();
                         $location.path("/admin/services");
                         //alert("zjbs edited");
