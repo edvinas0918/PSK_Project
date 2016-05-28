@@ -1,6 +1,7 @@
 package search.summerhouse;
 
 import Entities.Summerhouse;
+import RestControllers.HouseServicePriceFacadeREST;
 import models.SummerhouseSearchDto;
 
 import javax.decorator.Decorator;
@@ -20,11 +21,15 @@ public class SummerhouseServicesSearch implements SummerhouseSeach{
     @Any
     SummerhouseSeach summerhouseSeach;
 
+    @Inject
+    HouseServicePriceFacadeREST houseServicePriceFacadeREST;
+
     @Override
     public List<Summerhouse> search(List<Summerhouse> summerhouses, SummerhouseSearchDto searchDto) {
         List<Summerhouse> result = summerhouseSeach.search(summerhouses, searchDto);
+
         if(searchDto.additionalServices != null){
-            result.removeIf(p -> !p.getAdditionalServices().containsAll(searchDto.additionalServices));
+            result.removeIf(p -> !houseServicePriceFacadeREST.getSummerhouseAdditionalServices(p.getId()).containsAll(searchDto.additionalServices));
         }
         return result;
     }

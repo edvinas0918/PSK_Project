@@ -5,6 +5,7 @@
  */
 package RestControllers;
 
+import Entities.AdditionalService;
 import Entities.HouseServicePrice;
 import Entities.HouseServicePricePK;
 import models.HouseServicePriceDTO;
@@ -137,6 +138,11 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
         Query query = em.createNamedQuery("HouseServicePrice.findBySummerhouse");
         query.setParameter("houseID", houseID);
         return query.getResultList();
+    }
+
+    public List<AdditionalService> getSummerhouseAdditionalServices(Integer houseID) {
+        List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(houseID);
+        return houseServicePrices.stream().map(n -> n.getAdditionalService()).collect(Collectors.toList());
     }
 
     @GET
