@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RestControllers;
+package restControllers;
 
-import Entities.Summerhouse;
-import Helpers.Helpers;
+import entities.Summerhouse;
+import helpers.Helpers;
 import models.SummerhouseSearchDto;
 import search.summerhouse.SummerhouseSeach;
 

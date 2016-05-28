@@ -1,10 +1,10 @@
 package discounts;
 
-import Entities.Clubmember;
-import Entities.Payment;
-import Helpers.InsufficientFundsException;
-import Services.ClubMemberService;
-import Services.IPaymentService;
+import entities.Clubmember;
+import entities.Payment;
+import helpers.InsufficientFundsException;
+import services.ClubMemberService;
+import services.IPaymentService;
 import org.joda.time.LocalDateTime;
 
 import javax.decorator.Decorator;

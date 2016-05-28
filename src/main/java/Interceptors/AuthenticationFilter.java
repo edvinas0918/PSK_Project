@@ -1,7 +1,7 @@
-package Interceptors;
+package interceptors;
 
-import Entities.Clubmember;
-import RestControllers.ClubmemberFacadeREST;
+import entities.Clubmember;
+import restControllers.ClubmemberFacadeREST;
 
 import javax.annotation.Priority;
 import javax.inject.Inject;

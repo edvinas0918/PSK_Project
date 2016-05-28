@@ -1,7 +1,7 @@
-package Services;
+package services;
 
-import Entities.Clubmember;
-import Entities.Invitation;
+import entities.Clubmember;
+import entities.Invitation;
 
 import javax.ejb.Stateful;
 import javax.inject.Inject;

@@ -1,8 +1,7 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Clubmember;
-import Entities.Memberstatus;
-import Services.ClubMemberService;
+import entities.Clubmember;
+import services.ClubMemberService;
 import models.AuthResponse;
 import org.json.JSONObject;
 
@@ -11,7 +10,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

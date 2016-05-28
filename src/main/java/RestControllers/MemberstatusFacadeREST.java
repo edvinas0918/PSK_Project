@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RestControllers;
+package restControllers;
 
-import Entities.Memberstatus;
+import entities.Memberstatus;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

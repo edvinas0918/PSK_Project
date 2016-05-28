@@ -1,6 +1,6 @@
-package Services;
+package services;
 
-import Entities.Settings;
+import entities.Settings;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;

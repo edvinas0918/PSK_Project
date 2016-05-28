@@ -1,8 +1,8 @@
-package Interceptors;
+package interceptors;
 
-import Entities.Clubmember;
-import Entities.Moneyoperationlogentry;
-import Services.ClubMemberService;
+import entities.Clubmember;
+import entities.Moneyoperationlogentry;
+import services.ClubMemberService;
 
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;

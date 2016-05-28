@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RestControllers;
+package restControllers;
 
-import Entities.Clubmember;
-import Entities.Settings;
-import Entities.Summerhousereservation;
-import Helpers.InsufficientFundsException;
-import Interceptors.Authentication;
-import Services.ClubMemberService;
-import Services.EmailService;
-import Services.SettingsService;
+import entities.Clubmember;
+import entities.Settings;
+import entities.Summerhousereservation;
+import helpers.InsufficientFundsException;
+import interceptors.Authentication;
+import services.ClubMemberService;
+import services.EmailService;
+import services.SettingsService;
 import models.PointsGrant;
 
 import java.text.DateFormat;

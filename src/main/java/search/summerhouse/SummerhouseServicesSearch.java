@@ -1,14 +1,13 @@
 package search.summerhouse;
 
-import Entities.Summerhouse;
-import RestControllers.HouseServicePriceFacadeREST;
+import entities.Summerhouse;
+import restControllers.HouseServicePriceFacadeREST;
 import models.SummerhouseSearchDto;
 
 import javax.decorator.Decorator;
 import javax.decorator.Delegate;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

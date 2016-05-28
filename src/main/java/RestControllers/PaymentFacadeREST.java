@@ -1,8 +1,7 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Payment;
-import Services.IPaymentService;
-import Services.PaymentService;
+import entities.Payment;
+import services.IPaymentService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

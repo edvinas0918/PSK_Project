@@ -1,4 +1,4 @@
-package Interceptors;
+package interceptors;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;

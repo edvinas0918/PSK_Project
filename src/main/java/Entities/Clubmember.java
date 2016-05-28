@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -269,7 +269,7 @@ public class Clubmember implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Clubmember[ id=" + id + " ]";
+        return "entities.Clubmember[ id=" + id + " ]";
     }
 
     public String getFbUserId() {

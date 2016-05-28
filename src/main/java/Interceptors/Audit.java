@@ -1,4 +1,4 @@
-package Interceptors;
+package interceptors;
 
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.Inherited;

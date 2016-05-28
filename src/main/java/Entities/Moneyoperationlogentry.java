@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -141,7 +141,7 @@ public class Moneyoperationlogentry implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Moneyoperationlogentry[ id=" + id + " ]";
+        return "entities.Moneyoperationlogentry[ id=" + id + " ]";
     }
 
     public int getOptLockVersion() {

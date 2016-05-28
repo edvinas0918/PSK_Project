@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package RestControllers;
+package restControllers;
 
-import Entities.AdditionalService;
-import Entities.HouseServicePrice;
-import Entities.HouseServicePricePK;
+import entities.AdditionalService;
+import entities.HouseServicePrice;
+import entities.HouseServicePricePK;
 import models.HouseServicePriceDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -54,7 +53,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
          */
-        Entities.HouseServicePricePK key = new Entities.HouseServicePricePK();
+        entities.HouseServicePricePK key = new entities.HouseServicePricePK();
         javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
         java.util.List<String> houseID = map.get("houseID");
         if (houseID != null && !houseID.isEmpty()) {
@@ -119,7 +118,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
-        Entities.HouseServicePricePK key = getPrimaryKey(id);
+        entities.HouseServicePricePK key = getPrimaryKey(id);
         super.remove(super.find(key));
     }
 

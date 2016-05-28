@@ -1,16 +1,13 @@
-package Services;
+package services;
 
-import Entities.AdditionalService;
-import Entities.Additionalservicereservation;
-import Entities.Payment;
-import Entities.Summerhousereservation;
-import Helpers.InsufficientFundsException;
-import RestControllers.AuthenticationControllerREST;
+import entities.AdditionalService;
+import entities.Payment;
+import helpers.InsufficientFundsException;
+import restControllers.AuthenticationControllerREST;
 import models.AdditionalServiceReservationDTO;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by Mindaugas on 27/05/16.

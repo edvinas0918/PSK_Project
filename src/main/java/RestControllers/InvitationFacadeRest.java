@@ -1,17 +1,15 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Clubmember;
-import Entities.Invitation;
-import Services.ClubMemberService;
+import entities.Clubmember;
+import entities.Invitation;
+import services.ClubMemberService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;

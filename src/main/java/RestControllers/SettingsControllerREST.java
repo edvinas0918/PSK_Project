@@ -1,7 +1,7 @@
-package RestControllers;
+package restControllers;
 
-import Entities.Settings;
-import Services.SettingsService;
+import entities.Settings;
+import services.SettingsService;
 
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;

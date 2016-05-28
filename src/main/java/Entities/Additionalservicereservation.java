@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -122,7 +121,7 @@ public class Additionalservicereservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Additionalservicereservation[ id=" + id + " ]";
+        return "entities.Additionalservicereservation[ id=" + id + " ]";
     }
     
 }

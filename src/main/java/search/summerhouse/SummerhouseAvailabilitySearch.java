@@ -1,7 +1,7 @@
 package search.summerhouse;
 
-import Entities.Summerhouse;
-import Services.SummerhouseReservation;
+import entities.Summerhouse;
+import services.SummerhouseReservation;
 import models.SummerhouseSearchDto;
 
 import javax.decorator.Decorator;

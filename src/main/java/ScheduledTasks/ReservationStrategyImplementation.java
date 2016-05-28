@@ -1,15 +1,14 @@
-package ScheduledTasks;
+package scheduledTasks;
 
-import Entities.Clubmember;
-import Entities.Summerhousereservation;
-import Services.ClubMemberService;
+import entities.Clubmember;
+import entities.Summerhousereservation;
+import services.ClubMemberService;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

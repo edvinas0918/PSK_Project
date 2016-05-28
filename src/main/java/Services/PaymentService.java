@@ -1,9 +1,9 @@
-package Services;
+package services;
 
-import Entities.Clubmember;
-import Entities.Payment;
-import Helpers.InsufficientFundsException;
-import Interceptors.Audit;
+import entities.Clubmember;
+import entities.Payment;
+import helpers.InsufficientFundsException;
+import interceptors.Audit;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

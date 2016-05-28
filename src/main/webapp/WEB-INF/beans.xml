@@ -5,11 +5,11 @@
             http://java.sun.com/xml/ns/javaee/beans_1_0.xsd">
 
     <interceptors>
-        <class>Interceptors.AuditInterceptor</class>
+        <class>interceptors.AuditInterceptor</class>
     </interceptors>
 
     <alternatives>
-        <class>ScheduledTasks.ReservationStrategyImplementation</class>
+        <class>scheduledTasks.ReservationStrategyImplementation</class>
     </alternatives>
 
     <decorators>

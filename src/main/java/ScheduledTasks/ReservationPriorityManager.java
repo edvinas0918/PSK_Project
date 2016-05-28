@@ -1,6 +1,6 @@
-package ScheduledTasks;
+package scheduledTasks;
 
-import Services.SettingsService;
+import services.SettingsService;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;

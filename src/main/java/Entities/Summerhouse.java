@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -190,7 +190,7 @@ public class Summerhouse implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Summerhouse[ id=" + id + " ]";
+        return "entities.Summerhouse[ id=" + id + " ]";
     }
 
 }

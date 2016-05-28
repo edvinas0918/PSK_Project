@@ -1,8 +1,8 @@
-package Services;
+package services;
 
-import Entities.Clubmember;
-import Entities.Payment;
-import Helpers.InsufficientFundsException;
+import entities.Clubmember;
+import entities.Payment;
+import helpers.InsufficientFundsException;
 
 /**
  * Created by Dziugas on 5/17/2016.
