@@ -1,5 +1,6 @@
 /// <reference path="../typings/angular.d.ts" />
 /// <reference path="../typings/lodash.d.ts" />
+/// <reference path="../typings/moment.d.ts" />
 
 module SummerHouses {
 
@@ -69,6 +70,8 @@ module SummerHouses {
         function link(scope, element, attrs) {
             element.datepicker({
                 firstDay: 1,
+                minDate: moment().month(0).date(1).toDate(),
+                maxDate: moment().month(11).date(31).toDate(),
                 onSelect: function (dateText, inst) {
                     if (attrs.picker && scope[attrs.picker]) {
                         scope[attrs.picker].handleDateSelect(dateText);

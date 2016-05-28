@@ -28,13 +28,15 @@ module Utilities{
 
         dates: moment.Moment[];
         format: string;
+        startingDate: Date;
 
-        constructor(occupiedPeriods: Period[], format?: string){
+        constructor(occupiedPeriods: Period[], format?: string, startingDate?: string){
             this.dates = [];
             this.occupiedPeriods = _.map(occupiedPeriods, (period) => {
                 return new MomentPeriod(period);
             });
             this.format = format ? format : "YYYY-MM-DD";
+            this.startingDate = startingDate ? new Date(moment(startingDate).format("YYYY-MM-DD")) : new Date();
         }
 
         handleDateSelect(date: string) {
