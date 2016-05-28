@@ -4,10 +4,13 @@ import entities.Clubmember;
 import entities.Payment;
 import helpers.InsufficientFundsException;
 import interceptors.Audit;
+import models.PayPalPaymentDTO;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.core.Response;
 import java.util.Calendar;
 
 /**
@@ -19,6 +22,9 @@ public class PaymentService implements IPaymentService {
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
+    @Inject
+    PaypalService paypalService;
+
     public void confirmPayment(Payment[] payments) {
         for (Payment item: payments) {
             Payment payment = em.find(Payment.class, item.getId());
@@ -28,6 +34,7 @@ public class PaymentService implements IPaymentService {
 
     @Audit
     public Payment makePayment(Clubmember member, int price, String name) throws InsufficientFundsException{
+
         if (member.getPoints() < price){
             throw new InsufficientFundsException("Nepakankamas taškų skaičius.");
         }
@@ -61,5 +68,13 @@ public class PaymentService implements IPaymentService {
         payment.setPrice( isMinus ? -price : price);
         em.persist(payment);
         return payment;
+    }
+
+    public Response getPaypalAuthorizationForPayment(Integer amount, String returnURL, String cancelURL){
+        return paypalService.getPaypalAuthorizationForPayment(amount, returnURL, cancelURL);
+    }
+
+    public Response purchaseWithPayPal(PayPalPaymentDTO payPalPaymentDTO) {
+        return paypalService.purchaseWithPayPal(payPalPaymentDTO);
     }
 }

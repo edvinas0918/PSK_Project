@@ -10,6 +10,8 @@ module SummerHouses.members {
 
     class MemberEditController {
 
+        static that:MemberEditController;
+
         static $inject = [
             '$rootScope',
             '$scope',
@@ -31,6 +33,14 @@ module SummerHouses.members {
             private authService: any,
             private $location: ng.ILocationService
         ) {
+
+            MemberEditController.that = this;
+
+            var params = $route.current.params;
+            this.makePaymentIfNeeded(params.paymentId, params.token, params.PayerID);
+
+
+            this.$scope.eurToPay = 0;
             this.$scope.editing = false;
             this.$scope.editable = false;
             this.$scope.candidateReview = false;
@@ -67,11 +77,11 @@ module SummerHouses.members {
                 if (this.$scope.newMember){
                     this.$scope.member.id = null;
                     this.$http.post('rest/clubmember/', this.$scope.member).success(() => {
-                        this.showSuccessMessage("Pakeitimai išsaugoti");
+                        this.showSuccessMessage("Pakeitimai išsaugoti", 4000);
                     })
                 } else {
                     this.$http.put('rest/clubmember/' + this.$scope.member.id, this.$scope.member).success(() => {
-                        this.showSuccessMessage("Pakeitimai išsaugoti");
+                        this.showSuccessMessage("Pakeitimai išsaugoti", 4000);
                     });
                 }
                 this.$scope.editing = false;
@@ -84,7 +94,7 @@ module SummerHouses.members {
             this.$scope.renewMembership = () => {
                 this.$http.put('/rest/clubmember/renewMembership', this.$scope.member).then(() => {
                     this.getMember(this.$scope.member.id);
-                    this.showSuccessMessage("Pakeitimai išsaugoti");
+                    this.showSuccessMessage("Pakeitimai išsaugoti", 4000);
                 })
                 .catch((error) => {
                     switch (error.status){
@@ -114,8 +124,67 @@ module SummerHouses.members {
 
             this.$scope.recommendCandidate = () => {
                 this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).success(() => {
-                    this.showSuccessMessage("Rekomendacija patvirtinta");
+                    this.showSuccessMessage("Rekomendacija patvirtinta", 5000);
                 })
+            }
+
+            this.$scope.change = (pointAmount: number) => {
+                MemberEditController.that.$scope.eurToPay = pointAmount;
+            }
+
+            this.$scope.buyPointsWithPayPal = () => {
+                MemberEditController.that.$scope.isPaying = true;
+                var btn =$("#pay").button('loading');
+                var params = {
+                    method: "POST",
+                    url: "/rest/payments/payPalAuthorizationForPayment",
+                    data: {"amount": MemberEditController.that.$scope.eurToPay, "returnURL":  this.$window.location.href, "cancelURL": this.$window.location.href},
+                    headers: {
+                        'Content-Type': "application/json"
+                    }
+                };
+
+                this.$http(params).then(function (response) {
+                    MemberEditController.that.$window.location = response.data.approval_url;
+                    btn.button('reset');
+                }, function (error) {
+                    MemberEditController.that.$scope.isPaying = false;
+                    MemberEditController.that.$scope.payPalErrorMessage = error.data.errorMessage;
+                    MemberEditController.that.$scope.isModalError = true;
+                });
+            }
+        }
+
+        makePaymentIfNeeded(paymentID: string, token: string, payerID: string): void {
+            if (payerID && paymentID && token) {
+                MemberEditController.that.$location.search({});
+                var btn =$("#update").button('loading, disabled');
+                MemberEditController.that.$scope.isPaying = true;
+                var params = {
+                    method: "POST",
+                    url: "/rest/payments/payPalMakePayment",
+                    data: {"paymentID": paymentID, "token":  token, "payerID": payerID},
+                    headers: {
+                        'Content-Type': "application/json"
+                    }
+                };
+
+                this.$http(params).then(function (response) {
+                    btn.button('reset');
+                    MemberEditController.that.$http.get('/rest/clubmember/getPoints/' + MemberEditController.that.$scope.member.id).success((points: number, status) => {
+                        MemberEditController.that.$scope.member.points = points;
+                        MemberEditController.that.$scope.isPaying = false;
+                        MemberEditController.that.showSuccessMessage("Įsigyta klubo taškų už " + response.data.total + " eurų", 10000);
+                    });
+                }, function (error) {
+                    btn.button('reset');
+                    MemberEditController.that.$scope.isPaying = false;
+                    MemberEditController.that.$scope.isError = true;
+                    MemberEditController.that.$scope.payPalErrorMessage = error.data.errorMessage;
+                });
+                paymentID = null;
+                token = null;
+                payerID = null;
             }
         }
 
@@ -140,14 +209,14 @@ module SummerHouses.members {
             });
         }
 
-        showSuccessMessage(message: string): void{
+        showSuccessMessage(message: string, timeout: number): void{
             this.$scope.showAlert = true;
             this.$scope.successMessage = message;
             setTimeout(() => {
                 this.$scope.$apply(() => {
                     this.$scope.showAlert = false;
                 })
-            }, 4000)
+            }, timeout)
         }
 
         showErrorMessage(message: string): void{

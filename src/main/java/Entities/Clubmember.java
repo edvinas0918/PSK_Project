@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
         @NamedQuery(name = "Clubmember.findByLastName", query = "SELECT c FROM Clubmember c WHERE c.lastName = :lastName"),
         @NamedQuery(name = "Clubmember.findByEmail", query = "SELECT c FROM Clubmember c WHERE c.email = :email"),
         @NamedQuery(name = "Clubmember.findByPoints", query = "SELECT c FROM Clubmember c WHERE c.points = :points"),
+        @NamedQuery(name = "Clubmember.getMemberPoints", query = "SELECT c.points FROM Clubmember c WHERE c.id = :id"),
         @NamedQuery(name = "Clubmember.findByReservationGroup", query = "SELECT c FROM Clubmember c WHERE c.reservationGroup = :reservationGroup"),
         @NamedQuery(name = "Clubmember.findByfbUserId", query = "SELECT c FROM Clubmember c WHERE c.fbUserId = :fbUserId"),
         @NamedQuery(name = "Clubmember.findByMembershipExpirationDate", query = "SELECT c FROM Clubmember c WHERE c.membershipExpirationDate = :membershipExpirationDate"),

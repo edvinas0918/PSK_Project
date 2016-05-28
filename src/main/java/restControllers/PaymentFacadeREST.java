@@ -1,6 +1,8 @@
 package restControllers;
 
 import entities.Payment;
+import models.PayPalAuthorizationDTO;
+import models.PayPalPaymentDTO;
 import services.IPaymentService;
 
 import javax.ejb.Stateless;
@@ -9,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -34,6 +37,21 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Payment entity) throws Exception {
         super.create(entity);
+    }
+
+    @POST
+    @Path("payPalAuthorizationForPayment")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response getPaypalAuthorizationForPayment(PayPalAuthorizationDTO payPalAuthorizationDTO) {
+        return paymentService.getPaypalAuthorizationForPayment(payPalAuthorizationDTO.getAmount(), payPalAuthorizationDTO.getReturnURL(), payPalAuthorizationDTO.getCancelURL());
+    }
+
+    @POST
+    @Path("payPalMakePayment")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response makePayPalPayment(PayPalPaymentDTO payPalPaymentDTO) {
+        //return //paymentService.getPaypalAuthorizationForPayment(payPalAuthorizationDTO.getAmount(), payPalAuthorizationDTO.getReturnURL(), payPalAuthorizationDTO.getCancelURL());
+        return paymentService.purchaseWithPayPal(payPalPaymentDTO);
     }
 
     @PUT
