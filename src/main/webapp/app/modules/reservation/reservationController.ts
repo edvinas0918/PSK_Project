@@ -49,10 +49,11 @@ module SummerHouses {
                             untilDate: moment().year() + "/12/31"
                         });
                         ReservationController.that.$scope.weekPicker = new Utilities.WeekPicker(
-                            disallowedPeriods, "MMMM DD, YYYY");
+                            disallowedPeriods, "MMMM DD, YYYY", summerhouse.beginPeriod);
 
                         //ReservationController.that.getServicePricesForSummerhouse(summerhouse.id);
                         $("#reservationDatePicker").datepicker("refresh");
+                        $("#reservationDatePicker").datepicker("setDate", moment(summerhouse.beginPeriod).toDate());
 
                         ReservationController.that.$scope.summerhouse.beginPeriodString =
                             moment(ReservationController.that.$scope.summerhouse.beginPeriod).locale('LT').format('MMMM Do');
