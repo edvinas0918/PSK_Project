@@ -694,4 +694,13 @@
                                  referencedTableName="summerhousereservation"
                                  referencedColumnNames="ID" onUpdate="CASCADE" onDelete="RESTRICT"/>
     </changeSet>
+
+    <changeSet id="dv009" author="Dziugas">
+        <sql>
+            INSERT INTO Settings (Name, Value, ReferenceCode)
+            VALUES ("Rezervacijų pradžios data", '2016-01-01', 'reservationStartDate');
+        </sql>
+
+    </changeSet>
+
 </databaseChangeLog>

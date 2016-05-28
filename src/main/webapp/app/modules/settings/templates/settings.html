@@ -56,6 +56,34 @@
         </table>
 
         <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Rezervacijos pradžios data</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <label>Mėnuo</label>
+                </div>
+                <div class="col-md-11">
+                    <select ng-model="reservationStartMonth" ng-options="currMonth.value for currMonth in months
+                        track by currMonth.key">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <label>Diena</label>
+                </div>
+                <div class="col-md-11">
+                    <select ng-model="reservationStartDay" ng-options="day for day in days
+                        | limitTo: reservationStartMonth.days">
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-horizontal">
             <h4>Pasirinkite laukus, kurie bus matomi klubo nario anketoje</h4>
             <div class="checkbox">
                 <label>
