@@ -3,6 +3,7 @@ package Services;
 import Entities.Clubmember;
 import Entities.Payment;
 import Helpers.InsufficientFundsException;
+import Interceptors.Audit;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,6 +26,7 @@ public class PaymentService implements IPaymentService {
         }
     }
 
+    @Audit
     public Payment makePayment(Clubmember member, int price, String name) throws InsufficientFundsException{
         if (member.getPoints() < price){
             throw new InsufficientFundsException("Nepakankamas taškų skaičius.");
@@ -41,6 +43,7 @@ public class PaymentService implements IPaymentService {
         return payment;
     }
 
+    @Audit
     public void makeMinusPayment(Clubmember member, int price, String name){
         member.setPoints(member.getPoints() + price);
         em.merge(member);

@@ -56,7 +56,6 @@ public class ClubMemberService {
         em.merge(member);
     }
 
-    @Audit
     public void grantPoints(Clubmember member, Integer points){
         if (points > 0){
             member.setPoints(member.getPoints() + points);
