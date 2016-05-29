@@ -53,7 +53,7 @@
                 <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteHouse(x)">Ištrinti</button>
                 <a class="btn btn-success" ng-if="!isAdminPage" ng-href="#/houses/{{x.id}}/reservation">Rezervuoti</a>
                 <a class="btn btn-success" ng-if="isAdminPage" ng-href="#/admin/houses/{{x.id}}/reservation">Rezervuoti</a>
-                <a class="btn btn-info" ng-click="previewHouse(x)">Plačiau</a>
+                <a class="btn btn-info" ng-click="previewHouse(x)" ng-if="!isAdminPage">Plačiau</a>
             </div>
         </div>
     </div>
