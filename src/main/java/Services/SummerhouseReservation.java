@@ -41,6 +41,9 @@ public class SummerhouseReservation {
     @Inject
     DateService dateService;
 
+    @Inject
+    private AdditionalServiceReservationService additionalServiceReservationService;
+
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws BadRequestException {
         if (endPeriod.compareTo(beginPeriod) != 1) {
             throw new BadRequestException("Neteisingai įvestas laikotarpis");
@@ -164,6 +167,8 @@ public class SummerhouseReservation {
 
         //3. Give points back to user
         paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
+
+        cancelAdditionalServiceReservations(reservation, clubmember);
     }
 
     public Payment getPayment (Summerhousereservation reservation) throws InsufficientFundsException {
@@ -196,7 +201,7 @@ public class SummerhouseReservation {
 
         reservation.setFromDate(dateService.ConvertToLTTimezone(reservation.getFromDate()));
         reservation.setUntilDate(dateService.ConvertToLTTimezone(reservation.getUntilDate()));
-        
+
         List<AdditionalServiceReservationDTO> services = reservationDTO.getAdditionalServiceReservationDTOs();
 
         for (AdditionalServiceReservationDTO serviceDTO :
@@ -205,5 +210,20 @@ public class SummerhouseReservation {
         }
 
         return reservationDTO;
+    }
+
+    public void cancelAdditionalServiceReservations(Summerhousereservation reservation, Clubmember clubmember){
+        for(Additionalservicereservation res :
+                additionalServiceReservationService.getAdditionalServiceReservations(reservation.getId())){
+            cancelAdditionalServiceReservation(res, clubmember);
+        }
+    }
+
+    public void cancelAdditionalServiceReservation(Additionalservicereservation reservation, Clubmember clubmember){
+        Payment payment = em.find(Payment.class, reservation.getPayment().getId());
+        payment.setCanceled(true);
+        paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
+
+        additionalServiceReservationService.delete(reservation);
     }
 }

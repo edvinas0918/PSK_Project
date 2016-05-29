@@ -78,7 +78,7 @@ module SummerHouses.houses {
                     this.$location.path("/admin/reservation/" + reservation.id + "/edit");
                 }
                 else{
-                    this.$location.path("/previewHouse/" + reservation.id);
+                    this.$location.path("/reservation/" + reservation.id + "/edit");
                 }
             };
 

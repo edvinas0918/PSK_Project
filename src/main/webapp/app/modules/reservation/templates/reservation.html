@@ -30,27 +30,27 @@
     <div class="col-lg-12">
         <h2 class="page-header">Papildomos paslaugos</h2>
     </div>
-    <div class="media col-md-4 pull-left" ng-repeat="service in summerhouse.additionalServices" style="height:120px;">
+    <div class="media col-md-4 pull-left" ng-repeat="serviceReservation in summerhouse.additionalServices" style="height:120px;">
         <div class="pull-left">
-                    <span ng-disabled="!service.serviceBegin" class="fa-stack fa-2x" ng-click="manageService(service)">
-                          <span ng-show="!service.checked" class="glyphicon glyphicon-unchecked text-primary"
-                                style="top: 3px;left: 15px;" ng-click="service.checked = true"></span>
-                          <span ng-show="service.checked" class="glyphicon glyphicon-check text-primary"
-                                style="top: 3px;left: 15px;" ng-click="service.checked = false"></span>
+                    <span class="fa-stack fa-2x">
+                          <span ng-show="!serviceReservation.checked" class="glyphicon glyphicon-unchecked text-primary"
+                                style="top: 3px;left: 15px;" ng-click="serviceReservation.checked = true"></span>
+                          <span ng-show="serviceReservation.checked" class="glyphicon glyphicon-check text-primary"
+                                style="top: 3px;left: 15px;" ng-click="serviceReservation.checked = false"></span>
                     </span>
         </div>
         <div class="media-body">
-            <h4 class="media-heading">{{service.name}}</h4>
+            <h4 class="media-heading">{{serviceReservation.service.name}}</h4>
             <input ng-show="isDateSelected"
                    type="datetime-local"
                    name="serviceReservationBegin"
-                   ng-model="service.serviceBegin"
+                   ng-model="serviceReservation.serviceReservationStartDate"
                    min="{{getFromDate()}}"
                    max="{{getUntilDate()}}"
             >
             <!--<input type="datetime-local" name="serviceReservationEnd" ng-model="service.serviceEnd">-->
-            <p>{{service.description}}</p>
-            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{service.price}} taškai(-as)</p>
+            <p>{{serviceReservation.service.description}}</p>
+            <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{serviceReservation.service.price}} taškai(-as)</p>
         </div>
     </div>
 </div>

@@ -22,14 +22,18 @@ module SummerHouses {
                     private $routeParams:any,
                     private $uibModal: any,
                     private summerhouseService:SummerHouses.SummerhouseService) {
-            
+
+            ReservationEditController.that = this;
+
             this.$scope.openReservationForm = this.openReservationForm;
             this.$scope.additionalServiceReservations = [];
 
             this.getReservation();
 
             this.$scope.changeReservedServices = () => {
-                var selectedServices = _.filter(this.additionalServiceReservations, function(reservation) { return reservation.selected == true });
+                var selectedServices = _.filter(this.$scope.additionalServiceReservations, function(reservation) {
+                    return reservation.checked;
+                });
                 if(selectedServices && !this.allServicesHaveDate(selectedServices)) {
                     this.$scope.selectDates = true;
                     return;
@@ -82,59 +86,51 @@ module SummerHouses {
                 this.$scope.reservation.fromDateString = moment(this.$scope.reservation.fromDate).locale('LT').format('MMMM Do');
                 this.$scope.reservation.untilDateString = moment(this.$scope.reservation.untilDate).locale('LT').format('MMMM Do');
                 this.reservation = this.$scope.reservation;
-                this.getAllAdditionalServices();
+                this.getSummerhouseServices(this.reservation.summerhouse.id);
+            });
+        }
+
+        private getSummerhouseServices(summerhouseID):void {
+            this.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + summerhouseID).success((prices:HouseServicePrice[], status) => {
+                var services = [];
+                for (let houseServicePrice of prices) {
+                    let additionalService = houseServicePrice.additionalService;
+                    additionalService.price = houseServicePrice.price;
+                    services.push(new AdditionalServiceReservation(false, additionalService, null));
+                }
+                ReservationEditController.that.$scope.reservation.summerhouse.additionalServices = services;
+                ReservationEditController.that.getReservedAdditionalServices(ReservationEditController.that.$scope.reservation.id);
             });
         }
 
         private getReservedAdditionalServices(reservationID):AdditionalServiceReservation[] {
             this.$http.get('rest/servicesReservation/reservedServicesFor/' + reservationID).success((reservations: AdditionalServiceReservation[], status) => {
-
                 this.createAdditionalServiceReservations(reservations);
             });
         }
 
-        private getAllAdditionalServices():void {
-            this.$http.get('rest/additionalservice').success((services:AdditionalService[], status) => {
-                this.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + this.$scope.reservation.summerhouse.id).success((prices:HouseServicePrice[], status) => {
-                    var servicesWithPrices = [];
-                    for (let service of services) {
-                        for (let houseServicePrice of prices) {
-                            if (houseServicePrice.additionalService.id == service.id) {
-                                service.price = houseServicePrice.price;
-                                servicesWithPrices.push(service);
-                            }
-                        }
-                    }
-                    this.$scope.additionalServices = servicesWithPrices;
-                    this.getReservedAdditionalServices(this.$scope.reservation.id);
-                });
-            });
-        }
-
         private createAdditionalServiceReservations(serviceReservations: AdditionalServiceReservation[]) {
-            this.$scope.additionalServiceReservations = _.map(this.$scope.additionalServices, (service: AdditionalService) => {
-                var serviceReservation = _.find(serviceReservations, (serviceReservation: AdditionalServiceReservation) => {
-                    return service.id === serviceReservation.additionalService.id;
+            var serviceArray = new Array();
+            for (let summerhouseService of ReservationEditController.that.$scope.reservation.summerhouse.additionalServices) {
+                var reservedService = _.find(serviceReservations, (serviceReservation:AdditionalServiceReservation) => {
+                    return serviceReservation.additionalService.id === summerhouseService.additionalService.id;
                 });
-
-                if (serviceReservation) {
-                    serviceReservation.selected = true;
-                    serviceReservation.startDate = new Date(serviceReservation.serviceStart);
-                    serviceReservation.additionalService = service;
-                    return serviceReservation;
+                if (reservedService) {
+                    reservedService.serviceReservationStartDate = new Date(reservedService.serviceStart);
+                    reservedService.additionalService.price = reservedService.payment.price;
+                    reservedService.checked = true;
+                    serviceArray.push(reservedService);
                 } else {
-                    var possibleReservation = new AdditionalServiceReservation(service, this.$scope.reservation.fromDate);
-                    possibleReservation.selected = false;
-                    possibleReservation.startDate = new Date(this.$scope.reservation.fromDate);
-                    return possibleReservation;
+                    summerhouseService.serviceReservationStartDate = new Date(this.$scope.reservation.fromDate);
+                    serviceArray.push(summerhouseService);
                 }
-            });
-            this.additionalServiceReservations = this.$scope.additionalServiceReservations;
+            }
+            this.$scope.additionalServiceReservations = serviceArray;
         }
 
         public allServicesHaveDate(reservations: AdditionalServiceReservation[]):Boolean {
             for(let serviceReservation of reservations) {
-                if (!serviceReservation.startDate) { return false; }
+                if (!serviceReservation.serviceReservationStartDate) { return false; }
             }
             return true;
         }
@@ -142,7 +138,7 @@ module SummerHouses {
         public additionalServiceDTOs(reservations: AdditionalServiceReservation[]):AdditionalServiceReservationDTO[] {
             var serviceDTOs = [];
             for (let serviceReservation of reservations) {
-                var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                var date = (new Date(serviceReservation.serviceReservationStartDate)).getTime();
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.id, serviceReservation.additionalService.price, serviceReservation.additionalService.id, date);
                 serviceDTOs.push(serviceDTO);
             }
@@ -191,7 +187,7 @@ module SummerHouses {
     }
 
     export class AdditionalServiceReservation {
-        constructor(public additionalService: AdditionalService, public serviceReservationStartDate: Date) {
+        constructor(public checked: boolean, public additionalService: AdditionalService, public serviceReservationStartDate: Date) {
 
         }
     }
