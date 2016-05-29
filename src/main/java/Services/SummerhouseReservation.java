@@ -4,6 +4,8 @@ import entities.*;
 import helpers.BadRequestException;
 import helpers.DateTermException;
 import helpers.InsufficientFundsException;
+import models.AdditionalServiceReservationDTO;
+import models.SummerhouseReservationDTO;
 import restControllers.AuthenticationControllerREST;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -13,10 +15,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static javax.persistence.PersistenceContextType.TRANSACTION;
@@ -39,6 +38,9 @@ public class SummerhouseReservation {
     @Inject
     private SettingsService settingsService;
 
+    @Inject
+    DateService dateService;
+
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws BadRequestException {
         if (endPeriod.compareTo(beginPeriod) != 1) {
             throw new BadRequestException("Neteisingai įvestas laikotarpis");
@@ -53,12 +55,13 @@ public class SummerhouseReservation {
         Calendar cal = Calendar.getInstance();
 
         cal.setTime(beginPeriod);
+
         int beginWeekDay = cal.get(Calendar.DAY_OF_WEEK);
         cal.setTime(endPeriod);
         int endWeekDay = cal.get(Calendar.DAY_OF_WEEK);
 
         if (beginWeekDay != Calendar.MONDAY || endWeekDay != Calendar.SUNDAY) {
-            throw new BadRequestException("Rezervuoti galima laikotarpiui, kuris prasideda pirmadienį ir baigiasi sekmadienį.");
+            throw new BadRequestException("Rezervuoti galima laikotarpiui, kuris prasideda pirmadienį ir baigiasi sekmadienį." + beginPeriod.toString() + " " + endPeriod.toString());
         }
     }
 
@@ -186,5 +189,21 @@ public class SummerhouseReservation {
         if (membershipDate == null || user.getMembershipExpirationDate().compareTo(new Date()) == -1) {
             throw new BadRequestException ("Rezervuoti gali tik tie nariai, kurie yra sumokėję metinį klubo nario mokestį");
         }
+    }
+
+    public SummerhouseReservationDTO setCorrectDates(SummerhouseReservationDTO reservationDTO) throws Exception {
+        Summerhousereservation reservation = reservationDTO.getReservation();
+
+        reservation.setFromDate(dateService.ConvertToLTTimezone(reservation.getFromDate()));
+        reservation.setUntilDate(dateService.ConvertToLTTimezone(reservation.getUntilDate()));
+        
+        List<AdditionalServiceReservationDTO> services = reservationDTO.getAdditionalServiceReservationDTOs();
+
+        for (AdditionalServiceReservationDTO serviceDTO :
+                services) {
+            serviceDTO.setDate(dateService.ConvertToLTTimezone(serviceDTO.getDate()));
+        }
+
+        return reservationDTO;
     }
 }

@@ -100,7 +100,7 @@ module SummerHouses.houses {
         }
 
         postHouse(house:SummerHouse):void {
-            SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).then((response:any, status) => {
+            SummerHouseEditController.that.$http.post('rest/summerhouse/postHashMap', house).then((response:any, status) => {
                 var houseID = response.data.houseID;
                 let houseServicePrices = house.houseServicePrices;
                 for (let houseServicePrice of houseServicePrices) {

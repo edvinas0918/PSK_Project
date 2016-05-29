@@ -5,6 +5,7 @@ import entities.Summerhousereservation;
 import helpers.DateTermException;
 import interceptors.ExceptionHandler;
 import services.ClubMemberService;
+import services.DateService;
 import services.IPaymentService;
 import services.SummerhouseReservation;
 import models.AdditionalServiceReservationDTO;
@@ -53,6 +54,9 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @Inject
     IPaymentService paymentService;
+
+    @Inject
+    DateService dateService;
 
     public SummerhouseReservationREST() {
         super(Summerhousereservation.class);
@@ -110,6 +114,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) throws Exception{
+        summerhouseReservationDTO = summerhouseReservation.setCorrectDates(summerhouseReservationDTO);
         Summerhousereservation reservation = summerhouseReservationDTO.getReservation();
         List<AdditionalServiceReservationDTO> reservationDTOs = summerhouseReservationDTO.getAdditionalServiceReservationDTOs();
 
