@@ -703,4 +703,11 @@
 
     </changeSet>
 
+    <changeSet id="ar007" author="Aurimas">
+        <dropColumn tableName="Payment" columnName="Name"></dropColumn>
+        <addColumn tableName="Payment">
+            <column name="Name" type="VARCHAR(1000)"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
