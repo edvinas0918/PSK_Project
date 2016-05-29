@@ -117,6 +117,7 @@ module SummerHouses {
                 });
                 if (reservedService) {
                     reservedService.serviceReservationStartDate = new Date(reservedService.serviceStart);
+                    reservedService.additionalService.price = reservedService.payment.price;
                     reservedService.checked = true;
                     serviceArray.push(reservedService);
                 } else {
