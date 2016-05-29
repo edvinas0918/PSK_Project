@@ -1,5 +1,6 @@
 package restControllers;
 
+import interceptors.ExceptionHandler;
 import services.EmailService;
 import models.Mailing;
 
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 @Stateless
 @Path("mailing")
+@ExceptionHandler
 public class MailingInvitationFacadeREST {
 
     @Inject

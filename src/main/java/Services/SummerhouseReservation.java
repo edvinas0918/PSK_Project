@@ -1,6 +1,7 @@
 package services;
 
 import entities.*;
+import helpers.BadRequestException;
 import helpers.DateTermException;
 import helpers.InsufficientFundsException;
 import restControllers.AuthenticationControllerREST;
@@ -38,15 +39,15 @@ public class SummerhouseReservation {
     @Inject
     private SettingsService settingsService;
 
-    public void validatePeriod(Date beginPeriod, Date endPeriod) throws Exception {
+    public void validatePeriod(Date beginPeriod, Date endPeriod) throws BadRequestException {
         if (endPeriod.compareTo(beginPeriod) != 1) {
-            throw new Exception("Neteisingai įvestas laikotarpis");
+            throw new BadRequestException("Neteisingai įvestas laikotarpis");
         }
 
         int intervalInDays = (int) SummerhouseReservation.getDateDiff(beginPeriod, endPeriod, TimeUnit.DAYS);
 
         if (intervalInDays == 0 || (intervalInDays + 1) % 7 != 0) {
-            throw new Exception("Rezervuoti galima tik savaitei, dviem ir t.t.");
+            throw new BadRequestException("Rezervuoti galima tik savaitei, dviem ir t.t.");
         }
 
         Calendar cal = Calendar.getInstance();
@@ -57,7 +58,7 @@ public class SummerhouseReservation {
         int endWeekDay = cal.get(Calendar.DAY_OF_WEEK);
 
         if (beginWeekDay != Calendar.MONDAY || endWeekDay != Calendar.SUNDAY) {
-            throw new Exception("Rezervuoti galima laikotarpiui, kuris prasideda pirmadienį ir baigiasi sekmadienį.");
+            throw new BadRequestException("Rezervuoti galima laikotarpiui, kuris prasideda pirmadienį ir baigiasi sekmadienį.");
         }
     }
 
@@ -66,7 +67,8 @@ public class SummerhouseReservation {
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 
-    public void checkAvailabilityPeriod(Summerhousereservation reservation, List<Summerhousereservation> otherReservations) throws Exception {
+    public void checkAvailabilityPeriod(Summerhousereservation reservation, List<Summerhousereservation> otherReservations)
+            throws BadRequestException {
 
         Date beginPeriod = reservation.getFromDate();
         Date endPeriod = reservation.getUntilDate();
@@ -74,11 +76,11 @@ public class SummerhouseReservation {
 
         //check availability period
         if (endPeriod.compareTo(beginPeriod) != 1) {
-            throw new Exception("Neteisingai įvestas laikotarpis");
+            throw new BadRequestException("Neteisingai įvestas laikotarpis");
         }
 
         if (beginPeriod.compareTo(summerhouse.getBeginPeriod()) == -1 || endPeriod.compareTo(summerhouse.getEndPeriod()) == 1) {
-            throw new Exception("Šiuo laikotarpiu rezervacija nėra galima.");
+            throw new BadRequestException("Šiuo laikotarpiu rezervacija nėra galima.");
         }
 
         //check if not reserved already
@@ -86,7 +88,7 @@ public class SummerhouseReservation {
                 otherReservations) {
             if (dateIsInPeriod(beginPeriod, otherReservation.getFromDate(), otherReservation.getUntilDate()) ||
                     dateIsInPeriod(endPeriod, otherReservation.getFromDate(), otherReservation.getUntilDate())) {
-                throw new Exception("Šiuo laikotarpiu vasarnamis yra užimtas.");
+                throw new BadRequestException("Šiuo laikotarpiu vasarnamis yra užimtas.");
             }
         }
     }
@@ -96,12 +98,12 @@ public class SummerhouseReservation {
                 !(date.compareTo(endPeriod) == 1);
     }
 
-    public void checkReservationGroup(Summerhousereservation reservation) throws Exception {
+    public void checkReservationGroup(Summerhousereservation reservation) throws BadRequestException {
 
         Settings setting = settingsService.getSetting("reservationStartDate");
         DateTime reservationStartDate = DateTime.parse(setting.getValue());
         if (DateTime.now().isBefore(reservationStartDate)){
-            throw new Exception("Registracija dar neprasidėjo.");
+            throw new BadRequestException("Registracija dar neprasidėjo.");
         }
         int difference = Days.daysBetween(reservationStartDate.toLocalDate(), DateTime.now().toLocalDate()).getDays();
 
@@ -109,7 +111,7 @@ public class SummerhouseReservation {
 
         int maxReservationGroupAllowed = difference / 7;
         if (maxReservationGroupAllowed  < reservationGroup){
-            throw new Exception("Jūs galėsite atlikti rezervaciją tik po " +
+            throw new BadRequestException("Jūs galėsite atlikti rezervaciją tik po " +
                     (reservationGroup - maxReservationGroupAllowed) + "sav.");
         }
     }
@@ -163,8 +165,11 @@ public class SummerhouseReservation {
 
     public Payment getPayment (Summerhousereservation reservation) throws InsufficientFundsException {
         int price = reservation.getSummerhouse().getReservationPrice() * getWeekDiff(reservation.getFromDate(), reservation.getUntilDate());
+
+        String fromDate = new DateTime(reservation.getFromDate()).toString("yyyy-MM-dd");
+        String toDate = new DateTime(reservation.getUntilDate()).toString("yyyy-MM-dd");
         return paymentService.makePayment(authenticationControllerREST.getSessionUser(), price, "Vasarnamis " + reservation.getSummerhouse().getNumber()
-                + " " + reservation.getFromDate() + " " + reservation.getUntilDate());
+                + " " + fromDate + " " + toDate);
     }
 
     public int getWeekDiff (Date fromDate, Date untilDate) {
@@ -174,12 +179,12 @@ public class SummerhouseReservation {
         return Weeks.weeksBetween(from, until).getWeeks();
     }
 
-    public void checkMembership() throws Exception{
+    public void checkMembership() throws BadRequestException{
         Clubmember user = authenticationControllerREST.getSessionUser();
         Date membershipDate = user.getMembershipExpirationDate();
 
         if (membershipDate == null || user.getMembershipExpirationDate().compareTo(new Date()) == -1) {
-            throw new Exception ("Rezervuoti gali tik tie nariai, kurie yra sumokėję metinį klubo nario mokestį");
+            throw new BadRequestException ("Rezervuoti gali tik tie nariai, kurie yra sumokėję metinį klubo nario mokestį");
         }
     }
 }

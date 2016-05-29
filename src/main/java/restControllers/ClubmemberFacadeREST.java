@@ -10,6 +10,7 @@ import entities.Settings;
 import entities.Summerhousereservation;
 import helpers.InsufficientFundsException;
 import interceptors.Authentication;
+import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 import services.EmailService;
 import services.SettingsService;
@@ -37,6 +38,7 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 @Path("clubmember")
+@ExceptionHandler
 public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

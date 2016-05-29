@@ -6,6 +6,7 @@
 package restControllers;
 
 import entities.Memberformfield;
+import interceptors.ExceptionHandler;
 import services.MemberFormService;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("memberFormField")
+@ExceptionHandler
 public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

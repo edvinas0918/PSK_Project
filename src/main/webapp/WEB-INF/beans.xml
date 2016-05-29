@@ -6,6 +6,7 @@
 
     <interceptors>
         <class>interceptors.AuditInterceptor</class>
+        <class>interceptors.ExceptionHandlerInterceptor</class>
     </interceptors>
 
     <alternatives>

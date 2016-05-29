@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Clubmember;
+import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 import services.AuthenticationService;
 import models.AuthResponse;
@@ -35,6 +36,7 @@ import java.util.regex.Pattern;
 
 @Stateless
 @Path("authentication")
+@ExceptionHandler
 public class AuthenticationControllerREST {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
