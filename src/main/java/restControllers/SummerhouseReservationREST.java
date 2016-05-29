@@ -103,7 +103,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @DELETE
     @Path("{id}")
-    @Authentication(role = {"Admin"})
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") Integer id) {
         try{
