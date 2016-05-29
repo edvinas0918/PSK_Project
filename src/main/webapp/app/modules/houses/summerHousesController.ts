@@ -56,6 +56,7 @@ module SummerHouses.houses {
                         this.$scope.summerhouses.splice(index, 1);
                     }
                 });
+                
             };
 
             this.$scope.editHouse = (house: SummerHouse) => {
@@ -69,6 +70,15 @@ module SummerHouses.houses {
                 }
                 else{
                     this.$location.path("/previewHouse/" + house.id);
+                }
+            };
+
+            this.$scope.previewReservation = (reservation: any) => {
+                if(this.$scope.isAdminPage){
+                    this.$location.path("/admin/reservation/" + reservation.id + "/edit");
+                }
+                else{
+                    this.$location.path("/previewHouse/" + reservation.id);
                 }
             };
 

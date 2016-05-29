@@ -71,7 +71,7 @@
                 <h4><small>Vietų skaičius:</small> {{r.summerhouse.capacity}}</h4>
                 <h4><small>Rezervacijos data:</small> {{r.fromDate}} - {{r.untilDate}} </h4>
                 <p>{{r.summerhouse.description}}</p>
-                <a class="btn btn-info" ng-href="#/reservation/{{r.id}}/edit">Peržiūrėti</a>
+                <a class="btn btn-info" ng-click="previewReservation(r)">Peržiūrėti</a>
                 <a class="btn btn-danger" ng-click="cancelReservation(r)">Atšaukti</a>
             </div>
         </div>

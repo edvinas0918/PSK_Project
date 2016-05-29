@@ -282,6 +282,17 @@
           "Member", "Admin"
         ]
       }
+    },
+    {
+      "url": "/admin/reservation/:reservationID/edit",
+      "config": {
+        "templateUrl": "app/modules/reservation/templates/reservationEdit.html",
+        "controller": "reservationEditController",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
+        ]
+      }
     }
   ]
 }

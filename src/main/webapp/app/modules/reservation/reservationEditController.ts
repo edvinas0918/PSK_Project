@@ -45,9 +45,10 @@ module SummerHouses {
                         'Content-Type': "application/json"
                     }
                 };
-                this.$http(params).then(function (response) {
+                this.$http(params).then((response) => {
                     this.$scope.isSuccesful = true;
-                }, function (error) {
+                    this.showSuccessMessage("Pakeitimai išsaugoti.");
+                }).catch(error => {
 
                 });
             };
@@ -165,6 +166,17 @@ module SummerHouses {
                 }
             });
         };
+
+        public showSuccessMessage(message) {
+            this.$scope.showAlert = true;
+            this.$scope.successMessage = message;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showAlert = false;
+                });
+            }, 4000);
+        }
+
     }
 
     export class AdditionalServiceReservation {
