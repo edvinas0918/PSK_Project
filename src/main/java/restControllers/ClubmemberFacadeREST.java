@@ -62,6 +62,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @POST
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Clubmember entity) throws Exception {
         Settings memberMax = settingsService.getSetting("membersMax");
@@ -73,6 +74,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PUT
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Clubmember entity) {
         super.edit(entity);
@@ -80,6 +82,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PUT
     @Path("grantPoints")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response grantPoints(PointsGrant grant){
         Clubmember member = clubMemberService.getMember(grant.getMemberID());
@@ -103,6 +106,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @GET
     @Path("reservation")
     @Produces({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<Clubmember> getMembers(
             @QueryParam("from") String fromDateString,
             @QueryParam("until") String untilDateString) throws ParseException {
@@ -142,6 +146,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @PUT
     @Path("recommend/{candidateId}")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Response recommend(@PathParam("candidateId") Integer candidateId){
         clubMemberService.recommendCandidate(candidateId);
         return Response.status(Response.Status.OK).build();
@@ -149,6 +154,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     public void remove(@PathParam("id") int id) {
         clubMemberService.DeactivateMember(id);
     }
@@ -156,6 +162,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @GET
     @Path("/fbUserId/{fbUserId}")
     @Produces({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Clubmember findByFbUserId(@PathParam("fbUserId") String fbUserId) {
         TypedQuery<Clubmember> query =
                 em.createNamedQuery("Clubmember.findByfbUserId", Clubmember.class).setParameter("fbUserId", fbUserId);
@@ -171,6 +178,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Clubmember find(@PathParam("id") Integer id) {
         return super.find(id);
     }
@@ -178,6 +186,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @GET
     @Path("recommendations")
     @Produces({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<Clubmember> getRecommendations() {
         return em.find(Clubmember.class, clubMemberService.getCurrentUser().getId()).getRecommenders();
     }
@@ -192,6 +201,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @GET
     @Path("getPoints/{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Integer getMemberPoints(@PathParam("id") Integer memberID) {
         Query query = em.createNamedQuery("Clubmember.getMemberPoints");
@@ -199,24 +209,11 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         return (Integer)query.getResultList().get(0);
     }
 
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Clubmember> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
     @PUT
     @Path("renewMembership")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Response renewMembership(Clubmember member) {
         try{
             clubMemberService.renewMembership(member);

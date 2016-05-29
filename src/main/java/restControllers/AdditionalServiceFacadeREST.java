@@ -6,6 +6,7 @@
 package restControllers;
 
 import entities.AdditionalService;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @POST
     @Override
     @Path("createService")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(AdditionalService entity) throws Exception {
         super.create(entity);
@@ -52,6 +54,7 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @POST
     @Path("postServiceMap")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void handleService(Map<Object, Object> serviceMap) throws Exception {
         String serialized = getGensonInstance().serialize(serviceMap);
         AdditionalService additionalService = getGensonInstance().deserialize(serialized, AdditionalService.class);
@@ -61,12 +64,14 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void edit(@PathParam("id") Integer id, AdditionalService entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
@@ -74,6 +79,7 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public AdditionalService find(@PathParam("id") Integer id) {
         return super.find(id);
     }
@@ -81,22 +87,9 @@ public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalServic
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<AdditionalService> findAll() {
         return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<AdditionalService> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
     }
 
     @Override
