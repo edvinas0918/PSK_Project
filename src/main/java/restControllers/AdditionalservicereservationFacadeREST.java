@@ -13,6 +13,7 @@ import models.HandlesServiceDTO;
 import org.json.JSONObject;
 import services.SummerhouseReservation;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -92,6 +93,8 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
         JSONObject responseBody = new JSONObject();
         List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs = handlesServiceDTO.getAdditionalServiceReservationDTOs();
         List<Additionalservicereservation> currentReservations = getAdditionalServiceReservations(handlesServiceDTO.getReservationID());
+        List<Additionalservicereservation> editableReservations = new ArrayList<>();
+        editableReservations.addAll(currentReservations);
         Summerhousereservation summerhouseReservation = summerhouseReservationREST.find(handlesServiceDTO.getReservationID());
 
         try {
@@ -105,8 +108,8 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
                     additionalservicereservation = getServiceReservationForDTO(serviceReservationDTO, summerhouseReservation);
                     create(additionalservicereservation);
                 }
-                if (currentReservations.contains(additionalservicereservation)) {
-                    currentReservations.remove(additionalservicereservation);
+                if (editableReservations.contains(additionalservicereservation)) {
+                    editableReservations.remove(additionalservicereservation);
                 }
             }
 
@@ -119,7 +122,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
         }
 
 
-        for (Additionalservicereservation reservationToRemove : currentReservations) {
+        for (Additionalservicereservation reservationToRemove : editableReservations) {
             summerhouseReservationService.cancelAdditionalServiceReservation(reservationToRemove, summerhouseReservation.getMember());
         }
 
