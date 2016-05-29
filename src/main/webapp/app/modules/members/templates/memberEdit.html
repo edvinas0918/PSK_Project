@@ -53,7 +53,7 @@
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.points}}</p>
                 <button class="btn btn-success" data-toggle="modal" id="update" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Atnaujinami taškai..."
-                        data-target="#confirm-point-purchase">Pirkti taškų per PayPal</button>
+                        data-target="#confirm-point-purchase" ng-if="editable">Pirkti taškų per PayPal</button>
             </div>
         </div>
         <div class="form-group" ng-if="(editable || isAdminPage) && !candidate">
