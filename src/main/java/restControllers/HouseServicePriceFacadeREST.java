@@ -6,12 +6,15 @@
 package restControllers;
 
 import entities.AdditionalService;
+import entities.Additionalservicereservation;
 import entities.HouseServicePrice;
 import entities.HouseServicePricePK;
 import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import models.HouseServicePriceDTO;
 import models.HouseServicePricesDTO;
+import services.AdditionalServiceReservationService;
+import services.SummerhouseReservation;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,6 +52,11 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Inject
     AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
+    @Inject
+    AdditionalServiceReservationService additionalServiceReservationService;
+
+    @Inject
+    private SummerhouseReservation summerhouseReservationService;
 
     public HouseServicePriceFacadeREST() {
         super(HouseServicePrice.class);
@@ -91,6 +99,12 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
         }
 
         for (HouseServicePrice houseServicePriceToRemove : houseServicePrices) {
+            List<Additionalservicereservation> additionalservicereservations = additionalServiceReservationService.getAdditionalServiceReservationsForService(houseServicePriceToRemove.getAdditionalService().getId());
+            if (additionalservicereservations != null && !additionalservicereservations.isEmpty()) {
+                for (Additionalservicereservation additionalservicereservation : additionalservicereservations) {
+                    summerhouseReservationService.cancelAdditionalServiceReservation(additionalservicereservation, additionalservicereservation.getSummerhouseReservation().getMember());
+                }
+            }
             em.remove(houseServicePriceToRemove);
         }
     }
