@@ -40,28 +40,51 @@
         <div class="col-lg-12">
             <h2 class="page-header">Papildomos paslaugos</h2>
         </div>
-        <div class="media col-md-4 pull-left" ng-repeat="serviceReservation in summerhouse.additionalServices" style="height:120px;">
+        <div class="media col-md-4 pull-left" ng-repeat="serviceReservation in additionalServiceReservations" style="height:120px;">
             <div class="pull-left">
-                    <span class="fa-stack fa-2x" ng-model="serviceReservation.selected">
-                          <span ng-show="!serviceReservation.selected" class="glyphicon glyphicon-unchecked text-primary"
-                                style="top: 3px;left: 15px;" ng-click="serviceReservation.selected = true"></span>
-                          <span ng-show="serviceReservation.selected" class="glyphicon glyphicon-check text-primary"
-                                style="top: 3px;left: 15px;" ng-click="serviceReservation.selected = false"></span>
+                    <span class="fa-stack fa-2x">
+                          <span ng-show="!serviceReservation.checked" class="glyphicon glyphicon-unchecked text-primary"
+                                style="top: 3px;left: 15px;" ng-click="serviceReservation.checked = true"></span>
+                          <span ng-show="serviceReservation.checked" class="glyphicon glyphicon-check text-primary"
+                                style="top: 3px;left: 15px;" ng-click="serviceReservation.checked = false"></span>
                     </span>
             </div>
             <div class="media-body">
-                <h4 class="media-heading">{{serviceReservation.additionalService.name}}</h4>
-                <input ng-show="serviceReservation.selected"
+                <h4 class="media-heading">{{serviceReservation.additionalService.description}}</h4>
+                <input ng-show="serviceReservation.checked"
                        type="datetime-local"
                        name="serviceReservationBegin"
-                       ng-model="serviceReservation.startDate"
+                       ng-model="serviceReservation.serviceReservationStartDate"
                        min="{{getDateString(reservation.fromDate)}}"
                        max="{{getDateString(reservation.untilDate)}}"
                 >
+                <!--<input type="datetime-local" name="serviceReservationEnd" ng-model="service.serviceEnd">-->
                 <p>{{serviceReservation.additionalService.description}}</p>
-                <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{serviceReservation.additionalService.price}} taškai</p>
+                <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{serviceReservation.additionalService.price}} taškai(-as)</p>
             </div>
         </div>
+        <!--<div class="media col-md-4 pull-left" ng-repeat="serviceReservation in additionalServiceReservations" style="height:120px;">-->
+            <!--<div class="pull-left">-->
+                    <!--<span class="fa-stack fa-2x" ng-model="serviceReservation.selected">-->
+                          <!--<span ng-show="!serviceReservation.selected" class="glyphicon glyphicon-unchecked text-primary"-->
+                                <!--style="top: 3px;left: 15px;" ng-click="serviceReservation.selected = true"></span>-->
+                          <!--<span ng-show="serviceReservation.selected" class="glyphicon glyphicon-check text-primary"-->
+                                <!--style="top: 3px;left: 15px;" ng-click="serviceReservation.selected = false"></span>-->
+                    <!--</span>-->
+            <!--</div>-->
+            <!--<div class="media-body">-->
+                <!--<h4 class="media-heading">{{serviceReservation.additionalService.name}}</h4>-->
+                <!--<input ng-show="serviceReservation.selected"-->
+                       <!--type="datetime-local"-->
+                       <!--name="serviceReservationBegin"-->
+                       <!--ng-model="serviceReservation.startDate"-->
+                       <!--min="{{getDateString(reservation.fromDate)}}"-->
+                       <!--max="{{getDateString(reservation.untilDate)}}"-->
+                <!--&gt;-->
+                <!--<p>{{serviceReservation.additionalService.description}}</p>-->
+                <!--<p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{serviceReservation.additionalService.price}} taškai</p>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 
 </div>
