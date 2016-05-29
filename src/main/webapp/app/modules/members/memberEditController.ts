@@ -124,14 +124,14 @@ module SummerHouses.members {
 
             this.$scope.recommendCandidate = () => {
                 var btn = $("#recommend").button('loading');
-                this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).then(() => {
+                this.$http.put('rest/clubmember/recommend/' + this.$scope.member.id ).then(() => {
                     this.showSuccessMessage("Rekomendacija patvirtinta", 5000);
                     btn.button('reset');
                 }).catch(response => {
                     this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Sistemos klaida.");
                     btn.button('reset');
                 })
-            }
+            };
 
             this.$scope.change = (pointAmount: number) => {
                 MemberEditController.that.$scope.eurToPay = pointAmount;
@@ -142,7 +142,7 @@ module SummerHouses.members {
                 var btn =$("#pay").button('loading');
                 var params = {
                     method: "POST",
-                    url: "/rest/payments/payPalAuthorizationForPayment",
+                    url: "rest/payments/payPalAuthorizationForPayment",
                     data: {"amount": MemberEditController.that.$scope.eurToPay, "returnURL":  this.$window.location.href, "cancelURL": this.$window.location.href},
                     headers: {
                         'Content-Type': "application/json"
@@ -167,7 +167,7 @@ module SummerHouses.members {
                 var btn =$("#update").button('loading, disabled');
                 var params = {
                     method: "POST",
-                    url: "/rest/payments/payPalMakePayment",
+                    url: "rest/payments/payPalMakePayment",
                     data: {"paymentID": paymentID, "token":  token, "payerID": payerID},
                     headers: {
                         'Content-Type': "application/json"
@@ -176,7 +176,7 @@ module SummerHouses.members {
 
                 this.$http(params).then(function (response) {
                     btn.button('reset');
-                    MemberEditController.that.$http.get('/rest/clubmember/getPoints/' + MemberEditController.that.$scope.member.id).success((points: number, status) => {
+                    MemberEditController.that.$http.get('rest/clubmember/getPoints/' + MemberEditController.that.$scope.member.id).success((points: number, status) => {
                         MemberEditController.that.$scope.member.points = points;
                         MemberEditController.that.$scope.isPaying = false;
                         MemberEditController.that.showSuccessMessage("Įsigyta klubo taškų už " + response.data.total + " EUR", 10000);

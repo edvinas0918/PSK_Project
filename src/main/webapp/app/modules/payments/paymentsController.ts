@@ -55,13 +55,13 @@ module SummerHouses.payments {
         }
 
         getPayments(): void{
-            this.$http.get('/rest/payments').success((payments: Payment[]) => {
+            this.$http.get('rest/payments').success((payments: Payment[]) => {
                 this.$scope.payments = payments;
             });
         }
 
         getShownPayments(): void{
-            this.$http.get('/rest/payments').success((payments: Payment[]) => {
+            this.$http.get('rest/payments').success((payments: Payment[]) => {
                 this.$scope.shownPayments = _.sortBy(payments, payment => {
                     return payment.paymentDate;
                 });

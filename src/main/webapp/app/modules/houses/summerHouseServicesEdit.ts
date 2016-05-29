@@ -46,7 +46,7 @@ module SummerHouses.houses {
             if (!serviceID){
                 this.$scope.service = new AdditionalService();
             } else {
-                this.$http.get('/rest/additionalservice/' + serviceID).success((service: AdditionalService, status) => {
+                this.$http.get('rest/additionalservice/' + serviceID).success((service: AdditionalService, status) => {
                     this.$scope.service = service;
                 });
             }
