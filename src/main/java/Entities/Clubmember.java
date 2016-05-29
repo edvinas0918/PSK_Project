@@ -72,6 +72,8 @@ public class Clubmember implements Serializable {
     @NotNull
     @Column(name = "Points")
     private int points;
+    @Lob
+    private String about;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "membershipExpirationDate")
@@ -120,6 +122,14 @@ public class Clubmember implements Serializable {
         this.points = points;
         this.reservationGroup = reservationGroup;
         this.isActive = isActive;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public Integer getId() {
