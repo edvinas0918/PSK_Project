@@ -61,7 +61,8 @@ namespace SummerHouses {
         public additionalServiceDTOs():AdditionalServiceReservationDTO[] {
             var serviceDTOs = [];
             for (let serviceReservation of this.$scope.summerhouse.additionalServiceReservations) {
-                var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                //var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                var date = (new Date(serviceReservation.serviceReservationStartDate)).getTime();
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.service.price, serviceReservation.service.id, date);
                 serviceDTOs.push(serviceDTO);
             }
