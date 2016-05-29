@@ -133,9 +133,13 @@ public class EmailService {
     public void sendRecommendationEmail(String [] mailTo) throws Exception {
         String subject = "Naujo nario rekomendacija";
 
+        TypedQuery<Clubmember> query = em.createNamedQuery("Clubmember.findByEmail", Clubmember.class).setParameter("email", mailTo);
+        boolean isAdmin = query.getSingleResult().getMemberStatus().getName().toLowerCase().equals("admin");
         // message contains HTML markups
+
+        String path = (isAdmin) ? "#/admin/members" : "#/members";
         String message = "Sveiki,<br>";
-        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"" + authService.getOrigin() + "#/members/%d\">mūsų puslapyje</a>.",
+        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"" + authService.getOrigin() + path + "/%d\">mūsų puslapyje</a>.",
                 clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
         message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
