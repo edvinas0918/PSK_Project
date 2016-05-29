@@ -74,7 +74,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @PUT
     @Path("{id}")
-    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Clubmember entity) {
         super.edit(entity);
@@ -151,7 +150,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
     @DELETE
     @Path("{id}")
-    @Authentication(role = {"Member", "Admin"})
     public void remove(@PathParam("id") int id) {
         clubMemberService.DeactivateMember(id);
     }
@@ -183,7 +181,6 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @GET
     @Path("recommendations")
     @Produces({MediaType.APPLICATION_JSON})
-    @Authentication(role = {"Member", "Admin"})
     public List<Clubmember> getRecommendations() {
         return em.find(Clubmember.class, clubMemberService.getCurrentUser().getId()).getRecommenders();
     }

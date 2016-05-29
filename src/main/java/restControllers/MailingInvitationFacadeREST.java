@@ -43,7 +43,6 @@ public class MailingInvitationFacadeREST {
     @Path("recommendation")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Authentication(role = {"Member", "Admin"})
     public Response sendRecommendationMessage(Mailing mailing){
         if(emailService.isMember(mailing.getEmailAddresses())){
             try {

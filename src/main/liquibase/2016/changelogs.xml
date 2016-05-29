@@ -717,4 +717,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="min029" author="Mindaugas">
+        <addColumn tableName="clubmember">
+            <column name="about" type="CLOB"></column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
