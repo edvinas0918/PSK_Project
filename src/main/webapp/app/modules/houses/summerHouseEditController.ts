@@ -44,7 +44,7 @@ module SummerHouses.houses {
                 if (matchingHouseServicePrice) {
                     _.remove(houseServicePrices, matchingHouseServicePrice);
                 } else {
-                    houseServicePrices.push(new HouseServicePrice(null, SummerHouseEditController.that.scope.house.id, service.id, service.price));
+                    houseServicePrices.push(new HouseServicePrice(null, service.id, service.price));
                 }
             };
             this.$scope.saveHouse = (house:SummerHouse) => {
@@ -104,7 +104,6 @@ module SummerHouses.houses {
                 var houseID = response.data.houseID;
                 let houseServicePrices = house.houseServicePrices;
                 for (let houseServicePrice of houseServicePrices) {
-                    houseServicePrice.houseID = houseID;
                     for (let service of SummerHouseEditController.that.$scope.additionalServices) {
                         if (service.id == houseServicePrice.serviceID) {
                             houseServicePrice.price = service.price;
@@ -112,8 +111,20 @@ module SummerHouses.houses {
                     }
                 }
                 if (houseServicePrices) {
-                    SummerHouseEditController.that.$http.post('rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
+                    var params = {
+                        method: "POST",
+                        url: "rest/houseserviceprice/handleServicePrices",
+                        data: {"houseServicePriceDTOList": houseServicePrices, "houseID": houseID},
+                        headers: {
+                            'Content-Type': "application/json"
+                        }
+                    };
+
+                    SummerHouseEditController.that.$http(params).then(function () {
+                        SummerHouseEditController.that.$scope.isSuccesful = true;
                         SummerHouseEditController.that.$location.path("/admin/houses");
+                    }, function () {
+                        SummerHouseEditController.that.$scope.isError = true;
                     });
                 } else {
                     SummerHouseEditController.that.$location.path("/admin/houses");
@@ -131,7 +142,7 @@ module SummerHouses.houses {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.additionalService.id == service.id) {
                                 //public id: number, public optLockVersion: number, public houseID: number, public serviceID: number, public price: number
-                                house.houseServicePrices.push(new HouseServicePrice(houseServicePrice.id, house.id, service.id, houseServicePrice.price));
+                                house.houseServicePrices.push(new HouseServicePrice(houseServicePrice.id, service.id, houseServicePrice.price));
                                 service.price = houseServicePrice.price;
                                 service.selected = true;
                             }

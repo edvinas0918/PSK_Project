@@ -11,6 +11,7 @@ import entities.HouseServicePricePK;
 import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import models.HouseServicePriceDTO;
+import models.HouseServicePricesDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,26 +49,6 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Inject
     AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
-    private HouseServicePricePK getPrimaryKey(PathSegment pathSegment) {
-        /*
-         * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;houseID=houseIDValue;serviceID=serviceIDValue'.
-         * Here 'somePath' is a result of getPath() method invocation and
-         * it is ignored in the following code.
-         * Matrix parameters are used as field names to build a primary key instance.
-         */
-        entities.HouseServicePricePK key = new entities.HouseServicePricePK();
-        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-        java.util.List<String> houseID = map.get("houseID");
-        if (houseID != null && !houseID.isEmpty()) {
-            key.setHouseID(new java.lang.Integer(houseID.get(0)));
-        }
-        java.util.List<String> serviceID = map.get("serviceID");
-        if (serviceID != null && !serviceID.isEmpty()) {
-            key.setServiceID(new java.lang.Integer(serviceID.get(0)));
-        }
-        return key;
-    }
 
     public HouseServicePriceFacadeREST() {
         super(HouseServicePrice.class);
@@ -89,19 +70,19 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Path("handleServicePrices")
     @Consumes({MediaType.APPLICATION_JSON})
     @Authentication(role = {"Member", "Admin"})
-    public void handleServicePrices(ArrayList<HouseServicePriceDTO> priceMap) throws Exception {
-        List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(priceMap.get(0).getHouseID());
-        for (HouseServicePriceDTO dto : priceMap) {
-            HouseServicePrice houseServicePrice = null;
+    public void handleServicePrices(HouseServicePricesDTO houseServicePricesDTO) throws Exception {
+        List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(houseServicePricesDTO.getHouseID());
+        for (HouseServicePriceDTO dto : houseServicePricesDTO.getHouseServicePriceDTOList()) {
+            HouseServicePrice houseServicePrice;
             if (dto.getId() > 0) {
                 Query query = em.createNamedQuery("HouseServicePrice.findByIDs");
                 query.setParameter("serviceID", dto.getServiceID());
-                query.setParameter("houseID", dto.getHouseID());
+                query.setParameter("houseID", houseServicePricesDTO.getHouseID());
                 houseServicePrice = (HouseServicePrice) query.getResultList().get(0);
                 houseServicePrice.setPrice(dto.getPrice());
                 edit(houseServicePrice);
             } else {
-                houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(dto.getHouseID()));
+                houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(houseServicePricesDTO.getHouseID()));
                 create(houseServicePrice);
             }
             if (houseServicePrices.contains(houseServicePrice)) {
@@ -119,14 +100,6 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Authentication(role = {"Member", "Admin"})
     public void edit(HouseServicePrice entity) {
         super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    @Authentication(role = {"Member", "Admin"})
-    public void remove(@PathParam("id") PathSegment id) {
-        entities.HouseServicePricePK key = getPrimaryKey(id);
-        super.remove(super.find(key));
     }
 
     @GET

@@ -11,7 +11,7 @@ module SummerHouses.houses {
 
     export class HouseServicePrice {
 
-        constructor(public id: number, public houseID: number, public serviceID: number, public price: number) {
+        constructor(public id: number, public serviceID: number, public price: number) {
 
         }
 
