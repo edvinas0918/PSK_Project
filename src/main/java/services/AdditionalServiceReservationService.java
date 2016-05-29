@@ -39,6 +39,8 @@ public class AdditionalServiceReservationService {
     }
 
     public void delete(Additionalservicereservation reservation){
+        reservation.setSummerhouseReservation(null);
+        reservation.setAdditionalService(null);
         em.remove(reservation);
     }
 

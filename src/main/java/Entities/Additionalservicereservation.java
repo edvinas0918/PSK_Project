@@ -31,7 +31,7 @@ public class Additionalservicereservation implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "ServiceStart")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date serviceStart;
     @JoinColumn(name = "SummerhouseReservationID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)

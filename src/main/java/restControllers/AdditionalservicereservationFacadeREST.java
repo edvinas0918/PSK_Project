@@ -11,13 +11,13 @@ import services.AdditionalServiceReservationService;
 import models.AdditionalServiceReservationDTO;
 import models.HandlesServiceDTO;
 import org.json.JSONObject;
+import services.SummerhouseReservation;
 
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -45,10 +45,13 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     private AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
     @Inject
-    private AdditionalServiceReservationService additionalServiceReservation;
+    private AdditionalServiceReservationService additionalServiceReservationService;
 
     @Inject
     private SummerhouseReservationREST summerhouseReservationREST;
+
+    @Inject
+    private SummerhouseReservation summerhouseReservationService;
 
     public AdditionalservicereservationFacadeREST() {
         super(Additionalservicereservation.class);
@@ -65,7 +68,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
 
     private Additionalservicereservation getServiceReservationForDTO(AdditionalServiceReservationDTO serviceReservationDTO, Summerhousereservation summerhouseReservation) throws InsufficientFundsException {
         AdditionalService additionalService = additionalServiceFacadeREST.find(serviceReservationDTO.getAdditionalServiceID());
-        Payment payment = additionalServiceReservation.getPayment(additionalService, serviceReservationDTO);
+        Payment payment = additionalServiceReservationService.getPayment(additionalService, serviceReservationDTO);
         return new Additionalservicereservation(serviceReservationDTO.getDate(), summerhouseReservation, additionalService, payment);
     }
 
@@ -114,13 +117,13 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
-        for (Additionalservicereservation reservationToRemove : currentReservations) {
-            Additionalservicereservation additionalServiceReservation = find(reservationToRemove.getId());
-            additionalServiceReservation.setSummerhouseReservation(null);
-            additionalServiceReservation.setAdditionalService(null);
 
-            super.remove(additionalServiceReservation);
+
+        for (Additionalservicereservation reservationToRemove : currentReservations) {
+            summerhouseReservationService.cancelAdditionalServiceReservation(reservationToRemove, summerhouseReservation.getMember());
         }
+
+
         return Response.ok().build();
     }
 
@@ -129,7 +132,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @Produces(MediaType.APPLICATION_JSON)
     @Authentication(role = {"Member", "Admin"})
     public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
-        return additionalServiceReservation.getAdditionalServiceReservations(id);
+        return additionalServiceReservationService.getAdditionalServiceReservations(id);
     }
 
     @PUT

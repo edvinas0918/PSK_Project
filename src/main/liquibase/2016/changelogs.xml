@@ -709,5 +709,12 @@
             <column name="Name" type="VARCHAR(1000)"/>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="min028" author="Mindaugas">
+        <dropColumn tableName="AdditionalServiceReservation" columnName="ServiceStart"></dropColumn>
+        <addColumn tableName="AdditionalServiceReservation">
+            <column name="ServiceStart" type="DATETIME"></column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>
