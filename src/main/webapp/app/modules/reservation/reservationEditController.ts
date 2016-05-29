@@ -48,9 +48,9 @@ module SummerHouses {
                 this.$http(params).then((response) => {
                     this.$scope.isSuccesful = true;
                     this.showSuccessMessage("Pakeitimai išsaugoti.");
-                }).catch(error => {
-
-                });
+                }).catch(response => {
+                    this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Įvyko klaida.");
+            });
             };
 
             this.$scope.manageService = (service:AdditionalService) => {
@@ -176,6 +176,17 @@ module SummerHouses {
                 });
             }, 4000);
         }
+
+        public showErrorMessage(message) {
+            this.$scope.showError = true;
+            this.$scope.errorMessage = message;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showError = false;
+                });
+            }, 4000);
+        }
+
 
     }
 
