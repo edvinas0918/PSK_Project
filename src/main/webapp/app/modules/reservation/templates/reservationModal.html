@@ -18,7 +18,7 @@
                                     <th>Data</th>
                                     <th>Kaina(taškai)</th>
                                 </tr>
-                                <tr ng-repeat="reservation in summerhouse.additionalServices">
+                                <tr ng-repeat="reservation in summerhouse.additionalServiceReservations">
                                     <td>{{reservation.service.name}}</td>
                                     <td>{{formatDate(reservation.serviceReservationStartDate)}}</td>
                                     <td>{{reservation.service.price}}</td>
