@@ -133,17 +133,19 @@ public class EmailService {
     public void sendRecommendationEmail(String [] mailTo) throws Exception {
         String subject = "Naujo nario rekomendacija";
 
-        TypedQuery<Clubmember> query = em.createNamedQuery("Clubmember.findByEmail", Clubmember.class).setParameter("email", mailTo);
-        boolean isAdmin = query.getSingleResult().getMemberStatus().getName().toLowerCase().equals("admin");
-        // message contains HTML markups
+        for (String mail : mailTo){
+            TypedQuery<Clubmember> query = em.createNamedQuery("Clubmember.findByEmail", Clubmember.class).setParameter("email", mail);
+            boolean isAdmin = query.getSingleResult().getMemberStatus().getName().toLowerCase().equals("admin");
 
-        String path = (isAdmin) ? "#/admin/members" : "#/members";
-        String message = "Sveiki,<br>";
-        message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"" + authService.getOrigin() + path + "/%d\">mūsų puslapyje</a>.",
-                clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
-        message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
+            String path = (isAdmin) ? "#/admin/members" : "#/members";
+            String message = "Sveiki,<br>";
+            message += String.format("Naujas kandidatas <i> %s %s </i> laukia tavo patvirtinimo! Kandidato anketą galite peržiūrėti <a href=\"" + authService.getOrigin() + path + "/%d\">mūsų puslapyje</a>.",
+                    clubMemberService.getCurrentUser().getFirstName(), clubMemberService.getCurrentUser().getLastName(), clubMemberService.getCurrentUser().getId());
+            message += "<br><br>Pagarbiai,<br>„Labanoro draugų“ klubas";
 
-        sendHtmlEmail(mailTo, subject, message, true);
+            sendHtmlEmail(new String[]{mail}, subject, message, true);
+
+        }
     }
 
     public void sendCandidatePromotionEmail(String mailTo) throws Exception {
