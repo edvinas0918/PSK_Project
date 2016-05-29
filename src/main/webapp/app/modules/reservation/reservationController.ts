@@ -62,19 +62,7 @@ module SummerHouses {
 
                     });
                 });
-
-            this.$scope.manageService = (service:AdditionalService) => {
-                var serviceReservation = new AdditionalServiceReservation(service, service.serviceBegin);
-                if (service.checked) {
-                    ReservationController.that.$scope.additionalServiceReservations.push(serviceReservation);
-                } else {
-                    _.remove(ReservationController.that.$scope.additionalServiceReservations, function (n) {
-                        return n.service.id == service.id;
-                    });
-                }
-                ReservationController.that.$scope.summerhouse.additionalServiceReservations = ReservationController.that.$scope.additionalServiceReservations;
-            };
-
+            
             this.$scope.getFromDate = () => {
                 try {
                     var date = ReservationController.that.$scope.weekPicker.getReservationPeriod();
@@ -127,7 +115,7 @@ module SummerHouses {
                 for (let houseServicePrice of prices) {
                     let additionalService = houseServicePrice.additionalService;
                     additionalService.price = houseServicePrice.price;
-                    services.push(additionalService);
+                    services.push(new AdditionalServiceReservation(false, additionalService, null));
                 }
                 ReservationController.that.$scope.summerhouse.additionalServices = services;
             });
@@ -143,8 +131,12 @@ module SummerHouses {
         }
 
         public openReservationForm() {
-            var reservations = ReservationController.that.$scope.summerhouse.additionalServiceReservations;
-            if (reservations && !ReservationController.that.checkIfAllServicesHaveDate(reservations)) {
+            var reservations = ReservationController.that.$scope.summerhouse.additionalServices;
+            var checkedServices = _.filter(reservations, function (n) {
+                return n.checked;
+            });
+            ReservationController.that.$scope.summerhouse.additionalServiceReservations = checkedServices;
+            if (checkedServices && !ReservationController.that.checkIfAllServicesHaveDate(checkedServices)) {
                 ReservationController.that.$scope.selectDates = true;
                 return;
             } else {
@@ -174,7 +166,7 @@ module SummerHouses {
     }
 
     export class AdditionalServiceReservation {
-        constructor(public service:AdditionalService, public serviceReservationStartDate:Date) {
+        constructor(public checked: boolean, public service:AdditionalService, public serviceReservationStartDate:Date) {
 
         }
     }
