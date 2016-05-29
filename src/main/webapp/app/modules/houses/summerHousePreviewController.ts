@@ -22,8 +22,8 @@ module SummerHouses.houses {
 
         getHouse(houseID:string):void {
             SummerHousePreviewController.that.$http.get('rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
-                house.endPeriod = moment(house.endPeriod).format('MMMM Do');
-                house.beginPeriod = moment(house.beginPeriod).format('MMMM Do');
+                house.endPeriod = moment(house.endPeriod).locale('LT').format('MMMM Do');
+                house.beginPeriod = moment(house.beginPeriod).locale('LT').format('MMMM Do');
                 SummerHousePreviewController.that.$scope.house = house;
                 this.getAdditionalServices();
             });
