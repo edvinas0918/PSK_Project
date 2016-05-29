@@ -65,7 +65,7 @@ public class Summerhouse implements Serializable {
     private String description;
     @Column(columnDefinition = "LONGTEXT", name="image")
     private String image;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouse", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "summerhouse", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Summerhousereservation> summerHouseReservationList;
     @OneToMany(mappedBy = "summerhouse")
     private List<HouseServicePrice> houseServicePrices = new ArrayList<>();

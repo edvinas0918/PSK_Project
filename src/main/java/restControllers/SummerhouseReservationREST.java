@@ -21,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Edvinas.Barickis on 5/15/2016.
@@ -109,7 +110,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         try{
             Summerhousereservation reservation = super.find(id);
             summerhouseReservation.cancelReservation(reservation, clubMemberService.getCurrentUser());
-            super.remove(reservation);
+            em.remove(reservation);
         } catch(DateTermException exc){
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
