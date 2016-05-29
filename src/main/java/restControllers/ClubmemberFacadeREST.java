@@ -129,10 +129,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
             boolean result = false;
             for(Summerhousereservation reservation: reservations){
-                if((reservation.getFromDate().after(fromDate) || reservation.getFromDate().equals(fromDate)) &&
-                        reservation.getFromDate().before(untilDate) ||
-                        reservation.getUntilDate().after(fromDate)
-                                && (reservation.getUntilDate().before(untilDate) || reservation.getUntilDate().equals(untilDate))){
+                if (!reservation.getFromDate().after(untilDate) && !reservation.getUntilDate().before(fromDate)) {
                     result = true;
                     break;
                 }
@@ -214,9 +211,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Authentication(role = {"Member", "Admin"})
-    public Response renewMembership(Clubmember member) {
-        try{
-            clubMemberService.renewMembership(member);
+    public Response renewMembership() {
+        try{    
+            clubMemberService.renewMembership(clubMemberService.getCurrentUser());
         } catch(InsufficientFundsException exc){
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }

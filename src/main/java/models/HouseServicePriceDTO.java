@@ -6,7 +6,6 @@ package models;
 public class HouseServicePriceDTO {
 
     private int id;
-    private int houseID;
     private int serviceID;
     private int price;
 
@@ -27,14 +26,6 @@ public class HouseServicePriceDTO {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getHouseID() {
-        return houseID;
-    }
-
-    public void setHouseID(int houseID) {
-        this.houseID = houseID;
     }
 
     public int getServiceID() {

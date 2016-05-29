@@ -1,6 +1,16 @@
+<div class="alert alert-error" ng-if="showError">
+    <strong>Klaida!</strong> {{errorMessage}}
+</div>
+<div class="alert alert-success" ng-if="showSuccess">
+    <strong>Patvirtinta!</strong> {{successMessage}}
+</div>
 <div class="container">
     <h2>Sukurti/keisti esamą vasarnamį</h2>
     <form role="form" name="houseForm" ng-submit="saveHouse(house)" class="form-horizontal" novalidate>
+        <div class="alert alert-danger fade in" ng-show="isError">
+            <a href="" class="close" data-dismiss="modal">&times;</a>
+            <strong>Klaida išsaugant vasarnamio duomenis. </strong>
+        </div>
         <div class="form-group" ng-class="{ 'has-error' : houseWithNumberExists }">
             <label class="control-label col-sm-2">Numeris:</label>
             <div class="col-sm-10">

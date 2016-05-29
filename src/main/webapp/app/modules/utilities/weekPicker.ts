@@ -18,8 +18,8 @@ module Utilities{
         untilDate: moment.Moment;
 
         constructor(period: Period){
-            this.fromDate = moment(period.fromDate);
-            this.untilDate = moment(period.untilDate);
+            this.fromDate = moment(period.fromDate).startOf("day");
+            this.untilDate = moment(period.untilDate).startOf("day");
         }
     }
 
