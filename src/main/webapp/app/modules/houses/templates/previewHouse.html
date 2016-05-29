@@ -15,10 +15,7 @@
         </div>
 
         <div class="col-md-12">
-            <h4><small>aprašymas: </small></h4>
-            <textarea rows="5" class="textarea-none" disabled>
-                {{house.description}}
-            </textarea>
+            <textarea class="textarea-none" disabled>{{house.description}}</textarea>
         </div>
     </div>
     <div class="row">
@@ -33,16 +30,14 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="service in additionalServices">
-                    <td class="col-xs-2">
+                    <td >
                         <p>{{service.name}}</p>
                     </td>
-                    <td class="col-xs-1">
+                    <td>
                         <p>{{service.price}}</p>
                     </td>
-                    <td class="col-xs-9">
-                        <textarea rows="5" class="textarea-none" disabled>
-                            {{service.description}}
-                        </textarea>
+                    <td>
+                        <textarea class="textarea-none" disabled>{{service.description}}</textarea>
                     </td>
                 </tr>
                 </tbody>
