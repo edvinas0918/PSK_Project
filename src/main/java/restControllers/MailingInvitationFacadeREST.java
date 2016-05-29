@@ -1,5 +1,6 @@
 package restControllers;
 
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.EmailService;
 import models.Mailing;
@@ -28,6 +29,7 @@ public class MailingInvitationFacadeREST {
     @Path("invitation")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Response sendInvitationMessage(Mailing mailing) {
         try {
             emailService.sendInvitationEmail(mailing.getEmailAddresses());
@@ -41,6 +43,7 @@ public class MailingInvitationFacadeREST {
     @Path("recommendation")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Response sendRecommendationMessage(Mailing mailing){
         if(emailService.isMember(mailing.getEmailAddresses())){
             try {
@@ -57,6 +60,7 @@ public class MailingInvitationFacadeREST {
     @POST
     @Path("pointsReceived")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void sendPointsReceivedMessage(String [] emails, Integer points, String reason) throws Exception {
         emailService.sendPointsReceivedEmail(emails, points, reason);
     }

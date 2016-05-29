@@ -3,6 +3,7 @@ package restControllers;
 import entities.Payment;
 import entities.Summerhousereservation;
 import helpers.DateTermException;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 import services.DateService;
@@ -64,6 +65,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @GET
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public Summerhousereservation find(@PathParam("id") Integer id) {
         Summerhousereservation summerhousereservation = super.find(id);
@@ -72,6 +74,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @GET
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Summerhousereservation> findAll() {
         return super.findAll();
@@ -79,6 +82,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @GET
     @Path("summerhouse/{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Summerhousereservation> findBySummerhouse(@PathParam("id") Integer id) {
         TypedQuery<Summerhousereservation> query =
@@ -88,6 +92,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @GET
     @Path("clubmember/{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<Summerhousereservation> findByClubmember(@PathParam("id") Integer id) {
         TypedQuery<Summerhousereservation> query =
@@ -98,6 +103,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response remove(@PathParam("id") Integer id) {
         try{
@@ -112,6 +118,7 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
 
     @POST
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) throws Exception{
         summerhouseReservationDTO = summerhouseReservation.setCorrectDates(summerhouseReservationDTO);

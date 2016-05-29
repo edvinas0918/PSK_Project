@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Clubmember;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 import services.AuthenticationService;

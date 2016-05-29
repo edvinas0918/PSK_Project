@@ -6,7 +6,9 @@
             <h2 ng-if="editable">Jūsų informacija</h2>
         </div>
         <div class="col-md-2" style="margin-top: 20px;"s>
-            <button class="btn btn-success" ng-if="candidateReview" ng-click="recommendCandidate()">Rekomenduoti šį kandidatą</button>
+            <button class="btn btn-success" data-toggle="modal" id="recommend"
+                    data-loading-text="<i class='fa fa-spinner fa-spin'></i> Siunčiama rekomendacija..."
+                    ng-if="candidateReview" ng-click="recommendCandidate()">Rekomenduoti šį kandidatą</button>
             <a class="glyphicon glyphicon-log-out glyphicon-lg" ng-if="candidate" href="#/logout"></a>
         </div>
     </div>
@@ -53,7 +55,7 @@
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.points}}</p>
                 <button class="btn btn-success" data-toggle="modal" id="update" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Atnaujinami taškai..."
-                        data-target="#confirm-point-purchase">Pirkti taškų per PayPal</button>
+                        data-target="#confirm-point-purchase" ng-if="editable">Pirkti taškų per PayPal</button>
             </div>
         </div>
         <div class="form-group" ng-if="(editable || isAdminPage) && !candidate">

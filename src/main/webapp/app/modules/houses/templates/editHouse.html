@@ -1,3 +1,9 @@
+<div class="alert alert-error" ng-if="showError">
+    <strong>Klaida!</strong> {{errorMessage}}
+</div>
+<div class="alert alert-success" ng-if="showSuccess">
+    <strong>Patvirtinta!</strong> {{successMessage}}
+</div>
 <div class="container">
     <h2>Sukurti/keisti esamą vasarnamį</h2>
     <form role="form" name="houseForm" ng-submit="saveHouse(house)" class="form-horizontal" novalidate>

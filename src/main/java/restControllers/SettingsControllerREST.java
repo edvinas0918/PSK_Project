@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Settings;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.SettingsService;
 
@@ -28,6 +29,7 @@ public class SettingsControllerREST{
     @Inject private SettingsService settingsService;
 
     @GET
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Settings> getSettings() {
         return settingsService.getSettings();
@@ -35,12 +37,14 @@ public class SettingsControllerREST{
 
     @GET
     @Path("{referenceCode}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Settings findbByRefernceCode(@PathParam("referenceCode") String referenceCode) {
         return settingsService.getSetting(referenceCode);
     }
 
     @PUT
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void saveSettings(List<Settings> settings) {
         for(Settings setting : settings){

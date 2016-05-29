@@ -53,7 +53,7 @@ module SummerHouses {
                     this.$scope.isSuccesful = true;
                     this.showSuccessMessage("Pakeitimai išsaugoti.");
                 }).catch(response => {
-                    this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Įvyko klaida.");
+                    this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Sistemos klaida.");
             });
             };
 

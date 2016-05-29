@@ -5,6 +5,7 @@ import entities.Additionalservicereservation;
 import entities.Payment;
 import entities.Summerhousereservation;
 import helpers.InsufficientFundsException;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.AdditionalServiceReservationService;
 import models.AdditionalServiceReservationDTO;
@@ -74,6 +75,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Admin"})
     public void create(Additionalservicereservation entity) {
         try {
             super.create(entity);
@@ -85,6 +87,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @POST
     @Path("handleServices")
     @Produces(MediaType.APPLICATION_JSON)
+    @Authentication(role = {"Member", "Admin"})
     public Response updateReservationServices(HandlesServiceDTO handlesServiceDTO) {
         JSONObject responseBody = new JSONObject();
         List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs = handlesServiceDTO.getAdditionalServiceReservationDTOs();
@@ -127,6 +130,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @GET
     @Path("reservedServicesFor/{summerhouseReservationID}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Authentication(role = {"Member", "Admin"})
     public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
         return additionalServiceReservationService.getAdditionalServiceReservations(id);
     }
@@ -134,12 +138,14 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void edit(@PathParam("id") Integer id, Additionalservicereservation entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
@@ -147,6 +153,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public Additionalservicereservation find(@PathParam("id") Integer id) {
         return super.find(id);
     }
@@ -154,22 +161,9 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<Additionalservicereservation> findAll() {
         return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Additionalservicereservation> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
     }
 
     @Override
