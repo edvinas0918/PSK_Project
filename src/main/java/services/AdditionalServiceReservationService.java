@@ -52,4 +52,12 @@ public class AdditionalServiceReservationService {
         return additionalservicereservations;
     }
 
+    public List<Additionalservicereservation> getAdditionalServiceReservationsForService(Integer serviceID) {
+        TypedQuery<Additionalservicereservation> query =
+                em.createNamedQuery("Additionalservicereservation.findByServiceID",
+                        Additionalservicereservation.class).setParameter("serviceID", serviceID);
+        List<Additionalservicereservation> additionalservicereservations = query.getResultList();
+        return additionalservicereservations;
+    }
+
 }
