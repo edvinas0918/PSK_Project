@@ -37,7 +37,6 @@ public class SettingsControllerREST{
 
     @GET
     @Path("{referenceCode}")
-    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Settings findbByRefernceCode(@PathParam("referenceCode") String referenceCode) {
         return settingsService.getSetting(referenceCode);

@@ -59,7 +59,6 @@ public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @GET
     @Path("{id}")
-    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Memberformfield find(@PathParam("id") Integer id) {
         return super.find(id);

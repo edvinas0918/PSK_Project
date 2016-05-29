@@ -36,7 +36,6 @@ public class InvitationFacadeRest extends AbstractFacade<Invitation>{
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Authentication(role = {"Member", "Admin"})
     public List<Invitation> findByMemberId() {
         return em.find(Clubmember.class,  clubMemberService.getCurrentUser().getId()).getInvitationList() ;
     }
