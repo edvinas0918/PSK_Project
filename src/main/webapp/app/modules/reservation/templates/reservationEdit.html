@@ -1,3 +1,9 @@
+<div class="alert alert-success" ng-if="showAlert">
+    <strong>Patvirtinta!</strong> {{successMessage}}
+</div>
+<div class="alert alert-danger" ng-if="showError">
+    <strong>Klaida!</strong> {{errorMessage}}
+</div>
 <div class="form-group">
     <div class="row">
         <div class="col-lg-12">
@@ -25,7 +31,7 @@
 <div class="row" style="margin-top:10px;padding:0px 15px 0px 15px;">
     <button class="btn btn-primary"
             style="height:34px; min-width:140px;"
-            ng-click="changeReservedServices()">Keisti rezervacija
+            ng-click="changeReservedServices()">Keisti rezervaciją
     </button>
     <p ng-show="selectDates" class="help-block">Pasirinkite datas paslaugoms, kurias norite rezervuoti</p>
 </div>

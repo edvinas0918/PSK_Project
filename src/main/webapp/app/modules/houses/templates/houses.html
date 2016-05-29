@@ -53,7 +53,7 @@
                 <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteHouse(x)">Ištrinti</button>
                 <a class="btn btn-success" ng-if="!isAdminPage" ng-href="#/houses/{{x.id}}/reservation">Rezervuoti</a>
                 <a class="btn btn-success" ng-if="isAdminPage" ng-href="#/admin/houses/{{x.id}}/reservation">Rezervuoti</a>
-                <a class="btn btn-info" ng-click="previewHouse(x)">Plačiau</a>
+                <a class="btn btn-info" ng-click="previewHouse(x)" ng-if="!isAdminPage">Plačiau</a>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
                 <h4><small>Vietų skaičius:</small> {{r.summerhouse.capacity}}</h4>
                 <h4><small>Rezervacijos data:</small> {{r.fromDate}} - {{r.untilDate}} </h4>
                 <p>{{r.summerhouse.description}}</p>
-                <a class="btn btn-info" ng-href="#/reservation/{{r.id}}/edit">Peržiūrėti</a>
+                <a class="btn btn-info" ng-click="previewReservation(r)">Peržiūrėti</a>
                 <a class="btn btn-danger" ng-click="cancelReservation(r)">Atšaukti</a>
             </div>
         </div>
