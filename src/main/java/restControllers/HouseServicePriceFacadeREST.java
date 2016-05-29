@@ -8,6 +8,7 @@ package restControllers;
 import entities.AdditionalService;
 import entities.HouseServicePrice;
 import entities.HouseServicePricePK;
+import interceptors.ExceptionHandler;
 import models.HouseServicePriceDTO;
 
 import java.util.*;
@@ -34,6 +35,7 @@ import javax.ws.rs.core.PathSegment;
  */
 @Stateless
 @Path("houseserviceprice")
+@ExceptionHandler
 public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePrice> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

@@ -3,12 +3,12 @@ package restControllers;
 import entities.Payment;
 import entities.Summerhousereservation;
 import helpers.DateTermException;
+import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 import services.IPaymentService;
 import services.SummerhouseReservation;
 import models.AdditionalServiceReservationDTO;
 import models.SummerhouseReservationDTO;
-import org.json.JSONObject;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * Created by Edvinas.Barickis on 5/15/2016.
  */
+@ExceptionHandler
 @Stateless
 @Path("reservation")
 public class SummerhouseReservationREST extends AbstractFacade<Summerhousereservation> {
@@ -108,34 +109,24 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) {
+    public Response reserveSummerhouse(SummerhouseReservationDTO summerhouseReservationDTO) throws Exception{
         Summerhousereservation reservation = summerhouseReservationDTO.getReservation();
         List<AdditionalServiceReservationDTO> reservationDTOs = summerhouseReservationDTO.getAdditionalServiceReservationDTOs();
 
-        JSONObject responseBody = new JSONObject();
+        summerhouseReservation.checkMembership();
+        summerhouseReservation.validatePeriod(reservation.getFromDate(), reservation.getUntilDate());
+        summerhouseReservation.checkAvailabilityPeriod(
+                reservation,
+                this.findBySummerhouse(reservation.getSummerhouse().getId()));
 
-        try {
-            summerhouseReservation.checkMembership();
-            summerhouseReservation.validatePeriod(reservation.getFromDate(), reservation.getUntilDate());
-            summerhouseReservation.checkAvailabilityPeriod(
-                    reservation,
-                    this.findBySummerhouse(reservation.getSummerhouse().getId()));
+        reservation.setMember(authenticationControllerREST.getSessionUser());
+        summerhouseReservation.checkReservationGroup(reservation);
 
-            reservation.setMember(authenticationControllerREST.getSessionUser());
-            summerhouseReservation.checkReservationGroup(reservation);
+        Payment payment = summerhouseReservation.getPayment(reservation);
+        reservation.setPayment(payment);
 
-            Payment payment = summerhouseReservation.getPayment(reservation);
-            reservation.setPayment(payment);
-
-            super.create(reservation);
-            additionalServiceReservationFacadeREST.createServiceReservationsForSummerhouse(reservation, reservationDTOs);
-        } catch (Exception ex) {
-            responseBody.put("errorMessage", ex.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(responseBody.toString())
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-        }
+        super.create(reservation);
+        additionalServiceReservationFacadeREST.createServiceReservationsForSummerhouse(reservation, reservationDTOs);
 
         return Response.ok().build();
     }

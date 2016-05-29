@@ -5,6 +5,7 @@ import entities.Additionalservicereservation;
 import entities.Payment;
 import entities.Summerhousereservation;
 import helpers.InsufficientFundsException;
+import interceptors.ExceptionHandler;
 import services.AdditionalServiceReservation;
 import models.AdditionalServiceReservationDTO;
 import models.HandlesServiceDTO;
@@ -33,6 +34,7 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 @Path("servicesReservation")
+@ExceptionHandler
 public class AdditionalservicereservationFacadeREST extends AbstractFacade<Additionalservicereservation> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
@@ -51,7 +53,8 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
         super(Additionalservicereservation.class);
     }
 
-    public void createServiceReservationsForSummerhouse(Summerhousereservation summerhouseReservation, List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs) throws InsufficientFundsException{
+    public void createServiceReservationsForSummerhouse(Summerhousereservation summerhouseReservation, List<AdditionalServiceReservationDTO> additionalServiceReservationDTOs)
+                                                        throws InsufficientFundsException{
         if (!additionalServiceReservationDTOs.isEmpty()){
             for (AdditionalServiceReservationDTO serviceReservationDTO : additionalServiceReservationDTOs) {
                 create(getServiceReservationForDTO(serviceReservationDTO, summerhouseReservation));

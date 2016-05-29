@@ -2,6 +2,7 @@ package restControllers;
 
 import entities.Clubmember;
 import entities.Invitation;
+import interceptors.ExceptionHandler;
 import services.ClubMemberService;
 
 import javax.ejb.Stateless;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Stateless
 @Path("invitation")
+@ExceptionHandler
 public class InvitationFacadeRest extends AbstractFacade<Invitation>{
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

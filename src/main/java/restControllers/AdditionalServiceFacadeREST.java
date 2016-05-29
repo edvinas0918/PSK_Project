@@ -6,6 +6,7 @@
 package restControllers;
 
 import entities.AdditionalService;
+import interceptors.ExceptionHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import static helpers.Helpers.getGensonInstance;
  */
 @Stateless
 @Path("additionalservice")
+@ExceptionHandler
 public class AdditionalServiceFacadeREST extends AbstractFacade<AdditionalService> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

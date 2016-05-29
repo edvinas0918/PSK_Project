@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Payment;
+import interceptors.ExceptionHandler;
 import services.IPaymentService;
 
 import javax.ejb.Stateless;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Stateless
 @Path("payments")
+@ExceptionHandler
 public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

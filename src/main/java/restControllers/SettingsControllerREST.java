@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Settings;
+import interceptors.ExceptionHandler;
 import services.SettingsService;
 
 import javax.ejb.Stateless;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Gintautas on 4/24/2016.
  */
+@ExceptionHandler
 @Stateless
 @Path("settings")
 @TransactionAttribute(TransactionAttributeType.REQUIRED)

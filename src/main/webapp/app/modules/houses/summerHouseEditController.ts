@@ -100,7 +100,8 @@ module SummerHouses.houses {
         }
 
         postHouse(house:SummerHouse):void {
-            SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).success((houseID:number, status) => {
+            SummerHouseEditController.that.$http.post('/rest/summerhouse/postHashMap', house).then((response:any, status) => {
+                var houseID = response.data.houseID;
                 let houseServicePrices = house.houseServicePrices;
                 for (let houseServicePrice of houseServicePrices) {
                     houseServicePrice.houseID = houseID;
@@ -117,6 +118,8 @@ module SummerHouses.houses {
                 } else {
                     SummerHouseEditController.that.$location.path("/admin/houses");
                 }
+            }).catch((exc) => {
+                console.log(exc);
             });
         }
 

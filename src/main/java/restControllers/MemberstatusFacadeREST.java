@@ -6,6 +6,8 @@
 package restControllers;
 
 import entities.Memberstatus;
+import interceptors.ExceptionHandler;
+
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,6 +28,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("memberstatus")
+@ExceptionHandler
 public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")

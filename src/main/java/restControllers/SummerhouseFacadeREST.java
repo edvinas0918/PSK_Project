@@ -7,7 +7,9 @@ package restControllers;
 
 import entities.Summerhouse;
 import helpers.Helpers;
+import interceptors.ExceptionHandler;
 import models.SummerhouseSearchDto;
+import org.json.JSONObject;
 import search.summerhouse.SummerhouseSeach;
 
 import javax.ejb.Stateless;
@@ -16,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ import java.util.Map;
  */
 @Stateless
 @Path("summerhouse")
+@ExceptionHandler
 public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @PersistenceContext(unitName = "com.psk_LabanorasFriends_war_1.0-SNAPSHOTPU")
@@ -49,14 +53,20 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
     @POST
     @Path("postHashMap")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Integer handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
+    public Response handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
+        JSONObject responseBody = new JSONObject();
+
         Summerhouse summerhouse = Helpers.getSummerhouseWithDates(summerhouseMap);
         if (summerhouse.getId() != null) {
             edit(summerhouse.getId(), summerhouse);
         } else {
             create(summerhouse);
         }
-        return summerhouse.getId();
+        responseBody.put("houseID", summerhouse.getId());
+        return Response.status(Response.Status.OK)
+                .entity(responseBody.toString())
+                .type(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @POST
