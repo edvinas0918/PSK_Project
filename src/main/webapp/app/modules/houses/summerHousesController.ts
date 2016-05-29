@@ -50,7 +50,7 @@ module SummerHouses.houses {
             };
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             this.$scope.deleteHouse = (house: SummerHouse) => {
-                this.$http.delete('/rest/summerhouse/' + house.id).success(() => {
+                this.$http.delete('rest/summerhouse/' + house.id).success(() => {
                     var index = this.$scope.summerhouses.indexOf(house, 0);
                     if (index > -1) {
                         this.$scope.summerhouses.splice(index, 1);
@@ -64,7 +64,12 @@ module SummerHouses.houses {
             };
 
             this.$scope.previewHouse = (house: SummerHouse) => {
-                this.$location.path("/previewHouse/" + house.id);
+                if(this.$scope.isAdminPage){
+                    this.$location.path("/admin/previewHouse/" + house.id);
+                }
+                else{
+                    this.$location.path("/previewHouse/" + house.id);
+                }
             };
 
             this.$scope.openSeachForm = () => {
@@ -78,12 +83,12 @@ module SummerHouses.houses {
                     this.$scope.summerhouses = result['summerhouses'];
                     this.$scope.searchParams = result['searchParams'];
                 });
-            }
+            };
 
 
             this.$scope.showView = (viewName: string) => {
                 this.$scope.view = viewName;
-            }
+            };
 
             this.$scope.renew = () => {
                 this.getSummerHouses();
@@ -92,7 +97,7 @@ module SummerHouses.houses {
             };
 
             this.$scope.cancelReservation = (reservation: any) => {
-                this.$http.delete('/rest/reservation/' + reservation.id).then(() => {
+                this.$http.delete('rest/reservation/' + reservation.id).then(() => {
                     this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
                     this.getUserReservations();
                 }).catch((error) => {
@@ -109,7 +114,7 @@ module SummerHouses.houses {
         }
 
         getSummerHouses(): void{
-            this.$http.get('/rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
+            this.$http.get('rest/summerhouse').success((summerhouses: SummerHouse[], status) => {
                 for (let summerhouse of summerhouses) {
                     summerhouse.endPeriod = moment(summerhouse.endPeriod).locale('LT').format('MMMM Do');
                     summerhouse.beginPeriod = moment(summerhouse.beginPeriod).locale('LT').format('MMMM Do');
@@ -121,11 +126,16 @@ module SummerHouses.houses {
         getUserReservations(): void{
             this.authService.getUser().then((user) => {
                 var userId = user.id;
-                this.$http.get('/rest/reservation/clubmember/' + userId).then((response) => {
+                var params = {
+                    method: "GET",
+                    url: "rest/reservation/clubmember/" + userId
+                };
+
+                this.$http(params).then((response) => {
                     _.forEach(response.data, (reservation) => {
                         reservation.fromDate = moment(reservation.fromDate).locale('LT').format('MMMM Do');
                         reservation.untilDate  = moment(reservation.untilDate).locale('LT').format('MMMM Do');
-                    })
+                    });
                     this.$scope.userReservations = response.data;
                 });
             }, (error) => {

@@ -26,6 +26,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -187,6 +188,15 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<Clubmember> findAll() {
         return em.createNamedQuery("Clubmember.findAll").getResultList();
+    }
+
+    @GET
+    @Path("getPoints/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Integer getMemberPoints(@PathParam("id") Integer memberID) {
+        Query query = em.createNamedQuery("Clubmember.getMemberPoints");
+        query.setParameter("id", memberID);
+        return (Integer)query.getResultList().get(0);
     }
 
     @GET

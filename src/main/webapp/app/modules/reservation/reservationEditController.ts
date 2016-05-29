@@ -86,16 +86,16 @@ module SummerHouses {
         }
 
         private getReservedAdditionalServices(reservationID):AdditionalServiceReservation[] {
-            this.$http.get('/rest/servicesReservation/reservedServicesFor/' + reservationID).success((reservations: AdditionalServiceReservation[], status) => {
+            this.$http.get('rest/servicesReservation/reservedServicesFor/' + reservationID).success((reservations: AdditionalServiceReservation[], status) => {
 
                 this.createAdditionalServiceReservations(reservations);
             });
         }
 
         private getAllAdditionalServices():void {
-            this.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
-                this.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + this.$scope.reservation.summerhouse.id).success((prices:HouseServicePrice[], status) => {
-                    var servicesWithPrices = new Array<AdditionalService>();
+            this.$http.get('rest/additionalservice').success((services:AdditionalService[], status) => {
+                this.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + this.$scope.reservation.summerhouse.id).success((prices:HouseServicePrice[], status) => {
+                    var servicesWithPrices = [];
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.additionalService.id == service.id) {
@@ -127,7 +127,7 @@ module SummerHouses {
                     possibleReservation.startDate = new Date(this.$scope.reservation.fromDate);
                     return possibleReservation;
                 }
-            })
+            });
             this.additionalServiceReservations = this.$scope.additionalServiceReservations;
         }
 
@@ -139,7 +139,7 @@ module SummerHouses {
         }
 
         public additionalServiceDTOs(reservations: AdditionalServiceReservation[]):AdditionalServiceReservationDTO[] {
-            var serviceDTOs = new Array<AdditionalServiceReservationDTO>();
+            var serviceDTOs = [];
             for (let serviceReservation of reservations) {
                 var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.id, serviceReservation.additionalService.price, serviceReservation.additionalService.id, date);

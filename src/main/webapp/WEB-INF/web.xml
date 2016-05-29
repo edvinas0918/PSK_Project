@@ -50,6 +50,16 @@
         <env-entry-value>./src/main/resources/emailRecommendation.vm</env-entry-value>
     </env-entry>
     <env-entry>
+        <env-entry-name>clientID</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>AQkquBDf1zctJOWGKWUEtKXm6qVhueUEMvXO_-MCI4DQQ4-LWvkDLIN2fGsd</env-entry-value>
+    </env-entry>
+    <env-entry>
+        <env-entry-name>clientSecret</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>EL1tVxAjhT7cJimnz5-Nsx9k2reTKSVfErNQF-CmrwJgxRtylkGTKlU4RvrX</env-entry-value>
+    </env-entry>
+    <env-entry>
         <env-entry-name>invitationTemplate</env-entry-name>
         <env-entry-type>java.lang.String</env-entry-type>
         <env-entry-value>Laba1234</env-entry-value>

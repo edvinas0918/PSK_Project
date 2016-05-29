@@ -106,7 +106,7 @@ module SummerHouses.members {
                         }
                     }
                 });
-            }
+            };
             this.$scope.deactivateMember = () => {
                 var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
                 if (result){
@@ -120,7 +120,7 @@ module SummerHouses.members {
         }
 
         getFormFields(): void{
-            this.$http.get('/rest/memberFormField').success((fields: MemberFormField[]) => {
+            this.$http.get('rest/memberFormField').success((fields: MemberFormField[]) => {
                 this.$scope.originalFieldOptions = fields;
                 _.forEach(fields, (field) => {
                     this.$scope.formFields[field.fieldName] = field.visible;
@@ -129,16 +129,16 @@ module SummerHouses.members {
         }
 
         getRecommendationInformation(): void{
-            this.$http.get('/rest/settings/reccommendationRequestMax').success((settings: Settings) => {
+            this.$http.get('rest/settings/reccommendationRequestMax').success((settings: Settings) => {
                 this.$scope.recommendationsRequestsMax = settings.value;
             });
-            this.$http.get('/rest/settings/recommendationsMin').success((settings: Settings) => {
+            this.$http.get('rest/settings/recommendationsMin').success((settings: Settings) => {
                 this.$scope.recommendationsReceivedMin = settings.value;
             });
-           this.$http.get('/rest/invitation').success((invitations: Invitation[]) => {
+           this.$http.get('rest/invitation').success((invitations: Invitation[]) => {
                 this.$scope.recommendationsRequests = invitations;
             });
-            this.$http.get('/rest/clubmember/recommendations').success((clubmembers: Member[]) => {
+            this.$http.get('rest/clubmember/recommendations').success((clubmembers: Member[]) => {
                 this.$scope.recommendationsReceived = clubmembers;
             });
         }

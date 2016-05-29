@@ -33,13 +33,13 @@ module SummerHouses {
                         ReservationController.that.$scope.summerhouse.additionalServiceReservations = [];
                         //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
                         ReservationController.that.getSummerhouseServices(summerhouse.id);
-                        ReservationController.that.$scope.additionalServiceReservations = new Array<AdditionalServiceReservation>();
+                        ReservationController.that.$scope.additionalServiceReservations = [];
                         var disallowedPeriods = _.map(reservations, (reservation: any) => {
                             return {
                                 fromDate: reservation.fromDate,
                                 untilDate: reservation.untilDate
                             };
-                        })
+                        });
                         disallowedPeriods.push({
                             fromDate: moment().year() + "/01/01",
                             untilDate: moment(summerhouse.beginPeriod).year(moment().year()).format()
@@ -116,14 +116,14 @@ module SummerHouses {
         }
 
         private getReservedAdditionalServices(summerhouseID):AdditionalServiceReservation[] {
-            this.$http.get('/rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation:AdditionalServiceReservation[], status) => {
+            this.$http.get('rest/reservation/additionalServices/' + summerhouseID).success((additionalServiceReservation:AdditionalServiceReservation[], status) => {
                 console.log(additionalServiceReservation);
             });
         }
 
         private getSummerhouseServices(summerhouseID):void {
-            this.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + summerhouseID).success((prices:HouseServicePrice[], status) => {
-                var services = new Array<AdditionalService>();
+            this.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + summerhouseID).success((prices:HouseServicePrice[], status) => {
+                var services = [];
                 for (let houseServicePrice of prices) {
                     let additionalService = houseServicePrice.additionalService;
                     additionalService.price = houseServicePrice.price;
@@ -165,7 +165,7 @@ module SummerHouses {
         };
 
         private getSummerhouseReservation(summerhouseID: string) {
-            return this.$http.get('/rest/reservation/summerhouse/' + summerhouseID)
+            return this.$http.get('rest/reservation/summerhouse/' + summerhouseID)
                 .then((response:any) => {
                 console.log(response.data);
                     return response.data;

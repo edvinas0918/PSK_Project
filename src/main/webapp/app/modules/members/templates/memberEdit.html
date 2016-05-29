@@ -1,3 +1,4 @@
+<fieldset ng-disabled="isPaying">
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -17,6 +18,10 @@
     </div>
     <div class="alert alert-error" ng-if="showAlertError">
         <strong>Klaida!</strong> {{errorMessage}}
+    </div>
+    <div class="alert alert-danger fade in" ng-show="isError">
+        <a href="" class="close" data-dismiss="modal">&times;</a>
+        <strong>Klaida įsigyjant taškus. </strong> {{payPalErrorMessage}}
     </div>
     <form role="form" ng-if="!editing" class="form-horizontal">
         <div class="form-group" ng-if="formFields.firstName">
@@ -47,6 +52,8 @@
             <label class="control-label col-sm-2">Taškai:</label>
             <div class="col-sm-10">
                 <p class="form-control-static">{{member.points}}</p>
+                <button class="btn btn-success" data-toggle="modal" id="update" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Atnaujinami taškai..."
+                        data-target="#confirm-point-purchase">Pirkti taškų per PayPal</button>
             </div>
         </div>
         <div class="form-group" ng-if="(editable || isAdminPage) && !candidate">
@@ -140,3 +147,34 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="confirm-point-purchase">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Klubo taškų įsigijimas</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Įrašykite norimą įsigyti taškų skaičių</p>
+                    <input placeholder="taškų skaičius" min="0" max="9999" style="margin: 0 auto;" class="form-control" style="width: 150px;" type="number"
+                           ng-model="pointAmount" ng-change="change(pointAmount)" ng-required="true">
+
+                    <div class="pull-left">Viso: {{eurToPay}} EUR</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="pull-left btn btn-default" data-dismiss="modal">Atšaukti</button>
+                    <button class="btn btn-success pull-right" ng-disabled="!pointAmount || pointAmount == 0" id="pay" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Vykdoma..." ng-click="buyPointsWithPayPal()" >
+                        Įsigyti naudojantis PayPal
+                    </button>
+                    <!--data-dismiss="modal"-->
+                    <!--<button type="button" class="btn btn-success pull-left" data-dismiss="modal"  ng-click="buyPointsWithPayPal()">Įsigyti per PayPal</button>-->
+                </div>
+                <div class="alert alert-danger fade in" ng-show="isModalError">
+                    <a href="" class="close" data-dismiss="modal">&times;</a>
+                    <strong>Klaida įsigyjant taškus. </strong> {{payPalErrorMessage}}
+                </div>
+            </div>
+        </div>
+</div>
+</fieldset>

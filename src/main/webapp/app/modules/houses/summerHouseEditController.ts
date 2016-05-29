@@ -30,7 +30,7 @@ module SummerHouses.houses {
 
             this.scope = $scope;
             this.httpService = $http;
-            SummerHouseEditController.that.scope.additionalServices= new Array<AdditionalService>();
+            SummerHouseEditController.that.scope.additionalServices= [];
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
             } else {
@@ -112,7 +112,7 @@ module SummerHouses.houses {
                     }
                 }
                 if (houseServicePrices) {
-                    SummerHouseEditController.that.$http.post('/rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
+                    SummerHouseEditController.that.$http.post('rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
                         SummerHouseEditController.that.$location.path("/admin/houses");
                     });
                 } else {
@@ -124,9 +124,9 @@ module SummerHouses.houses {
         }
 
         getAdditionalServices():void {
-            SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
+            SummerHouseEditController.that.$http.get('rest/additionalservice').success((services:AdditionalService[], status) => {
                 let house = SummerHouseEditController.that.scope.house;
-                SummerHouseEditController.that.$http.get('/rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
+                SummerHouseEditController.that.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + house.id).success((prices:HouseServicePrice[], status) => {
                     for (let service of services) {
                         for (let houseServicePrice of prices) {
                             if (houseServicePrice.additionalService.id == service.id) {
@@ -143,23 +143,23 @@ module SummerHouses.houses {
         }
 
         getAllAdditionalServices():void {
-            SummerHouseEditController.that.$http.get('/rest/additionalservice').success((services:AdditionalService[], status) => {
+            SummerHouseEditController.that.$http.get('rest/additionalservice').success((services:AdditionalService[], status) => {
                 SummerHouseEditController.that.$scope.additionalServices = services;
             });
         }
 
         getHouse(houseID:string):void {
-            SummerHouseEditController.that.httpService.get('/rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
+            SummerHouseEditController.that.httpService.get('rest/summerhouse/' + houseID).success((house:SummerHouse, status) => {
                 house.endPeriod = new Date(house.endPeriod);
                 house.beginPeriod = new Date(house.beginPeriod);
                 SummerHouseEditController.that.scope.house = house;
-                SummerHouseEditController.that.scope.house.houseServicePrices = new Array<HouseServicePrice>();
+                SummerHouseEditController.that.scope.house.houseServicePrices = [];
                 SummerHouseEditController.that.getAdditionalServices();
             });
         }
 
         getSummerHouses():void {
-            SummerHouseEditController.that.$http.get('/rest/summerhouse').success((summerhouses:SummerHouse[], status) => {
+            SummerHouseEditController.that.$http.get('rest/summerhouse').success((summerhouses:SummerHouse[], status) => {
                 SummerHouseEditController.that.$scope.summerhouses = summerhouses;
             });
         }

@@ -139,7 +139,13 @@ module SummerHouses.authentication {
 
         public getBaseUrl(): string {
             var url = AuthenticationService.that.$location.absUrl();
-            return url.substring (0, url.indexOf('#'));
+            var index = url.indexOf('#');
+            var qmIndex = url.indexOf('?');
+            if (qmIndex != -1 && qmIndex < index) {
+                index = qmIndex;
+            }
+
+            return url.substring (0, index);
         }
 
         public getSessionUser(): ng.IPromise<IUser> {
