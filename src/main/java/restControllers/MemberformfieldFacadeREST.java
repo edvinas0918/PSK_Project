@@ -66,7 +66,6 @@ public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @GET
     @Override
-    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Memberformfield> findAll() {
         return super.findAll();
