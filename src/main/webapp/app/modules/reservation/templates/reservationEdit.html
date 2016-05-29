@@ -53,8 +53,8 @@
                        type="datetime-local"
                        name="serviceReservationBegin"
                        ng-model="serviceReservation.serviceReservationStartDate"
-                       min="{{getDateString(reservation.fromDate)}}"
-                       max="{{getDateString(reservation.untilDate)}}"
+                       min="{{getReservationFromDate()}}"
+                       max="{{getReservationUntilDate()}}"
                 >
                 <p>{{serviceReservation.additionalService.description}}</p>
                 <p class="pull-right" style="border-top: 1px solid #eee;width: 100%;">{{serviceReservation.additionalService.price}} taškai(-as)</p>

@@ -74,8 +74,9 @@ module SummerHouses {
 
             this.$scope.getUntilDate = () => {
                 try {
-                    var date = ReservationController.that.$scope.weekPicker.getReservationPeriod();
-                    return ReservationController.that.formatDate(date.untilDate);
+                    var date = ReservationController.that.$scope.weekPicker.getReservationPeriod().untilDate;
+                    date = moment(date).hour(23).minute(59).second(59).format();
+                    return ReservationController.that.formatDate(date);
                 } catch (Exception) {
                     return null;
                 }

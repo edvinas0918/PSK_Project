@@ -69,8 +69,13 @@ module SummerHouses {
                 this.$scope.summerhouse.additionalServiceReservations = this.$scope.additionalServiceReservations;
             };
 
-            this.$scope.getDateString = (date: any) => {
-                return moment(date).format("YYYY-MM-DD");
+            this.$scope.getReservationFromDate = () => {
+                return this.formatDate(this.$scope.reservation.fromDate);
+            }
+
+            this.$scope.getReservationUntilDate = () => {
+                return this.formatDate(
+                    moment(this.$scope.reservation.untilDate).hour(23).minute(59).second(59).format());
             }
 
         }
@@ -89,6 +94,8 @@ module SummerHouses {
                 this.getSummerhouseServices(this.reservation.summerhouse.id);
             });
         }
+
+
 
         private getSummerhouseServices(summerhouseID):void {
             this.$http.get('rest/houseserviceprice/findSummerhouseServicePrices/' + summerhouseID).success((prices:HouseServicePrice[], status) => {
