@@ -142,7 +142,8 @@ module SummerHouses {
         public additionalServiceDTOs(reservations: AdditionalServiceReservation[]):AdditionalServiceReservationDTO[] {
             var serviceDTOs = [];
             for (let serviceReservation of reservations) {
-                var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                //var date = moment(serviceReservation.serviceReservationStartDate).format("MMMM DD, YYYY");
+                var date = serviceReservation.serviceReservationStartDate;
                 var serviceDTO = new AdditionalServiceReservationDTO(serviceReservation.id, serviceReservation.additionalService.price, serviceReservation.additionalService.id, date);
                 serviceDTOs.push(serviceDTO);
             }
