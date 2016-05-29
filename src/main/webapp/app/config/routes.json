@@ -66,7 +66,17 @@
         "controller": "summerHousePreviewController",
         "layout": "member",
         "allowedRoles": [
-          "Member",
+          "Member"
+        ]
+      }
+    },
+    {
+      "url": "/admin/previewHouse/:houseID",
+      "config": {
+        "templateUrl": "app/modules/houses/templates/previewHouse.html",
+        "controller": "summerHousePreviewController",
+        "layout": "admin",
+        "allowedRoles": [
           "Admin"
         ]
       }
@@ -92,7 +102,6 @@
         "controller": "summerHousesController",
         "layout": "member",
         "allowedRoles": [
-          "Admin",
           "Member"
         ]
       }
@@ -118,8 +127,19 @@
         "controller": "reservationController",
         "layout": "member",
         "allowedRoles": [
-          "Admin",
           "Member"
+        ]
+      }
+    },
+    {
+      "url": "/admin/houses/:summerhouseID/reservation",
+      "config": {
+        "name": "houseReservation",
+        "templateUrl": "app/modules/reservation/templates/reservation.html",
+        "controller": "reservationController",
+        "layout": "admin",
+        "allowedRoles": [
+          "Admin"
         ]
       }
     },

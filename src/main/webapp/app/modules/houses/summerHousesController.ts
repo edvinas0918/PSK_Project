@@ -64,7 +64,12 @@ module SummerHouses.houses {
             };
 
             this.$scope.previewHouse = (house: SummerHouse) => {
-                this.$location.path("/previewHouse/" + house.id);
+                if(this.$scope.isAdminPage){
+                    this.$location.path("/admin/previewHouse/" + house.id);
+                }
+                else{
+                    this.$location.path("/previewHouse/" + house.id);
+                }
             };
 
             this.$scope.openSeachForm = () => {
