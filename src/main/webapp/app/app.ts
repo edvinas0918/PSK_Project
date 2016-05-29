@@ -89,7 +89,9 @@ module SummerHouses {
                     }
                     return [true, "unselected-date"];
                 }
-            });
+            },
+                $.datepicker.regional['lt']
+            );
         }
         
         return {
