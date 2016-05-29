@@ -24,6 +24,7 @@
         <th ng-if="formFields.status">Statusas</th>
         <th ng-if="formFields.points">Taškai</th>
         <th ng-if="isAdminPage">Narystės galiojimas</th>
+        <th ng-if="isAdminPage">Rezervacijos grupė</th>
         <th ></th>
     </tr>
     </thead>
@@ -35,6 +36,7 @@
         <td ng-if="formFields.status">{{x.statusString}}</td>
         <td ng-if="formFields.points">{{x.points}}</td>
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
+        <td ng-if="isAdminPage">{{x.reservationGroup}}</td>
         <td>
             <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
             <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
