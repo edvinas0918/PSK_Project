@@ -165,8 +165,11 @@ public class SummerhouseReservation {
 
     public Payment getPayment (Summerhousereservation reservation) throws InsufficientFundsException {
         int price = reservation.getSummerhouse().getReservationPrice() * getWeekDiff(reservation.getFromDate(), reservation.getUntilDate());
+
+        String fromDate = new DateTime(reservation.getFromDate()).toString("yyyy-MM-dd");
+        String toDate = new DateTime(reservation.getUntilDate()).toString("yyyy-MM-dd");
         return paymentService.makePayment(authenticationControllerREST.getSessionUser(), price, "Vasarnamis " + reservation.getSummerhouse().getNumber()
-                + " " + reservation.getFromDate() + " " + reservation.getUntilDate());
+                + " " + fromDate + " " + toDate);
     }
 
     public int getWeekDiff (Date fromDate, Date untilDate) {
