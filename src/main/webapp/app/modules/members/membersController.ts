@@ -11,6 +11,7 @@ module SummerHouses.members {
     class MembersController {
 
         private user: string;
+        static that: MembersController;
 
         static $inject = [
             '$rootScope',
@@ -31,13 +32,14 @@ module SummerHouses.members {
             private $location: any,
             private authService: IAuthenticationService
         ) {
+            MembersController.that = this;
             this.$scope.formFields = { };
             this.$scope.search = false;
 
             this.authService.getUser().then((user:AuthenticationService.IUser) => {
-                this.$scope.user = user.firstName + " " + user.lastName;
+                this.$scope.user = user;
             }, function (error) {
-                this.$scope.user = "Anonimas";
+                this.$scope.user = null;
             });
 
             this.getMembers();
@@ -59,7 +61,8 @@ module SummerHouses.members {
                             return "Kvietimas prisijungti prie „Labanoro draugų“";
                         },
                         emailBody: () => {
-                            return "Sveiki,\n" + this.$scope.user + " Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
+                            var name = this.$scope.user.firstName + " " + this.$scope.user.lastName;
+                            return "Sveiki,\n" + name + " Jus kviečia prisijungti prie „Labanoro draugų“ klubo. Detalesnę informaciją ir kandidato anketą galite rasti mūsų puslapyje.\n\nPagarbiai,\n„Labanoro draugų“ klubas";
                         },
                         maxRecipients: () => {
                             return 5;
@@ -82,8 +85,8 @@ module SummerHouses.members {
 
                 modalInstance.result.then((result) =>{
                     this.$scope.search = true;
-                    this.$scope.members = result.members.filter(function (member) {
-                        return member.id !== this.user.id;
+                    this.$scope.members = result.filter(function (member) {
+                        return member.id !== MembersController.that.$scope.user.id;
                     });
                 });
             };

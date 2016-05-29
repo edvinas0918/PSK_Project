@@ -123,8 +123,13 @@ module SummerHouses.members {
             };
 
             this.$scope.recommendCandidate = () => {
-                this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).success(() => {
+                var btn = $("#recommend").button('loading');
+                this.$http.put('/rest/clubmember/recommend/' + this.$scope.member.id ).then(() => {
                     this.showSuccessMessage("Rekomendacija patvirtinta", 5000);
+                    btn.button('reset');
+                }).catch(response => {
+                    this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Sistemos klaida.");
+                    btn.button('reset');
                 })
             }
 
