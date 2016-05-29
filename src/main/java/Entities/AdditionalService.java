@@ -48,7 +48,7 @@ public class AdditionalService implements Serializable {
     private String description;
     @OneToMany(mappedBy = "additionalService")
     private List<HouseServicePrice> houseServicePrices = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "additionalService", fetch = FetchType.EAGER)
+    @OneToMany(orphanRemoval = true, mappedBy = "additionalService", fetch = FetchType.EAGER)
     private List<Additionalservicereservation> additionalServiceReservationList;
 
     public AdditionalService() {
