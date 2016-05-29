@@ -80,6 +80,8 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @Authentication(role = {"Member", "Admin"})
     public void handleServicePrices(HouseServicePricesDTO houseServicePricesDTO) throws Exception {
         List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(houseServicePricesDTO.getHouseID());
+        List<HouseServicePrice> editablePrices = new ArrayList<>();
+        editablePrices.addAll(houseServicePrices);
         for (HouseServicePriceDTO dto : houseServicePricesDTO.getHouseServicePriceDTOList()) {
             HouseServicePrice houseServicePrice;
             if (dto.getId() > 0) {
@@ -93,12 +95,12 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
                 houseServicePrice = new HouseServicePrice(dto.getPrice(), additionalServiceFacadeREST.find(dto.getServiceID()), summerhouseFacadeREST.find(houseServicePricesDTO.getHouseID()));
                 create(houseServicePrice);
             }
-            if (houseServicePrices.contains(houseServicePrice)) {
-                houseServicePrices.remove(houseServicePrice);
+            if (editablePrices.contains(houseServicePrice)) {
+                editablePrices.remove(houseServicePrice);
             }
         }
 
-        for (HouseServicePrice houseServicePriceToRemove : houseServicePrices) {
+        for (HouseServicePrice houseServicePriceToRemove : editablePrices) {
             List<Additionalservicereservation> additionalservicereservations = additionalServiceReservationService.getAdditionalServiceReservationsForService(houseServicePriceToRemove.getAdditionalService().getId());
             if (additionalservicereservations != null && !additionalservicereservations.isEmpty()) {
                 for (Additionalservicereservation additionalservicereservation : additionalservicereservations) {
