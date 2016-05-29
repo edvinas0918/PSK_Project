@@ -21,6 +21,8 @@ import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -40,8 +42,6 @@ public class PaypalService {
     private static final String ERROR_MESSAGE_KEY = "errorMessage";
 
     private static String accessToken = null;
-
-    private static APIContext apiContext = null;
     private static Payment pointsPayment = null;
 
     private APIContext loadPaypalConfig() {
@@ -81,6 +81,7 @@ public class PaypalService {
                 responseBody.put(ERROR_MESSAGE_KEY, "Apmokėjimas nebuvo patvirtintas");
             }
         } catch (PayPalRESTException e) {
+            Logger.getLogger(PaypalService.class.getName()).log(Level.SEVERE, null, e);
             responseBody.put(ERROR_MESSAGE_KEY, "Sistemos klaida");
         }
 
@@ -133,6 +134,7 @@ public class PaypalService {
                 responseBody.put(ERROR_MESSAGE_KEY, "Negauta nukreipimo nuoroda");
             }
         } catch (PayPalRESTException e) {
+            Logger.getLogger(PaypalService.class.getName()).log(Level.SEVERE, null, e);
             responseBody.put(ERROR_MESSAGE_KEY, "Sistemos klaida");
 
         }
@@ -143,10 +145,7 @@ public class PaypalService {
     }
 
     private APIContext getApiContext() {
-        if (apiContext == null) {
-            apiContext = loadPaypalConfig();
-        }
-        return apiContext;
+        return loadPaypalConfig();
     }
 
 }

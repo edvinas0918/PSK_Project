@@ -174,7 +174,7 @@ module SummerHouses.members {
                     MemberEditController.that.$http.get('/rest/clubmember/getPoints/' + MemberEditController.that.$scope.member.id).success((points: number, status) => {
                         MemberEditController.that.$scope.member.points = points;
                         MemberEditController.that.$scope.isPaying = false;
-                        MemberEditController.that.showSuccessMessage("Įsigyta klubo taškų už " + response.data.total + " eurų", 10000);
+                        MemberEditController.that.showSuccessMessage("Įsigyta klubo taškų už " + response.data.total + " EUR", 10000);
                     });
                 }, function (error) {
                     btn.button('reset');
