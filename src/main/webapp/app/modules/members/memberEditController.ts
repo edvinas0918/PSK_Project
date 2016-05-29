@@ -197,7 +197,9 @@ module SummerHouses.members {
             this.$http.get('rest/clubmember/' + memberID).success((member: Member, status) => {
                 this.$scope.member = member;
                 this.$scope.member.membershipExpirationDateString =
-                    moment(member.membershipExpirationDate).locale('LT').format('L');
+                    member.membershipExpirationDate
+                        ? moment(member.membershipExpirationDate).locale('LT').format('L')
+                        : "Klubo nario mokestis nesumokėtas";
                 if (member.memberStatus.name.toLowerCase() === "candidate"){
                     this.$scope.candidateReview = true;
                 }
