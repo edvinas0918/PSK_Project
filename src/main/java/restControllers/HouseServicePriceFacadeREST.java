@@ -8,6 +8,7 @@ package restControllers;
 import entities.AdditionalService;
 import entities.HouseServicePrice;
 import entities.HouseServicePricePK;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import models.HouseServicePriceDTO;
 
@@ -75,6 +76,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void create(HouseServicePrice entity) {
         try {
             super.create(entity);
@@ -86,6 +88,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @POST
     @Path("handleServicePrices")
     @Consumes({MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void handleServicePrices(ArrayList<HouseServicePriceDTO> priceMap) throws Exception {
         List<HouseServicePrice> houseServicePrices = getSummerhouseServicesPrices(priceMap.get(0).getHouseID());
         for (HouseServicePriceDTO dto : priceMap) {
@@ -113,12 +116,14 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public void edit(HouseServicePrice entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     public void remove(@PathParam("id") PathSegment id) {
         entities.HouseServicePricePK key = getPrimaryKey(id);
         super.remove(super.find(key));
@@ -127,6 +132,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public HouseServicePrice find(HouseServicePricePK key) {
         return super.find(key);
     }
@@ -134,6 +140,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @GET
     @Path("findSummerhouseServicePrices/{houseID}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<HouseServicePrice> getSummerhouseServicesPrices(@PathParam("houseID") final Integer houseID)
     {
         Query query = em.createNamedQuery("HouseServicePrice.findBySummerhouse");
@@ -149,6 +156,7 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<HouseServicePrice> findAll() {
         return super.findAll();
     }
@@ -156,15 +164,9 @@ public class HouseServicePriceFacadeREST extends AbstractFacade<HouseServicePric
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Authentication(role = {"Member", "Admin"})
     public List<HouseServicePrice> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
     }
 
     @Override
