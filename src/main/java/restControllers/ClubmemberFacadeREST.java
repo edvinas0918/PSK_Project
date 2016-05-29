@@ -214,9 +214,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     @Authentication(role = {"Member", "Admin"})
-    public Response renewMembership(Clubmember member) {
-        try{
-            clubMemberService.renewMembership(member);
+    public Response renewMembership() {
+        try{    
+            clubMemberService.renewMembership(clubMemberService.getCurrentUser());
         } catch(InsufficientFundsException exc){
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }

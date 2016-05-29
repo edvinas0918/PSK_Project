@@ -30,6 +30,8 @@ module SummerHouses.houses {
 
             this.scope = $scope;
             this.httpService = $http;
+            this.$scope.showError = false;
+            this.$scope.showSuccess = false;
             SummerHouseEditController.that.scope.additionalServices= [];
             if ($routeParams.houseID != "0") {
                 this.getHouse($routeParams.houseID);
@@ -112,14 +114,16 @@ module SummerHouses.houses {
                     }
                 }
                 if (houseServicePrices) {
-                    SummerHouseEditController.that.$http.post('rest/houseserviceprice/handleServicePrices', houseServicePrices).success(() => {
+                    SummerHouseEditController.that.$http.post('rest/houseserviceprice/handleServicePrices', houseServicePrices).then(() => {
                         SummerHouseEditController.that.$location.path("/admin/houses");
+                    }).catch((response) => {
+                        this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Sistemos klaida.");
                     });
                 } else {
                     SummerHouseEditController.that.$location.path("/admin/houses");
                 }
-            }).catch((exc) => {
-                console.log(exc);
+            }).catch((response) => {
+                this.showErrorMessage(response.data.errorMessage ? response.data.errorMessage : "Sistemos klaida.");
             });
         }
 
@@ -164,7 +168,25 @@ module SummerHouses.houses {
             });
         }
 
+        showSuccessMessage(message: string): void{
+            this.$scope.showSuccess = true;
+            this.$scope.successMessage = message;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showSuccess = false;
+                })
+            }, 4000)
+        }
 
+        showErrorMessage(message: string): void{
+            this.$scope.errorMessage = message;
+            this.$scope.showError = true;
+            setTimeout(() => {
+                this.$scope.$apply(() => {
+                    this.$scope.showError = false;
+                })
+            }, 4000)
+        }
     }
 
     function fileParse($parse) {
