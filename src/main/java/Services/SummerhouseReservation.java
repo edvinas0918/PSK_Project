@@ -39,6 +39,9 @@ public class SummerhouseReservation {
     @Inject
     private SettingsService settingsService;
 
+    @Inject
+    private AdditionalServiceReservationService additionalServiceReservationService;
+
     public void validatePeriod(Date beginPeriod, Date endPeriod) throws BadRequestException {
         if (endPeriod.compareTo(beginPeriod) != 1) {
             throw new BadRequestException("Neteisingai įvestas laikotarpis");
@@ -161,6 +164,8 @@ public class SummerhouseReservation {
 
         //3. Give points back to user
         paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
+
+        cancelAdditionalServiceReservations(reservation, clubmember);
     }
 
     public Payment getPayment (Summerhousereservation reservation) throws InsufficientFundsException {
@@ -186,5 +191,20 @@ public class SummerhouseReservation {
         if (membershipDate == null || user.getMembershipExpirationDate().compareTo(new Date()) == -1) {
             throw new BadRequestException ("Rezervuoti gali tik tie nariai, kurie yra sumokėję metinį klubo nario mokestį");
         }
+    }
+
+    public void cancelAdditionalServiceReservations(Summerhousereservation reservation, Clubmember clubmember){
+        for(Additionalservicereservation res :
+                additionalServiceReservationService.getAdditionalServiceReservations(reservation.getId())){
+            cancelAdditionalServiceReservation(res, clubmember);
+        };
+    }
+
+    public void cancelAdditionalServiceReservation(Additionalservicereservation reservation, Clubmember clubmember){
+        Payment payment = em.find(Payment.class, reservation.getPayment().getId());
+        payment.setCanceled(true);
+        paymentService.makeMinusPayment(clubmember, payment.getPrice(), payment.getName());
+
+        additionalServiceReservationService.delete(reservation);
     }
 }

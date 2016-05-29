@@ -6,7 +6,7 @@ import entities.Payment;
 import entities.Summerhousereservation;
 import helpers.InsufficientFundsException;
 import interceptors.ExceptionHandler;
-import services.AdditionalServiceReservation;
+import services.AdditionalServiceReservationService;
 import models.AdditionalServiceReservationDTO;
 import models.HandlesServiceDTO;
 import org.json.JSONObject;
@@ -44,7 +44,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     private AdditionalServiceFacadeREST additionalServiceFacadeREST;
 
     @Inject
-    private AdditionalServiceReservation additionalServiceReservation;
+    private AdditionalServiceReservationService additionalServiceReservation;
 
     @Inject
     private SummerhouseReservationREST summerhouseReservationREST;
@@ -125,10 +125,7 @@ public class AdditionalservicereservationFacadeREST extends AbstractFacade<Addit
     @Path("reservedServicesFor/{summerhouseReservationID}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Additionalservicereservation> getAdditionalServiceReservations(@PathParam("summerhouseReservationID") Integer id) {
-        TypedQuery<Additionalservicereservation> query =
-                em.createNamedQuery("Additionalservicereservation.findBySummerhouseReservationID", Additionalservicereservation.class).setParameter("summerhouseReservationID", id);
-        List<Additionalservicereservation> additionalservicereservations = query.getResultList();
-        return additionalservicereservations;
+        return additionalServiceReservation.getAdditionalServiceReservations(id);
     }
 
     @PUT
