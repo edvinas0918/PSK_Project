@@ -125,10 +125,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
 
             boolean result = false;
             for(Summerhousereservation reservation: reservations){
-                if((reservation.getFromDate().after(fromDate) || reservation.getFromDate().equals(fromDate)) &&
-                        reservation.getFromDate().before(untilDate) ||
-                        reservation.getUntilDate().after(fromDate)
-                                && (reservation.getUntilDate().before(untilDate) || reservation.getUntilDate().equals(untilDate))){
+                if (!reservation.getFromDate().after(untilDate) && !reservation.getUntilDate().before(fromDate)) {
                     result = true;
                     break;
                 }
