@@ -7,6 +7,7 @@ package restControllers;
 
 import entities.Summerhouse;
 import helpers.Helpers;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import models.SummerhouseSearchDto;
 import org.json.JSONObject;
@@ -45,6 +46,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @POST
     @Override
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Summerhouse entity) throws Exception {
         super.create(entity);
@@ -52,6 +54,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @POST
     @Path("postHashMap")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response handleHouse(Map<Object, Object> summerhouseMap) throws Exception {
         JSONObject responseBody = new JSONObject();
@@ -71,6 +74,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @POST
     @Path("search")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Summerhouse> searchSummerhouses(SummerhouseSearchDto searchDto) throws ParseException {
         List<Summerhouse> summerhouses = new ArrayList<>(em.createNamedQuery("Summerhouse.findAll").getResultList());
@@ -79,6 +83,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @PUT
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Summerhouse entity) {
         super.edit(entity);
@@ -86,12 +91,14 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Summerhouse find(@PathParam("id") Integer id) {
         return super.find(id);
@@ -99,6 +106,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @GET
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Summerhouse> findAll() {
         return super.findAll();
@@ -106,6 +114,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @GET
     @Path("{from}/{to}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Summerhouse> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
@@ -113,6 +122,7 @@ public class SummerhouseFacadeREST extends AbstractFacade<Summerhouse> {
 
     @GET
     @Path("count")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());

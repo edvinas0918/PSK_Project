@@ -6,6 +6,7 @@
 package restControllers;
 
 import entities.Memberformfield;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import services.MemberFormService;
 
@@ -43,12 +44,14 @@ public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @PUT
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Memberformfield entity) {
         super.edit(entity);
     }
 
     @PUT
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void editAll(Memberformfield[] fields) {
         memberFormService.editFields(fields);
@@ -56,6 +59,7 @@ public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @GET
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Memberformfield find(@PathParam("id") Integer id) {
         return super.find(id);
@@ -63,6 +67,7 @@ public class MemberformfieldFacadeREST extends AbstractFacade<Memberformfield> {
 
     @GET
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Memberformfield> findAll() {
         return super.findAll();

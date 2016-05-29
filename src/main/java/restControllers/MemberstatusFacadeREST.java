@@ -6,6 +6,7 @@
 package restControllers;
 
 import entities.Memberstatus;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @POST
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Memberstatus entity) throws Exception {
         super.create(entity);
@@ -47,6 +49,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @PUT
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Memberstatus entity) {
         super.edit(entity);
@@ -54,12 +57,14 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Memberstatus find(@PathParam("id") Integer id) {
         return super.find(id);
@@ -67,6 +72,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @GET
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Memberstatus> findAll() {
         return super.findAll();
@@ -74,6 +80,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @GET
     @Path("{from}/{to}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Memberstatus> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
@@ -81,6 +88,7 @@ public class MemberstatusFacadeREST extends AbstractFacade<Memberstatus> {
 
     @GET
     @Path("count")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());

@@ -1,6 +1,7 @@
 package restControllers;
 
 import entities.Payment;
+import interceptors.Authentication;
 import interceptors.ExceptionHandler;
 import models.PayPalAuthorizationDTO;
 import models.PayPalPaymentDTO;
@@ -36,6 +37,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @POST
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void create(Payment entity) throws Exception {
         super.create(entity);
@@ -43,6 +45,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @POST
     @Path("payPalAuthorizationForPayment")
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response getPaypalAuthorizationForPayment(PayPalAuthorizationDTO payPalAuthorizationDTO) {
         return paymentService.getPaypalAuthorizationForPayment(payPalAuthorizationDTO.getAmount(), payPalAuthorizationDTO.getReturnURL(), payPalAuthorizationDTO.getCancelURL());
@@ -50,6 +53,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @POST
     @Path("payPalMakePayment")
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public Response makePayPalPayment(PayPalPaymentDTO payPalPaymentDTO) {
         //return //paymentService.getPaypalAuthorizationForPayment(payPalAuthorizationDTO.getAmount(), payPalAuthorizationDTO.getReturnURL(), payPalAuthorizationDTO.getCancelURL());
@@ -58,6 +62,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @PUT
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Payment entity) {
         super.edit(entity);
@@ -65,6 +70,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @PUT
     @Path("confirm")
+    @Authentication(role = {"Admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     public void confirmPayment(Payment[] payments){
         paymentService.confirmPayment(payments);
@@ -72,12 +78,14 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @DELETE
     @Path("{id}")
+    @Authentication(role = {"Admin"})
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Payment find(@PathParam("id") Integer id) {
         return super.find(id);
@@ -85,6 +93,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @GET
     @Override
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Payment> findAll() {
         return super.findAll();
@@ -92,6 +101,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @GET
     @Path("{from}/{to}")
+    @Authentication(role = {"Member", "Admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<Payment> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
@@ -99,6 +109,7 @@ public class PaymentFacadeREST extends AbstractFacade<Payment> {
 
     @GET
     @Path("count")
+    @Authentication(role = {"Member", "Admin"})
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
