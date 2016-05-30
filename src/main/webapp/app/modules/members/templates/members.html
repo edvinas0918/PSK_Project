@@ -38,6 +38,8 @@
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td ng-if="isAdminPage">{{x.reservationGroup}}</td>
         <td>
+            <button type="button" class="btn btn-success" ng-click="collectVacationData(x)" data-toggle="modal"
+                    data-target="#view-vacation-info">Atostogų informacija</button>
             <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
             <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
             <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/members/{{x.id}}/pointsGrant">Suteikti taškų</a>
@@ -45,3 +47,35 @@
     </tr>
     </tbody>
 </table>
+
+<div class="modal fade" id="view-vacation-info">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Nario {{firstName}} {{lastName}} atostogos</h4>
+            </div>
+            <div class="row" ng-if="!noVacations">
+                <div class="controls col-xs-12">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Vasarnamis</th>
+                            <th>Rezervuota</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="vacationInfo in vacationInfos">
+                            <td>Vasarnamis nr. {{vacationInfo.summerhouseNumber}}</td>
+                            <td>{{vacationInfo.fromDate}} - {{vacationInfo.untilDate}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-body text-center" ng-if="noVacations">
+                <p>Narys nėra rezervavęs vasarnamių.</p>
+            </div>
+        </div>
+    </div>
+</div>

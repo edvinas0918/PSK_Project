@@ -33,6 +33,7 @@ module SummerHouses {
                         ReservationController.that.$scope.summerhouse.additionalServiceReservations = [];
                         //ReservationController.that.getReservedAdditionalServices(summerhouse.id);
                         ReservationController.that.getSummerhouseServices(summerhouse.id);
+                        ReservationController.that.getSummerhouseReservationInfo(summerhouse.id);
                         ReservationController.that.$scope.additionalServiceReservations = [];
                         var disallowedPeriods = _.map(reservations, (reservation: any) => {
                             return {
@@ -122,6 +123,16 @@ module SummerHouses {
             });
         }
 
+        private getSummerhouseReservationInfo(summerhouseID):void {
+            this.$http.get('rest/reservation/reservationInfoForSummerhouse/' + summerhouseID).success((reservationInfos:ReservationInfo[], status) => {
+                for(let reservationInfo of reservationInfos) {
+                    reservationInfo.fromDate = moment(reservationInfo.fromDate).locale('LT').format("MMMM DD, YYYY");
+                    reservationInfo.untilDate = moment(reservationInfo.untilDate).locale('LT').format("MMMM DD, YYYY");
+                }
+                ReservationController.that.$scope.summerhouseReservations = reservationInfos;
+            });
+        }
+
         public checkIfAllServicesHaveDate(reservations:AdditionalServiceReservation[]):Boolean {
             for (let serviceReservation of reservations) {
                 if (!serviceReservation.serviceReservationStartDate) {
@@ -168,6 +179,12 @@ module SummerHouses {
 
     export class AdditionalServiceReservation {
         constructor(public checked: boolean, public service:AdditionalService, public serviceReservationStartDate:Date) {
+
+        }
+    }
+
+    export class ReservationInfo {
+        constructor(public firstName: string, public lastName:string, public fromDate: Date, public untilDate: Date) {
 
         }
     }

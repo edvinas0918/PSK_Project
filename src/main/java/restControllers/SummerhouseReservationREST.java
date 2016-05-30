@@ -5,6 +5,8 @@ import entities.Summerhousereservation;
 import helpers.DateTermException;
 import interceptors.Authentication;
 import interceptors.ExceptionHandler;
+import models.ReservationInfoDTO;
+import models.VacationInfoDTO;
 import services.ClubMemberService;
 import services.DateService;
 import services.IPaymentService;
@@ -89,6 +91,28 @@ public class SummerhouseReservationREST extends AbstractFacade<Summerhousereserv
         TypedQuery<Summerhousereservation> query =
                 em.createNamedQuery("Summerhousereservation.findBySummerhouseId", Summerhousereservation.class).setParameter("id", id);
         return query.getResultList();
+    }
+
+    @GET
+    @Path("reservationInfoForSummerhouse/{id}")
+    @Authentication(role = {"Member", "Admin"})
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReservationInfoDTO> findReservationInfoForSummerhouse(@PathParam("id") Integer id) {
+        TypedQuery<ReservationInfoDTO> query =
+                em.createNamedQuery("Summerhousereservation.findHouseReservationInfo", ReservationInfoDTO.class).setParameter("id", id);
+        List<ReservationInfoDTO> objects = query.getResultList();
+        return objects;
+    }
+
+    @GET
+    @Path("vacationInfoForMember/{id}")
+    @Authentication(role = {"Member", "Admin"})
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<VacationInfoDTO> findVacationInfoForMember(@PathParam("id") Integer id) {
+        TypedQuery<VacationInfoDTO> query =
+                em.createNamedQuery("Summerhousereservation.findMemberVacationInfo", VacationInfoDTO.class).setParameter("id", id);
+        List<VacationInfoDTO> objects = query.getResultList();
+        return objects;
     }
 
     @GET

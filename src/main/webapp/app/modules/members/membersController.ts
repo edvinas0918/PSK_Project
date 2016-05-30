@@ -1,5 +1,6 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="memberModel.ts"/>
 ///<reference path="memberFormFieldModel.ts"/>
 ///<reference path="../utilities/utilities.ts"/>
@@ -49,6 +50,23 @@ module SummerHouses.members {
             this.$scope.deleteMember = (member: Member) => {
                 this.$http.delete('rest/clubmember/' + member.id).success(() => {
                     _.pull(this.$scope.members, member);
+                });
+            };
+
+            this.$scope.collectVacationData = (member: Member) => {
+                this.$http.get('rest/reservation/vacationInfoForMember/' + member.id).success((vacationInfos: any) => {
+                    if (!vacationInfos || vacationInfos.length == 0) {
+                        this.$scope.noVacations = true;
+                        return;
+                    }
+                    this.$scope.noVacations = false;
+                    this.$scope.firstName = member.firstName;
+                    this.$scope.lastName = member.lastName;
+                    for (let vacationInfo of vacationInfos) {
+                        vacationInfo.fromDate = moment(vacationInfo.fromDate).locale('LT').format("MMMM DD, YYYY");
+                        vacationInfo.untilDate = moment(vacationInfo.untilDate).locale('LT').format("MMMM DD, YYYY");
+                    }
+                    this.$scope.vacationInfos = vacationInfos;
                 });
             };
 

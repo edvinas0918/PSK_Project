@@ -54,4 +54,25 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="page-header">Vasarnamio rezervacijos</h2>
+    </div>
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Narys</th>
+                <th>Rezervuota</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="summerhouseReservation in summerhouseReservations">
+                <td>{{summerhouseReservation.firstName}} {{summerhouseReservation.lastName}}</td>
+                <td>{{summerhouseReservation.fromDate}} - {{summerhouseReservation.untilDate}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- /.row -->

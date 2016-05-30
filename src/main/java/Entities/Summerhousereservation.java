@@ -21,6 +21,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Summerhousereservation.findById", query = "SELECT s FROM Summerhousereservation s WHERE s.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findBySummerhouseId", query = "SELECT s FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByClubmemberId", query = "SELECT s FROM Summerhousereservation s WHERE s.member.id = :id"),
+        @NamedQuery(name = "Summerhousereservation.findMemberVacationInfo", query = "SELECT NEW models.VacationInfoDTO(s.summerhouse.number, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.member.id = :id"),
+        @NamedQuery(name = "Summerhousereservation.findHouseReservationInfo", query = "SELECT NEW models.ReservationInfoDTO(s.member.firstName, s.member.lastName, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByFromDate", query = "SELECT s FROM Summerhousereservation s WHERE s.fromDate = :fromDate"),
     @NamedQuery(name = "Summerhousereservation.findByUntilDate", query = "SELECT s FROM Summerhousereservation s WHERE s.untilDate = :untilDate")})
 public class Summerhousereservation implements Serializable {
