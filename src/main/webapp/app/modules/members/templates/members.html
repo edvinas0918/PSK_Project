@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 btn-toolbar">
             <button ng-if="search" class="btn btn-primary pull-right" ng-click="renew()">Rodyti visus narius</button>
             <button class="btn btn-info pull-right" ng-click="openSeachForm()">Ieškoti atostogaujančių narių</button>
             <button class="btn btn-success pull-right" ng-click="openInvitationForm()">Pakviesk draugą!</button>
@@ -38,11 +38,13 @@
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td ng-if="isAdminPage">{{x.reservationGroup}}</td>
         <td>
-            <button type="button" class="btn btn-success" ng-click="collectVacationData(x)" data-toggle="modal"
-                    data-target="#view-vacation-info">Atostogų informacija</button>
-            <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
-            <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
-            <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/members/{{x.id}}/pointsGrant">Suteikti taškų</a>
+            <div class="btn-toolbar">
+                <button type="button" ng-if="search" class="btn btn-success" ng-click="collectVacationData(x)" data-toggle="modal"
+                        data-target="#view-vacation-info">Atostogų informacija</button>
+                <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
+                <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
+                <a class="btn btn-info" ng-if="isAdminPage" ng-href="#/admin/members/{{x.id}}/pointsGrant">Suteikti taškų</a>
+            </div>
         </td>
     </tr>
     </tbody>
