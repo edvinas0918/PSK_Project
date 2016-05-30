@@ -61,9 +61,6 @@ public class Summerhousereservation implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhouse summerhouse;
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservation", fetch = FetchType.EAGER)
-//    private List<Additionalservicereservation> additionalServiceReservationList;
-
     public Summerhousereservation() {
     }
 
@@ -121,14 +118,6 @@ public class Summerhousereservation implements Serializable {
     public void setOptLockVersion(int optLockVersion) {
         this.optLockVersion = optLockVersion;
     }
-
-//    public List<Additionalservicereservation> getAdditionalServiceReservationList() {
-//        return additionalServiceReservationList;
-//    }
-//
-//    public void setAdditionalServiceReservationList(List<Additionalservicereservation> additionalServiceReservationList) {
-//        this.additionalServiceReservationList = additionalServiceReservationList;
-//    }
 
     public Payment getPayment() {
         return payment;
