@@ -181,7 +181,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Įrašykite norimą įsigyti taškų skaičių</p>
-                    <input placeholder="taškų skaičius" min="0" max="9999" style="margin: 0 auto;" class="form-control" style="width: 150px;" type="number"
+                    <input placeholder="taškų skaičius" min="0" max="9999" ng-maxlength="4" style="margin: 0 auto;" class="form-control" style="width: 150px;" type="number"
                            ng-model="pointAmount" ng-change="change(pointAmount)" ng-required="true">
 
                     <div class="pull-left">Viso: {{eurToPay}} EUR</div>
