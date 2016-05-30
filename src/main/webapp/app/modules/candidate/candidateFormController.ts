@@ -1,9 +1,11 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
+///<reference path="../../../typings/bootbox.d.ts"/>
 ///<reference path="../members/memberModel.ts"/>
 ///<reference path="../members/memberFormFieldModel.ts"/>
 ///<reference path="../../../typings/moment.d.ts"/>
 ///<reference path="../utilities/utilities.ts"/>
+
 
 module SummerHouses.members {
 
@@ -108,14 +110,27 @@ module SummerHouses.members {
                 });
             };
             this.$scope.deactivateMember = () => {
-                var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
-                if (result){
-                    this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
-                        authService.logout().then (function () {
-                            $location.path("/login");
+                bootbox.confirm({
+                    buttons: {
+                        confirm: {
+                            label: 'Taip',
+                            className: 'btn btn-primary'
+                        },
+                        cancel: {
+                            label: 'Ne',
+                            className: 'btn btn-default'
+                        }
+                    },
+                    message: 'Ar tikrai norite ištrinti vasarnamį?',
+                    callback: (result) => {
+                        if (!result) return;
+                        this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
+                            authService.logout().then (function () {
+                                $location.path("/login");
+                            });
                         });
-                    });
-                }
+                    }
+                });
             };
         }
 
