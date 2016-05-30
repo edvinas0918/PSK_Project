@@ -21,8 +21,8 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "Summerhousereservation.findById", query = "SELECT s FROM Summerhousereservation s WHERE s.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findBySummerhouseId", query = "SELECT s FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByClubmemberId", query = "SELECT s FROM Summerhousereservation s WHERE s.member.id = :id"),
-        @NamedQuery(name = "Summerhousereservation.findMemberVacationInfo", query = "SELECT NEW models.VacationInfoDTO(s.summerhouse.number, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.member.id = :id"),
-        @NamedQuery(name = "Summerhousereservation.findHouseReservationInfo", query = "SELECT NEW models.ReservationInfoDTO(s.member.firstName, s.member.lastName, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
+    @NamedQuery(name = "Summerhousereservation.findMemberVacationInfo", query = "SELECT NEW models.VacationInfoDTO(s.summerhouse.number, s.summerhouse.id, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.member.id = :id"),
+    @NamedQuery(name = "Summerhousereservation.findHouseReservationInfo", query = "SELECT NEW models.ReservationInfoDTO(s.member.firstName, s.member.lastName, s.fromDate, s.untilDate) FROM Summerhousereservation s WHERE s.summerhouse.id = :id"),
     @NamedQuery(name = "Summerhousereservation.findByFromDate", query = "SELECT s FROM Summerhousereservation s WHERE s.fromDate = :fromDate"),
     @NamedQuery(name = "Summerhousereservation.findByUntilDate", query = "SELECT s FROM Summerhousereservation s WHERE s.untilDate = :untilDate")})
 public class Summerhousereservation implements Serializable {
@@ -60,9 +60,6 @@ public class Summerhousereservation implements Serializable {
     @JoinColumn(name = "SummerhouseID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Summerhouse summerhouse;
-
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "summerhouseReservation", fetch = FetchType.EAGER)
-//    private List<Additionalservicereservation> additionalServiceReservationList;
 
     public Summerhousereservation() {
     }
@@ -121,14 +118,6 @@ public class Summerhousereservation implements Serializable {
     public void setOptLockVersion(int optLockVersion) {
         this.optLockVersion = optLockVersion;
     }
-
-//    public List<Additionalservicereservation> getAdditionalServiceReservationList() {
-//        return additionalServiceReservationList;
-//    }
-//
-//    public void setAdditionalServiceReservationList(List<Additionalservicereservation> additionalServiceReservationList) {
-//        this.additionalServiceReservationList = additionalServiceReservationList;
-//    }
 
     public Payment getPayment() {
         return payment;

@@ -70,6 +70,12 @@ module SummerHouses.members {
                 });
             };
 
+            this.$scope.closeVacationInfoModal = (summerhouseId: number) => {
+                $('#view-vacation-info').modal('toggle');
+                $(".modal-backdrop").remove();
+                MembersController.that.$location.path('previewHouse/' + summerhouseId);
+            };
+
             this.$scope.openInvitationForm = () => {
                 this.$uibModal.open({
                     templateUrl: 'app/modules/mailing/templates/mailingInvitation.html',
