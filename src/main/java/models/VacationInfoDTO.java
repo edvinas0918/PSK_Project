@@ -8,11 +8,12 @@ import java.util.Date;
 public class VacationInfoDTO {
 
     private int summerhouseNumber;
-    private int summerhouseId;
+    private Integer summerhouseId;
     private Date fromDate;
+
     private Date untilDate;
 
-    public VacationInfoDTO(int summerhouseNumber, int summerhouseId, Date fromDate, Date untilDate) {
+    public VacationInfoDTO(int summerhouseNumber, Integer summerhouseId, Date fromDate, Date untilDate) {
         this.summerhouseNumber = summerhouseNumber;
         this.summerhouseId = summerhouseId;
         this.fromDate = fromDate;
@@ -43,12 +44,12 @@ public class VacationInfoDTO {
         this.fromDate = fromDate;
     }
 
-    public int getSummerhouseId() {
-        return summerhouseId;
+    public void setSummerhouseId(Integer summerhouseId) {
+        this.summerhouseId = summerhouseId;
     }
 
-    public void setSummerhouseId(int summerhouseId) {
-        this.summerhouseId = summerhouseId;
+    public Integer getSummerhouseId() {
+        return summerhouseId;
     }
 
 }
