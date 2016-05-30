@@ -3,6 +3,7 @@
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="../utilities/weekPicker.ts"/>
 ///<reference path="../../../typings/moment.d.ts"/>
+///<reference path="../../../typings/bootbox.d.ts"/>
 
 module SummerHouses.houses {
 
@@ -107,18 +108,35 @@ module SummerHouses.houses {
             };
 
             this.$scope.cancelReservation = (reservation: any) => {
-                this.$http.delete('rest/reservation/' + reservation.id).then(() => {
-                    this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
-                    this.getUserReservations();
-                }).catch((error) => {
-                    switch (error.status){
-                        case 406:
-                            this.showErrorMessage("Rezervacijos atšaukimas negalimas.");
-                            break;
-                        case 500:
-                            this.showErrorMessage("Sistemos klaida");
-                            break;
+                bootbox.confirm({
+                    buttons: {
+                        confirm: {
+                            label: 'Taip',
+                            className: 'btn btn-primary'
+                        },
+                        cancel: {
+                            label: 'Ne',
+                            className: 'btn btn-default'
+                        }
+                    },
+                    message: 'Ar tikrai norite atšaukti rezervaciją?',
+                    callback: (result) => {
+                        if (!result) return;
+                        this.$http.delete('rest/reservation/' + reservation.id).then(() => {
+                            this.showSuccessMessage("Rezervacija atšaukta sėkmingai");
+                            this.getUserReservations();
+                        }).catch((error) => {
+                            switch (error.status){
+                                case 406:
+                                    this.showErrorMessage("Rezervacijos atšaukimas negalimas.");
+                                    break;
+                                case 500:
+                                    this.showErrorMessage("Sistemos klaida");
+                                    break;
+                            }
+                        });
                     }
+
                 });
             }
         }
