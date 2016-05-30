@@ -38,8 +38,8 @@
         <td ng-if="isAdminPage">{{x.membershipExpirationDate | date:'yyyy-MM-dd'}}</td>
         <td ng-if="isAdminPage">{{x.reservationGroup}}</td>
         <td>
-            <div class="btn-toolbar">
-                <button type="button" ng-if="search" class="btn btn-success" ng-click="collectVacationData(x)" data-toggle="modal"
+            <div class="btn-toolbar pull-right">
+                <button type="button" class="btn btn-success" ng-click="collectVacationData(x)" data-toggle="modal"
                         data-target="#view-vacation-info">Atostogų informacija</button>
                 <button class="btn btn-default" ng-click="redirectToMemberEdit(x)">Peržiūrėti</button>
                 <button class="btn btn-danger" ng-if="isAdminPage" ng-click="deleteMember(x)">Ištrinti</button>
