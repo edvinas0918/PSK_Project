@@ -51,13 +51,28 @@ module SummerHouses.houses {
             };
             this.$scope.isAdminPage = this.$route.current.$$route.layout.toLowerCase() === "admin";
             this.$scope.deleteHouse = (house: SummerHouse) => {
-                this.$http.delete('rest/summerhouse/' + house.id).success(() => {
-                    var index = this.$scope.summerhouses.indexOf(house, 0);
-                    if (index > -1) {
-                        this.$scope.summerhouses.splice(index, 1);
+                bootbox.confirm({
+                    buttons: {
+                        confirm: {
+                            label: 'Taip',
+                            className: 'btn btn-primary'
+                        },
+                        cancel: {
+                            label: 'Ne',
+                            className: 'btn btn-default'
+                        }
+                    },
+                    message: 'Ar tikrai norite ištrinti vasarnamį?',
+                    callback: (result) => {
+                        if (!result) return;
+                        this.$http.delete('rest/summerhouse/' + house.id).success(() => {
+                            var index = this.$scope.summerhouses.indexOf(house, 0);
+                            if (index > -1) {
+                                this.$scope.summerhouses.splice(index, 1);
+                            }
+                        });
                     }
                 });
-                
             };
 
             this.$scope.editHouse = (house: SummerHouse) => {

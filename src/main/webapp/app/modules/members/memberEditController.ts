@@ -1,6 +1,7 @@
 ///<reference path="../../../typings/angular.d.ts"/>
 ///<reference path="../../../typings/lodash.d.ts"/>
 ///<reference path="../../../typings/moment.d.ts"/>
+///<reference path="../../../typings/bootbox.d.ts"/>
 ///<reference path="memberModel.ts"/>
 ///<reference path="memberFormFieldModel.ts"/>
 ///<reference path="../utilities/utilities.ts"/>
@@ -63,14 +64,27 @@ module SummerHouses.members {
             this.getFormFields();
 
             this.$scope.deactivateMember = () => {
-                var result  = window.confirm("Ar tikrai norite išsiregistruoti iš sistemos?");
-                if (result){
-                    this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
-                        authService.logout().then (function () {
-                            $location.path("/login");
+                bootbox.confirm({
+                    buttons: {
+                        confirm: {
+                            label: 'Taip',
+                            className: 'btn btn-primary'
+                        },
+                        cancel: {
+                            label: 'Ne',
+                            className: 'btn btn-default'
+                        }
+                    },
+                    message: 'Ar tikrai norite išsiregistruoti iš sistemos?',
+                    callback: (result) => {
+                        if (!result) return;
+                        this.$http.delete('rest/clubmember/' + this.$scope.member.id).success(() => {
+                            authService.logout().then (function () {
+                                $location.path("/login");
+                            });
                         });
-                    });
-                }
+                    }
+                });
             };
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
