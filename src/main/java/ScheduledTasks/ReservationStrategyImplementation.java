@@ -2,6 +2,7 @@ package scheduledTasks;
 
 import entities.Clubmember;
 import entities.Summerhousereservation;
+import restControllers.SummerhouseReservationREST;
 import services.ClubMemberService;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
@@ -50,6 +51,9 @@ public class ReservationStrategyImplementation implements ReservationPriorityStr
 
 class memberComparator implements Comparator<Clubmember> {
 
+    @Inject
+    SummerhouseReservationREST summerhouseReservationREST;
+
     @Override
     public int compare(Clubmember member1, Clubmember member2) {
         // < 0   <=>   member1 < member2
@@ -62,7 +66,8 @@ class memberComparator implements Comparator<Clubmember> {
 
     private int countLastYearReservedNights(Clubmember member){
         int nights = 0;
-        for (Summerhousereservation reservation : member.getSummerhousereservationList()){
+
+        for (Summerhousereservation reservation : summerhouseReservationREST.findByClubmember(member.getId())){
             LocalDateTime date  = new LocalDateTime(reservation.getFromDate()).plusYears(1);
             if (LocalDateTime.now().isBefore(date)){
                 LocalDateTime fromDate = new LocalDateTime(reservation.getFromDate());

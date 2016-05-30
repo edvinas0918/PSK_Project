@@ -90,8 +90,6 @@ public class Clubmember implements Serializable {
     private List<Clubmember> recommendedMembers;
     @ManyToMany(mappedBy = "recommendedMembers", fetch = FetchType.EAGER)
     private List<Clubmember> recommenders;
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Summerhousereservation> summerHouseReservationList;
     @JoinColumn(name = "MemberStatusID", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Memberstatus memberStatus;
@@ -213,15 +211,6 @@ public class Clubmember implements Serializable {
 
     public void setRecommenders(List<Clubmember> recommenders) {
         this.recommenders = recommenders;
-    }
-
-    @XmlTransient
-    public List<Summerhousereservation> getSummerhousereservationList() {
-        return summerHouseReservationList;
-    }
-
-    public void setSummerhousereservationList(List<Summerhousereservation> summerhousereservationList) {
-        this.summerHouseReservationList = summerhousereservationList;
     }
 
     public Memberstatus getMemberStatus() {

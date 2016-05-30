@@ -59,7 +59,7 @@
                 <label class="control-label col-sm-2">Apie:</label>
                 <div class="col-sm-8">
                     <p ng-if="!member.about" style="color: grey;" class="form-control-static">Informacija apie narį</p>
-                    <textarea ng-if="member.about" ng-minlength="5" ng-maxlength="1000"
+                    <textarea ng-if="member.about" ng-maxlength="1000"
                           ng-model="member.about" class="form-control textarea-none" rows="3" style="background-color: white;"
                           disabled>{{member.about}}</textarea>
                 </div>
@@ -140,7 +140,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2">Apie:</label>
             <div class="col-sm-8">
-                    <textarea ng-minlength="5" ng-maxlength="1000"
+                    <textarea ng-maxlength="1000"
                               ng-model="member.about" class="form-control"
                               style="resize: vertical;">{{member.about}}</textarea>
             </div>

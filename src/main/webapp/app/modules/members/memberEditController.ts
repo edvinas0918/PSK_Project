@@ -88,17 +88,17 @@ module SummerHouses.members {
             };
 
             this.$scope.saveMember = () => {    // TODO: pagalvot apie email unikaluma
-                if (this.$scope.newMember){
-                    this.$scope.member.id = null;
-                    this.$http.post('rest/clubmember/', this.$scope.member).success(() => {
-                        this.showSuccessMessage("Pakeitimai išsaugoti", 4000);
+                if (MemberEditController.that.$scope.newMember){
+                    MemberEditController.that.$scope.member.id = null;
+                    MemberEditController.that.$http.post('rest/clubmember/', MemberEditController.that.$scope.member).success(() => {
+                        MemberEditController.that.showSuccessMessage("Pakeitimai išsaugoti", 4000);
                     })
                 } else {
-                    this.$http.put('rest/clubmember/' + this.$scope.member.id, this.$scope.member).success(() => {
-                        this.showSuccessMessage("Pakeitimai išsaugoti", 4000);
+                    MemberEditController.that.$http.put('rest/clubmember/' + MemberEditController.that.$scope.member.id, MemberEditController.that.$scope.member).success(() => {
+                        MemberEditController.that.showSuccessMessage("Pakeitimai išsaugoti", 4000);
                     });
                 }
-                this.$scope.editing = false;
+                MemberEditController.that.$scope.editing = false;
             };
 
             this.$scope.editForm = () => {

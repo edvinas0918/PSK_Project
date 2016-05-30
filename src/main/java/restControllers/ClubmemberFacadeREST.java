@@ -54,6 +54,9 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     private EmailService emailService;
 
     @Inject
+    SummerhouseReservationREST summerhouseReservationREST;
+
+    @Inject
     AuthenticationControllerREST authenticationControllerREST;
 
     public ClubmemberFacadeREST() {
@@ -76,6 +79,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Clubmember entity) {
+
         super.edit(entity);
     }
 
@@ -124,7 +128,7 @@ public class ClubmemberFacadeREST extends AbstractFacade<Clubmember> {
         List<Clubmember> membersWithReservation = new ArrayList<>();
 
         for (Clubmember member: members) {
-            List<Summerhousereservation> reservations = member.getSummerhousereservationList();
+            List<Summerhousereservation> reservations = summerhouseReservationREST.findByClubmember(member.getId());
 
             boolean result = false;
             for(Summerhousereservation reservation: reservations){
